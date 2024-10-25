@@ -9,7 +9,7 @@ export default function Map() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text>Edit apsahfahkjfhkjhjlp/index.tsx to edit this screen.</Text>
     </View>
   );
 }
