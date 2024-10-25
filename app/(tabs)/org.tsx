@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-export default function Org() {
+export default function Index() {
   return (
     <View
       style={{
@@ -9,7 +9,7 @@ export default function Org() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text>Edit app/org.tsx to edit this screen.</Text>
     </View>
   );
 }
