@@ -1,6 +1,7 @@
+import MapComponent from "@/components/MapComponent";
 import { Text, View } from "react-native";
 
-export default function Index() {
+export default function Index() { // Map Component (index as default entry point)
   return (
     <View
       style={{
@@ -10,6 +11,8 @@ export default function Index() {
       }}
     >
       <Text> MAP VIEW </Text>
+    
+      <MapComponent />
     </View>
   );
 }
