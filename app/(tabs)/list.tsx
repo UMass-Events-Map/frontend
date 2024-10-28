@@ -19,9 +19,13 @@ const styles = StyleSheet.create({
     paddingTop: 70,
   },
   heading: {
-    flex: 1,
+    flex: 0,
     fontSize: 35,
     fontWeight: 'bold',
-    color: '#7E2622'
+    color: '#7E2622',
+    marginBottom: 15
+  },
+  eventList: {
+    flex: 0
   }
 });

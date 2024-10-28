@@ -5,7 +5,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 export default function EventList() {
     return (
         <View style={styles.container}>
-            <SectionList
+
+            <SectionList style={{}}
                 sections={[
                     {title: 'Today', 
                      data: [{
@@ -43,8 +44,8 @@ const styles = StyleSheet.create({
         flex: 1
       },
     header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     logo: {
     width: 100,
