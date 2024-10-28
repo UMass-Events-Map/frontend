@@ -8,7 +8,13 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 1. Have Node.JS > v20.18.0 installed
 2. Have Git installed
-3. Clone the repository ```git clone https://github.com/UMass-Events-Map/frontend.git```
+3. Have an ios emulator or android emulator
+
+### steps
+1. Clone the repository ```git clone https://github.com/UMass-Events-Map/frontend.git```
+2. run npm i and npx expo start
+3. choose your emulator 
+
 
 ### Build Commands
 
