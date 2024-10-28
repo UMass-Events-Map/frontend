@@ -52,10 +52,12 @@ The 'milestone' dropdown menu organizes each issue to the alpha, beta, and 1.0 r
 
 The 'assignee' dropdown filters the issues based on which developers should work on them.
 
-To clear any search parameters, select the gray box with an 'X' symbol titled "Clear search query." Right click on an item to view more information about each issue, such as its description. On the right side of the screen, there are widgets to assign developers to the issue, add labels, provide notifications, and assign the issue to a milestone. There is also a comment section to provide updates on progress.
+To clear all search parameters, select the gray box with an 'X' symbol titled "Clear search query." Right click on an item to view more information about each issue, such as its description. On the right side of the screen, there are widgets to assign developers to the issue, add labels, provide notifications, and assign the issue to a milestone. There is also a comment section to provide updates on progress.
 In order to close an issue, add a comment and select 'close issue.' It is also possible to open and close multiple issues on the main issues page. This can be done by selecting multiple issues via the checkbox on the left, selecting 'Mark as,' and pressing 'open' or 'close.'
 
 To add an issue, select the green 'new issue' button. Add a title, description, the correct label (issue, feature, etc.), assignees, and milestone. Be sure to include the estimated timeline of completion in the issue description. Also be sure to designate each issue by priority through labels (high, medium, low). Afterwards, you should be good to go!
+
+NOTE: All frontend issues will be in the frontend repo, and all backend issues will be in the backend repo
 
 
 ## Join the community
