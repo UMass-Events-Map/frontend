@@ -21,10 +21,9 @@
         "backgroundColor": "#ffffff"
       },
       "config": {
-        "googleMaps": {
-          
-        }
-      }
+        "googleMaps": {}
+      },
+      "package": "com.anonymous.frontend"
     },
     "web": {
       "bundler": "metro",
