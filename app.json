@@ -13,7 +13,12 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": ""
+      },
+      "bundleIdentifier": "com.umassevents.umasseventsmap"
+
     },
     "android": {
       "adaptiveIcon": {

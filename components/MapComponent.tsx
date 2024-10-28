@@ -9,7 +9,7 @@ export default function MapComponent() {
     return (
         <View style={{ flex: 1 }}>
             <MapView
-                provider={PROVIDER_GOOGLE}
+                provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined }
                 style={StyleSheet.absoluteFill}
                 region={{
                     latitude: 42.390309,
