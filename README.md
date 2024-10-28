@@ -4,6 +4,14 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 ## Build Process Instructions
 
+### Prerequisites
+
+1. Have Node.JS > v20.18.0 installed
+2. Have Git installed
+3. Clone the repository ```git clone https://github.com/UMass-Events-Map/frontend.git```
+
+### Build Commands
+
 1. Install dependencies
 
    ```bash
