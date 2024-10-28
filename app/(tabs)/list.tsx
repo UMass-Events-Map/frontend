@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 20,
-    marginTop: 50
+    paddingTop: 70,
   },
   heading: {
     flex: 1,
