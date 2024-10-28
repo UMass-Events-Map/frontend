@@ -1,11 +1,12 @@
 import { Text, View, StyleSheet } from "react-native";
+import EventList from "@/components/EventList";
 
 export default function List() {
   return (
     <View style={styles.container}>
     
       <Text style={styles.heading}>EVENT LIST</Text>
-    
+      <EventList/>
     </View>
   );
 }
