@@ -1,4 +1,6 @@
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
+import { useState, useEffect } from "react";
+import { supabase } from '@/utils/supabase'
 
 export default function List() {
   const [events, setEvents] = useState<any[] | null>(null);
@@ -6,7 +8,7 @@ export default function List() {
   useEffect(() => {
     const fetchEvents = async () => {
       const { data } = await supabase
-        .from('creators')
+        .from('events')
         .select('*');
       setEvents(data);
     };
@@ -23,7 +25,7 @@ export default function List() {
     
       <Text> LIST VIEW</Text>
     
-    
+      {events}
     
     </View>
   );
