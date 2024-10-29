@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-export default function EventCard(event: {name: string, time: string, date: string, description: string}) {
+export default function EventCard(event: {thumbnail: string, name: string, time: string, date: string, description: string}) {
     return ( 
     <View style={styles.container}>
         <Image
             style={styles.eventImage}
-            source={{ uri: 'https://thevendry.com/cdn-cgi/image/width=640,quality=75,fit=contain,metadata=none,format=auto/https%3A%2F%2Fs3.amazonaws.com%2Fuploads.thevendry.co%2F24985%2F1665157263579_52126829973_d809692f7a_o-%25281%2529.jpg' }}>
+            source={{ uri: event.thumbnail }}>
         </Image>
         <View style={styles.eventInfo}>
             <Text style={styles.eventDateTime}>{event.date}, {event.time}</Text>

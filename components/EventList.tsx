@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, SectionList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import EventCard from './EventCard';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type Event = {
     id: string;
@@ -25,14 +26,12 @@ type Event = {
     return (
       <View>
         {events.map((event) => (
-          <View key={event.id} style={styles.eventCard}>
-            <Image source={{ uri: event.thumbnail }} style={styles.thumbnail} />
-            <Text style={styles.eventName}>{event.name}</Text>
-            <Text>{event.description}</Text>
-            <Text>Date: {event.date}</Text>
-            <Text>Time: {event.time}</Text>
-            <Text>Room: {event.room_number}</Text>
-          </View>
+          <EventCard 
+            thumbnail={event.thumbnail}
+            name={event.name}
+            date={event.date}
+            time={event.time}
+            description={event.description}/>
         ))}
       </View>
     );
