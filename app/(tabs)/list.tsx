@@ -1,6 +1,5 @@
 import { Text, View, StyleSheet } from "react-native";
 import EventList from "@/components/EventList";
-import EventCard from "@/components/EventCard";
 import { useState, useEffect } from "react";
 import { supabase } from '@/utils/supabase';
 
@@ -31,6 +30,7 @@ export default function List() {
     
       <Text> LIST VIEW</Text>
     
+      {events}
     
     </View>
   );
