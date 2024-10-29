@@ -4,13 +4,20 @@
 
 ### Prerequisites
 
-1. Have Node.JS > v20.18.0 installed
+1. Ensure you have Node.JS > v20.18.0 installed
 2. Have Git installed
 3. Have an iOS simulator or Android emulator
+    * **iOS** 
+      * Follow expo's official doc's for iOS Mac [Install XCode](https://docs.expo.dev/workflow/ios-simulator/)
+    * **Android** 
+      * Follow expo's official doc's for Android [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 
 ### How to build and run
 
-1. Clone the repository ```git clone https://github.com/UMass-Events-Map/frontend.git```
+1. Clone the repository 
+   ```bash 
+   git clone https://github.com/UMass-Events-Map/frontend.git
+   ```
 2. Install dependencies
 
    ```bash
@@ -23,10 +30,7 @@
     npx expo start
    ```
 
-In the output, you'll find options to open the app in a
-
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+4. After running `npx expo start` follow the on terminal instructions to start the emulators/simulators, press `a` for starting the Android emulator (ensure emulator is running first), and `i` for iOS simulator
 
 
 ## Bug Tracking
