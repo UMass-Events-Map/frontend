@@ -28,9 +28,8 @@ export default function List() {
   return (
     <View style={styles.container}>
     
-      <Text> LIST VIEW</Text>
-    
-      {events}
+      <Text style={styles.heading}>EVENT LIST</Text>
+      <EventList/>
     
     </View>
   );
