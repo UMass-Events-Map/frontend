@@ -2,8 +2,24 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import EventList from './EventList';
+import { supabase } from '@/utils/supabase';
 
-export default function OrgProfile() {
+
+type Event = {
+  id: string;
+  name: string;
+  description: string;
+  date: string;
+  time: string;
+  room_number: string;
+  thumbnail: string;
+};
+
+type EventListProps = {
+  events: Event[] | null;
+};
+
+export default function OrgProfile({ events }: EventListProps) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -16,7 +32,8 @@ export default function OrgProfile() {
           <MaterialCommunityIcons name="power-plug" size={24} color="#34C759" />
         </View>
       </View>
-      <EventList/>
+
+      <EventList events={events} />
     </View>
   );
 };
