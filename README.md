@@ -1,30 +1,23 @@
 # Welcome to UMass Events Map 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
-
 ## Build Process Instructions
 
 ### Prerequisites
 
 1. Have Node.JS > v20.18.0 installed
 2. Have Git installed
-3. Have an ios emulator or android emulator
+3. Have an iOS simulator or Android emulator
 
-### steps
+### How to build and run
+
 1. Clone the repository ```git clone https://github.com/UMass-Events-Map/frontend.git```
-2. run npm i and npx expo start
-3. choose your emulator 
-
-
-### Build Commands
-
-1. Install dependencies
+2. Install dependencies
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Start the app
 
    ```bash
     npx expo start
@@ -32,10 +25,8 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 In the output, you'll find options to open the app in a
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
 - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
 
 ## Bug Tracking
