@@ -23,13 +23,12 @@ export default function List() {
     fetchEvents();
   }, []);
   
-  console.log("Fetched events:", events);
 
   return (
     <View style={styles.container}>
     
       <Text style={styles.heading}>EVENT LIST</Text>
-      <EventList/>
+      <EventList events={events} />
     
     </View>
   );

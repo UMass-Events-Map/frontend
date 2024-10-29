@@ -3,59 +3,56 @@ import { View, Text, Image, StyleSheet, SectionList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import EventCard from './EventCard';
 
-export default function EventList() {
+type Event = {
+    id: string;
+    name: string;
+    description: string;
+    date: string;
+    time: string;
+    room_number: string;
+    thumbnail: string;
+  };
+  
+  type EventListProps = {
+    events: Event[] | null;
+  };
+
+  export default function EventList({ events }: EventListProps) {
+    if (!events) {
+      return <Text>No events available</Text>;
+    }
+  
     return (
-        <View style={styles.container}>
-
-            <SectionList style={{}}
-                sections={[
-                    {title: 'Today', 
-                     data: [
-                        {
-                            name: "Annual Company Conference",
-                            date: "Mar 12",
-                            time: "10:00 AM",
-                            description: "Keynote speakers and networking."
-                        },
-                        {
-                            name: "Team Building Workshop",
-                            date: "Apr 15",
-                            time: "2:00 PM",
-                            description: "Collaborative problem-solving activites."
-                        },
-                        {
-                            name: "Summer Kickoff Party",
-                            date: "May 20",
-                            time: "6:00 PM",
-                            description: "Food, drinks, and music."
-                        }
-                        ]}
-                ]}
-                renderItem={({item}) => (
-                <EventCard
-                    name={item.name}
-                    date={item.date}
-                    time={item.time}
-                    description={item.description}></EventCard>)}
-                renderSectionHeader={({section}) =>
-                <Text style={styles.sectionHeader}>{section.title}</Text>}
-                keyExtractor={item => `basicListEntry-${item}`}>
-
-            </SectionList>
-        </View>
-
+      <View>
+        {events.map((event) => (
+          <View key={event.id} style={styles.eventCard}>
+            <Image source={{ uri: event.thumbnail }} style={styles.thumbnail} />
+            <Text style={styles.eventName}>{event.name}</Text>
+            <Text>{event.description}</Text>
+            <Text>Date: {event.date}</Text>
+            <Text>Time: {event.time}</Text>
+            <Text>Room: {event.room_number}</Text>
+          </View>
+        ))}
+      </View>
     );
-
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1
-      },
-    sectionHeader: {
-        fontSize: 20,
-        fontWeight: 'semibold',
-        color: 'black',
-        backgroundColor: 'white'
+  }
+  
+  const styles = StyleSheet.create({
+    eventCard: {
+      marginBottom: 20,
+      padding: 10,
+      backgroundColor: '#f9f9f9',
+      borderRadius: 8,
     },
-});
+    eventName: {
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    thumbnail: {
+      width: '100%',
+      height: 150,
+      borderRadius: 8,
+      marginBottom: 10,
+    },
+  });
