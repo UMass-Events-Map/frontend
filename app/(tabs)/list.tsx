@@ -1,4 +1,6 @@
 import { Text, View, StyleSheet } from "react-native";
+import EventList from "@/components/EventList";
+import EventCard from "@/components/EventCard";
 import { useState, useEffect } from "react";
 import { supabase } from '@/utils/supabase';
 
@@ -26,11 +28,11 @@ export default function List() {
 
   return (
     <View style={styles.container}>
+    
       <Text> LIST VIEW</Text>
-      {error && <Text style={{ color: 'red' }}>Error: {error}</Text>}
-      {events ? events.map((event, index) => (
-        <Text key={index}>{JSON.stringify(event)}</Text>
-      )) : <Text>No events found</Text>}
+    
+      {events}
+    
     </View>
   );
 }
