@@ -16,12 +16,6 @@ export default function EventCard(event: {name: string, time: string, date: stri
     </View>)
 }
 
-type Event = {
-    name: string,
-    date: string,
-    description: string
-}
-
 const styles = StyleSheet.create({
     container: {
         flex: 0,
