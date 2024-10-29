@@ -1,32 +1,36 @@
 import { Text, View, StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
-import { supabase } from '@/utils/supabase'
+import { supabase } from '@/utils/supabase';
 
 export default function List() {
   const [events, setEvents] = useState<any[] | null>(null);
-  
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchEvents = async () => {
-      const { data } = await supabase
+      const { data: events, error } = await supabase
         .from('events')
         .select('*');
-      setEvents(data);
+      
+      if (error) {
+        console.error("Error fetching events:", error.message);
+        setError(error.message);
+      } else {
+        setEvents(events);
+      }
     };
     fetchEvents();
-
-    console.log(events)
-  
   }, []);
-
-
+  
+  console.log("Fetched events:", events);
 
   return (
     <View style={styles.container}>
-    
       <Text> LIST VIEW</Text>
-    
-      {events}
-    
+      {error && <Text style={{ color: 'red' }}>Error: {error}</Text>}
+      {events ? events.map((event, index) => (
+        <Text key={index}>{JSON.stringify(event)}</Text>
+      )) : <Text>No events found</Text>}
     </View>
   );
 }
