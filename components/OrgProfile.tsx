@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import EventList from './EventList';
 
 export default function OrgProfile() {
   return (
@@ -17,7 +17,9 @@ export default function OrgProfile() {
         </View>
       </View>
 
-      <View style={styles.eventsContainer}>
+      <EventList/>
+
+      {/* <View style={styles.eventsContainer}>
         <View style={styles.event}>
           <Image
             source={{ uri: 'https://via.placeholder.com/50' }}
@@ -53,7 +55,7 @@ export default function OrgProfile() {
             <Text style={styles.eventDescription}>Food, drinks, and music.</Text>
           </View>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };
