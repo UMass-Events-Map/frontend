@@ -1,12 +1,13 @@
 import { Text, View, StyleSheet } from "react-native";
 import EventList from "@/components/EventList";
+import EventCard from "@/components/EventCard";
 
 export default function List() {
   return (
     <View style={styles.container}>
     
       <Text style={styles.heading}>EVENT LIST</Text>
-      <EventList/>
+      <EventCard name="123" description="123" date="123"/>
     </View>
   );
 }
