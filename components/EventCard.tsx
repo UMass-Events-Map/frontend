@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-export default function EventCard(event: {thumbnail: string, name: string, time: string, date: string, description: string}) {
+export default function EventCard(event: {thumbnail: string, name: string, time: string, date: string, description: string, key: string}) {
     return ( 
     <View style={styles.container}>
         <Image

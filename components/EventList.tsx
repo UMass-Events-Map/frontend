@@ -31,7 +31,8 @@ type Event = {
             name={event.name}
             date={event.date}
             time={event.time}
-            description={event.description}/>
+            description={event.description}
+            key={event.id}/>
         ))}
       </View>
     );
