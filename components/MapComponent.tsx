@@ -34,6 +34,7 @@ export default function MapComponent({ buildings }: BuildingListProps) {
             >
                 {buildings.map(building => ( 
                     <Marker
+                        key={building.id}
                         coordinate={{ latitude: building.latitude, longitude: building.longitude }}
                         title={building.name}
                         description="Marker Description"
