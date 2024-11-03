@@ -1,7 +1,10 @@
 import MapComponent from "@/components/MapComponent";
 import { Text, View, StyleSheet } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { supabase } from '@/utils/supabase';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import BottomSheet from "@gorhom/bottom-sheet";
+
 
 export default function Index() { // Map Component (index as default entry point)
   const [buildings, setBuildings] = useState<any[] | null>(null);
@@ -25,9 +28,11 @@ export default function Index() { // Map Component (index as default entry point
   
   
   return (
-    <View style={{ flex: 1 }}>
-      
-      <MapComponent buildings={buildings}/>
-    </View>
+    
+      <View style={{ flex: 1 }}>
+        <MapComponent buildings={buildings}/>
+      </View>
+
+  
   );
 }
