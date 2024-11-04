@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Platform, Text, StyleSheet, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'; // (react native maps library doesnt support web loading/viewing)
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 // import { GOOGLE_MAPS_API_KEY } from '@env';
 
@@ -37,16 +37,14 @@ export default function MapComponent({ buildings }: BuildingListProps) {
 
     };
     
-    // If using web view to test viewing the map it won't work, you must launch Emulator or Connect Physical Device
-    if (!buildings) {
-        return <Text>No buildings available</Text>;
-    }
+    // Web Expo testing will not work, you must launch Emulator/Simulator or Connect Physical Device
+    if (!buildings) { return <Text>No buildings available</Text>; }
   
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
             <MapView
                 provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined }
-                style={StyleSheet.absoluteFill}
+                style={styles.map}
                 region={{
                     latitude: 42.390309,
                     longitude: -72.527682,
@@ -64,22 +62,22 @@ export default function MapComponent({ buildings }: BuildingListProps) {
                     />
 
                 ))}
-                
+
             </MapView>
-
+            
             <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
-                <View style={styles.contentContainer}>
-                {selectedLocation ? (
-                    <>
-                    <Text style={styles.title}>{selectedLocation.name}</Text>
-
-                    {/* <Text style={styles.description}>{selectedLocation.description}</Text> */}
-                    
-                    </>
-                ) : (
-                    <Text style={styles.description}>Tap on a marker to see details</Text>
-                )}
-                </View>
+                <BottomSheetView>
+                    <View style={styles.contentContainer}>
+                        {selectedLocation ? (
+                            <>
+                            <Text style={styles.title}>{selectedLocation.name} </Text>
+                            </>
+                        ) : (
+                            <Text style={styles.description}>Tap on a marker to see details</Text>
+                        )}
+                    </View>
+                </BottomSheetView>
+            
             </BottomSheet>
             
         </View>
@@ -92,20 +90,18 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     map: {
-        width: '100%',
-        height: '100%',
+        flex: 1,
     },
     contentContainer: {
-        flex: 1,
-        alignItems: 'center',
         padding: 16,
-      },
-      title: {
+        alignItems: 'center',
+    },
+    title: {
         fontSize: 18,
         fontWeight: 'bold',
-      },
-      description: {
+    },
+    description: {
         fontSize: 16,
         color: '#666',
-      },
+    },
 });
