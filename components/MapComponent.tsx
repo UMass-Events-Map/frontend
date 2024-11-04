@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState, memo } from 'react';
 import { Platform, Text, StyleSheet, View, Image } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
@@ -45,6 +45,7 @@ export default function MapComponent({ buildings }: BuildingProp) {
         isUserInteraction.current = true;
     };
 
+
     return (
         <View style={styles.container}>
             <MapView
@@ -66,6 +67,8 @@ export default function MapComponent({ buildings }: BuildingProp) {
                         coordinate={{ latitude: building.latitude, longitude: building.longitude }}
                         //title={building.name}
                         onPress={() => handleMarkerPress(building)}
+                        tracksViewChanges={false}
+                        zIndex={9999999}
                     >
                         <Image style={styles.markerImage} source={require('../assets/icons/pin.png')} />
                     </Marker>
