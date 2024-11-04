@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { Platform, Text, StyleSheet, View } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker, Region } from 'react-native-maps';
+import { Platform, Text, StyleSheet, View, Image } from 'react-native';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
 type Building = {
@@ -19,20 +19,13 @@ export default function MapComponent({ buildings }: BuildingProp) {
 
     const [selectedLocation, setSelectedLocation] = useState<Building | null>(null);
     const bottomSheetRef = useRef<BottomSheet>(null);
-    const mapRef = useRef<MapView>(null);
-    const isUserInteraction = useRef(true);
+    const isUserInteraction = useRef(false);
 
     const snapPoints = useMemo(() => ['45%', '85%'], []);
 
     const handleMarkerPress = (building: Building) => {
         setSelectedLocation(building);
         isUserInteraction.current = false;
-        mapRef.current?.animateToRegion({
-            latitude: building.latitude,
-            longitude: building.longitude,
-            latitudeDelta: 0.012,
-            longitudeDelta: 0.012,
-        });
         bottomSheetRef.current?.snapToIndex(1);
     };
 
@@ -55,7 +48,6 @@ export default function MapComponent({ buildings }: BuildingProp) {
     return (
         <View style={styles.container}>
             <MapView
-                ref={mapRef}
                 provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
                 style={styles.map}
                 region={{
@@ -72,9 +64,11 @@ export default function MapComponent({ buildings }: BuildingProp) {
                     <Marker
                         key={building.id}
                         coordinate={{ latitude: building.latitude, longitude: building.longitude }}
-                        title={building.name}
+                        //title={building.name}
                         onPress={() => handleMarkerPress(building)}
-                    />
+                    >
+                        <Image style={styles.markerImage} source={require('../assets/icons/pin.png')} />
+                    </Marker>
                 ))}
             </MapView>
 
@@ -111,5 +105,9 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 16,
         color: '#666',
+    },
+    markerImage: {
+        width: 39,
+        height: 45.3,
     },
 });
