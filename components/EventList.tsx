@@ -19,7 +19,11 @@ export type EventListProps = {
 
 export default function EventList({ events }: EventListProps) {
   if (!events) {
-    return <Text>No events available</Text>;
+    return (
+      <View style={styles.noEventTextContainer}>
+        <Text style={styles.noEventText}>No events available</Text>
+      </View>
+    );
   }
 
   return (
@@ -32,13 +36,7 @@ export default function EventList({ events }: EventListProps) {
         renderItem={({item}) => {
           return (
             <EventCard 
-            thumbnail={item.thumbnail}
-            name={item.name}
-            room_number={item.room_number}
-            date={item.date}
-            time={item.time}
-            description={item.description}
-            key={item.id}/>
+            event={item}/>
           );
         }}
       />
@@ -55,5 +53,14 @@ const styles = StyleSheet.create({
   },
   eventList: {
     paddingHorizontal: 8
+  },
+  noEventText: {
+    fontSize: 20,
+    color: '#D6D6D6'
+  },
+  noEventTextContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });

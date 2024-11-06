@@ -2,9 +2,19 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default function EventCard(event: {thumbnail: string, name: string, time: string, date: string, room_number: string, description: string, key: string}) {
+export type Event = {
+    id: string;
+    name: string;
+    description: string;
+    date: string;
+    time: string;
+    room_number: string;
+    thumbnail: string;
+};
+
+export default function EventCard({ event } : { event: Event }) {
     return ( 
-    <View style={styles.container}>
+    <View style={styles.container} >
         <Image
             style={styles.eventImage}
             source={{ uri: event.thumbnail }}>
@@ -37,8 +47,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 0.5 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3, 
+        shadowOpacity: 0.3,
+        shadowRadius: 1, 
     },
     eventInfoLayout: {
         flexDirection: "row",
