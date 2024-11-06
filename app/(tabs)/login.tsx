@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     fontSize: 15,
-    marginTop: 8,
+    marginTop: 9,
     textAlign: "center",
   },
   container: {
