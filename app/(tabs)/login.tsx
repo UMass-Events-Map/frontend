@@ -11,14 +11,14 @@ const LoginScreen: React.FC = () => {
     console.log("Password:", password);
   };
 
-  const doesNotHaveAnAccount = () => {
+  const handleAccountCreation = () => {
     //handle logic for when they don't have an account
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login as Organization</Text>
-      <Text style={styles.subtitle}>Login</Text>
+      <Text style={styles.subtitle}>Sign in</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -34,13 +34,24 @@ const LoginScreen: React.FC = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Login" onPress={handleLogin} />
-      <Text>Organization doesn’t have an account?</Text>
+      <Button title="Sign In" onPress={handleLogin} />
+      <Text
+        style={[styles.text, { textDecorationLine: "underline" }]}
+        onPress={handleAccountCreation}
+      >
+        Organization doesn’t have an account?
+      </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  text: {
+    color: "white",
+    fontSize: 15,
+    marginTop: 8,
+    textAlign: "center",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
