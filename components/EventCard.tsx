@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default function EventCard(event: {thumbnail: string, name: string, time: string, date: string, description: string, key: string}) {
+export default function EventCard(event: {thumbnail: string, name: string, time: string, date: string, room_number: string, description: string, key: string}) {
     return ( 
     <View style={styles.container}>
         <Image
@@ -9,9 +10,19 @@ export default function EventCard(event: {thumbnail: string, name: string, time:
             source={{ uri: event.thumbnail }}>
         </Image>
         <View style={styles.eventInfo}>
-            <Text style={styles.eventDateTime}>{event.date}, {event.time}</Text>
             <Text style={styles.eventName}>{event.name}</Text>
-            <Text style={styles.eventDescription}>{event.description}</Text>
+            <View style={styles.eventInfoLayout}>
+                <Ionicons name={"calendar"} size={16} style={styles.icon}/>
+                <Text style={styles.eventDateTime}>{event.date}</Text>
+            </View>
+            <View style={styles.eventInfoLayout}>
+                <Ionicons name={"time"} size={16} style={styles.icon}/>
+                <Text style={styles.eventDateTime}>{event.time}</Text>
+            </View>
+            <View style={styles.eventInfoLayout}>
+                <Ionicons name={"location"} size={16} style={styles.icon}/>
+                <Text style={styles.eventRoomNumber}>{event.room_number}</Text>
+            </View>
         </View>
     </View>)
 }
@@ -20,28 +31,43 @@ const styles = StyleSheet.create({
     container: {
         flex: 0,
         backgroundColor: '#FAFAFA',
-        borderRadius: 3,
-        flexDirection: 'row',
-        padding: 10
+        borderRadius: 10,
+        height: 270,
+        width: '49%',
+        marginBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 0.5 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3, 
+    },
+    eventInfoLayout: {
+        flexDirection: "row",
+        marginVertical: 3
     },
     eventImage: {
-        width: 80,
-        height: 80
+        width: '100%',
+        height: 140,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10
     },
     eventInfo: {
-        marginLeft: 10
+        marginHorizontal: 5
     },
     eventDateTime: {
-        fontSize: 16,
-        color: '#666'
+        fontSize: 14,
+        fontWeight: 'light',
     },
     eventName: {
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: 'bold',
+        marginVertical: 3
     },
-    eventDescription: {
+    eventRoomNumber: {
         fontSize: 14,
-        color: '#999',
+        fontWeight: 'light',
+    },
+    icon: {
+        marginRight: 3
     }
 
 });

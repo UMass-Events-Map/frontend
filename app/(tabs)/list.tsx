@@ -1,5 +1,6 @@
 import { Text, View, StyleSheet } from "react-native";
 import EventList from "@/components/EventList";
+import BuildingPage from "@/components/BuildingPage";
 import { useState, useEffect } from "react";
 import { supabase } from '@/utils/supabase';
 
@@ -31,6 +32,7 @@ export default function List() {
       <EventList events={events} />
     
     </View>
+    // <BuildingPage></BuildingPage>
   );
 }
 
@@ -38,7 +40,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
     paddingTop: 70,
   },
   heading: {
@@ -46,6 +47,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: 'bold',
     color: '#7E2622',
+    marginLeft: 10,
     marginBottom: 15
   },
   eventList: {
