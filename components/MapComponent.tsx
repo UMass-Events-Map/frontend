@@ -1,7 +1,9 @@
 import React, { useCallback, useMemo, useRef, useState, memo } from 'react';
-import { Platform, Text, StyleSheet, View, Image } from 'react-native';
+import { Platform, Text, StyleSheet, View, Image, ScrollView} from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import ActionSheet, { SheetManager, ActionSheetRef, useScrollHandlers } from 'react-native-actions-sheet';
+import {NativeViewGestureHandler} from 'react-native-gesture-handler';
 
 type Building = {
     id: string;
@@ -18,25 +20,28 @@ export default function MapComponent({ buildings }: BuildingProp) {
     if (!buildings) return <Text>No buildings available</Text>;
 
     const [selectedLocation, setSelectedLocation] = useState<Building | null>(null);
-    const bottomSheetRef = useRef<BottomSheet>(null);
     const isUserInteraction = useRef(false);
+    
+    const handlers = useScrollHandlers();
+    const actionSheetRef = useRef<ActionSheetRef>(null);
 
+    
     const snapPoints = useMemo(() => ['45%', '85%'], []);
 
     const handleMarkerPress = (building: Building) => {
         setSelectedLocation(building);
         isUserInteraction.current = false;
-        bottomSheetRef.current?.snapToIndex(1);
+        actionSheetRef.current?.show();
     };
 
     const handleMapPress = () => {
-        bottomSheetRef.current?.snapToIndex(0);
+        actionSheetRef.current?.hide();
         setSelectedLocation(null);
     };
 
     const handleRegionChange = () => {
         if (isUserInteraction.current) {
-            bottomSheetRef.current?.snapToIndex(0);
+            actionSheetRef.current?.hide();
             setSelectedLocation(null);
         }
     };
@@ -66,8 +71,9 @@ export default function MapComponent({ buildings }: BuildingProp) {
                         key={building.id}
                         coordinate={{ latitude: building.latitude, longitude: building.longitude }}
                         //title={building.name}
+                        
                         onPress={() => handleMarkerPress(building)}
-                        tracksViewChanges={false}
+                        
                         zIndex={9999999}
                     >
                         <Image style={styles.markerImage} source={require('../assets/icons/pin.png')} />
@@ -75,17 +81,22 @@ export default function MapComponent({ buildings }: BuildingProp) {
                 ))}
             </MapView>
 
-            <BottomSheet ref={bottomSheetRef} index={-1} snapPoints={snapPoints}>
-                <BottomSheetView>
-                    <View style={styles.contentContainer}>
-                        {selectedLocation ? (
-                            <Text style={styles.title}>{selectedLocation.name}</Text>
-                        ) : (
-                            <Text style={styles.description}>Tap on a marker to see details</Text>
-                        )}
-                    </View>
-                </BottomSheetView>
-            </BottomSheet>
+   
+                <ActionSheet ref={actionSheetRef} snapPoints={[100]}>
+                    {/* <NativeViewGestureHandler simultaneousHandlers={handlers.simultaneousHandlers}> */}
+                        
+                        <View style={styles.contentContainer}>
+                            {selectedLocation ? (
+                                <Text style={styles.title}>{selectedLocation.name}</Text>
+                            ) : (
+                                <Text style={styles.description}>Tap on a marker to see details</Text>
+                            )}
+                        </View>
+        
+                    {/* </NativeViewGestureHandler> */}
+                </ActionSheet>
+        
+        
         </View>
     );
 }

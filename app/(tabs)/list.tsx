@@ -1,7 +1,10 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Button } from "react-native";
 import EventList from "@/components/EventList";
 import { useState, useEffect } from "react";
 import { supabase } from '@/utils/supabase';
+import { Link } from 'expo-router';
+import OrgProfile from "@/components/OrgProfile";
+
 
 export default function List() {
   const [events, setEvents] = useState<any[] | null>(null);
@@ -27,9 +30,9 @@ export default function List() {
   return (
     <View style={styles.container}>
       
+
       <Text style={styles.heading}>EVENT LIST</Text>
       <EventList events={events} />
-    
     </View>
   );
 }
