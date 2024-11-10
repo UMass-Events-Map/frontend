@@ -3,7 +3,18 @@ import EventList from './EventList';
 import { useState, useEffect } from "react";
 import { supabase } from '@/utils/supabase';
 
-export default function BuildingPage( ) {
+type Building = {
+    id: string;
+    name: string;
+    latitude: string;
+    longitude: string;
+}
+
+type BuildingProp = {
+    building: Building | null
+}
+
+export default function BuildingPage( { building }: BuildingProp ) {
     const [events, setEvents] = useState<any[] | null>(null);
     const [error, setError] = useState<string | null>(null);
 
