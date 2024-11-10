@@ -48,27 +48,47 @@ export default function EventList({ events }: EventListProps) {
         style={styles.eventList}
         renderItem={({item}) => {
           return (
-            <TouchableHighlight style={styles.eventContainer} onPress={onPressEvent} underlayColor="white">
-                <View>
-                  <Image
-                    style={styles.eventImage}
-                    source={{ uri: item.thumbnail }}/>
-                  <View style={styles.eventInfo}>
-                    <Text style={styles.eventName} numberOfLines={2} ellipsizeMode='tail'>{item.name}</Text>
-                    <View style={styles.eventInfoLayout}>
-                        <Ionicons name={"calendar"} size={16} style={styles.icon}/>
-                        <Text style={styles.eventDateTime}>{item.date}</Text>
-                    </View>
-                    <View style={styles.eventInfoLayout}>
-                        <Ionicons name={"time"} size={16} style={styles.icon}/>
-                        <Text style={styles.eventDateTime}>{item.time}</Text>
-                    </View>
-                    <View style={styles.eventInfoLayout}>
-                        <Ionicons name={"location"} size={16} style={styles.icon}/>
-                        <Text style={styles.eventRoomNumber}>{item.room_number}</Text>
-                    </View>
+            <TouchableHighlight 
+              style={styles.eventContainer} 
+              onPress={onPressEvent} 
+              underlayColor="white"
+            >
+              <View>
+                <Image
+                  style={styles.eventImage}
+                  source={{ uri: item.thumbnail }}
+                />
+                <View style={styles.eventInfo}>
+                  <Text 
+                    style={styles.eventName} 
+                    numberOfLines={2} 
+                    ellipsizeMode='tail'
+                  >
+                    {item.name}
+                  </Text>
+                  <View style={styles.eventInfoLayout}>
+                    <Ionicons 
+                      name={"calendar"} 
+                      size={16} 
+                      style={styles.icon} />
+                    <Text style={styles.eventDateTime}>{item.date}</Text>
+                  </View>
+                  <View style={styles.eventInfoLayout}>
+                    <Ionicons 
+                      name={"time"} 
+                      size={16} 
+                      style={styles.icon} />
+                    <Text style={styles.eventDateTime}>{item.time}</Text>
+                  </View>
+                  <View style={styles.eventInfoLayout}>
+                    <Ionicons 
+                      name={"location"} 
+                      size={16} 
+                      style={styles.icon} />
+                    <Text style={styles.eventRoomNumber}>{item.room_number}</Text>
                   </View>
                 </View>
+              </View>
             </TouchableHighlight>
           );
         }}
