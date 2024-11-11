@@ -4,8 +4,11 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import {SheetProvider} from 'react-native-actions-sheet';
+import '@/components/sheets';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -27,9 +30,22 @@ export default function RootLayout() {
   }
 
   return (
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <SheetProvider>
+        {/* <GestureHandlerRootView> */}
+          
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Stack>
+
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />  
+              <Stack.Screen name="+not-found" />
+              
+            </Stack>
+          </ThemeProvider>
+
+        {/* </GestureHandlerRootView> */}
+      
+      </SheetProvider>
+    
+      
   );
 }
