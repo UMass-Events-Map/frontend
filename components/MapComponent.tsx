@@ -82,7 +82,7 @@ export default function MapComponent({ buildings }: BuildingProp) {
             </MapView>
 
    
-                <ActionSheet ref={actionSheetRef} snapPoints={[100]}>
+                <ActionSheet ref={actionSheetRef} snapPoints={[400]}>
                     {/* <NativeViewGestureHandler simultaneousHandlers={handlers.simultaneousHandlers}> */}
                         
                         <View style={styles.contentContainer}>
