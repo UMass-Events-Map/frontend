@@ -30,8 +30,9 @@ export default function RootLayout() {
   }
 
   return (
+    <GestureHandlerRootView> 
+   
       <SheetProvider>
-        {/* <GestureHandlerRootView> */}
           
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <Stack>
@@ -42,9 +43,10 @@ export default function RootLayout() {
             </Stack>
           </ThemeProvider>
 
-        {/* </GestureHandlerRootView> */}
-      
       </SheetProvider>
+   
+    </GestureHandlerRootView> 
+    
     
       
   );

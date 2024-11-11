@@ -28,6 +28,8 @@ function BuildingSheet(props: SheetProps<"building-sheet">) {
 
     return (
       <ActionSheet
+        enableGesturesInScrollView
+        gestureEnabled
         initialSnapIndex={1} 
         snapPoints={[40, 93]} 
       >
