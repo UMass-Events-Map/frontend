@@ -29,9 +29,10 @@ export default function MapComponent({ buildings }: BuildingProp) {
     const snapPoints = useMemo(() => ['45%', '85%'], []);
 
     const handleMarkerPress = (building: Building) => {
-        setSelectedLocation(building);
-        isUserInteraction.current = false;
-        actionSheetRef.current?.show();
+        SheetManager.show('building-sheet');
+        // setSelectedLocation(building);
+        // isUserInteraction.current = false;
+        // actionSheetRef.current?.show();
     };
 
     const handleMapPress = () => {
@@ -79,22 +80,23 @@ export default function MapComponent({ buildings }: BuildingProp) {
                         <Image style={styles.markerImage} source={require('../assets/icons/pin.png')} />
                     </Marker>
                 ))}
+                
             </MapView>
 
    
-                <ActionSheet ref={actionSheetRef} snapPoints={[400]}>
+                {/* <ActionSheet ref={actionSheetRef} snapPoints={[400]}> */}
                     {/* <NativeViewGestureHandler simultaneousHandlers={handlers.simultaneousHandlers}> */}
                         
-                        <View style={styles.contentContainer}>
+                        {/* <View style={styles.contentContainer}>
                             {selectedLocation ? (
                                 <Text style={styles.title}>{selectedLocation.name}</Text>
                             ) : (
                                 <Text style={styles.description}>Tap on a marker to see details</Text>
                             )}
-                        </View>
+                        </View> */}
         
                     {/* </NativeViewGestureHandler> */}
-                </ActionSheet>
+                {/* </ActionSheet> */}
         
         
         </View>
