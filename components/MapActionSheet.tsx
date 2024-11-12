@@ -66,10 +66,6 @@ const styles = StyleSheet.create({
     },
     eventList: {
       flex: 0
-    }
-
-
-
-    
+    }    
   });
   
