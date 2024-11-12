@@ -10,7 +10,7 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Event, EventListProps } from "@/constants/Interfaces";
 import { Link } from "expo-router";
-import { FlatList, useSheetRef} from 'react-native-actions-sheet';
+import { FlatList, useSheetRef, SheetManager} from 'react-native-actions-sheet';
 
 export default function EventList({ events }: EventListProps) {
 
@@ -45,15 +45,12 @@ export default function EventList({ events }: EventListProps) {
 function EventCard(event: Event) {
   const onPressEvent = () => {
     // navigate to event detail page
+    SheetManager.show('eventdetail-sheet');
   };
 
   const newDate = new Date(event.date);
 
   return (
-    <Link href={{
-      pathname: "/blank",
-      params: { value: "Test passing data"}
-    }} asChild>
       <TouchableHighlight
         style={styles.eventContainer}
         onPress={onPressEvent}
@@ -96,7 +93,7 @@ function EventCard(event: Event) {
           </View>
         </View>
       </TouchableHighlight>
-    </Link>
+   
   );
 }
 

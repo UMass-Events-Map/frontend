@@ -5,7 +5,7 @@ import { supabase } from '@/utils/supabase';
 import EventList from "@/components/EventList";
 import {NativeViewGestureHandler} from 'react-native-gesture-handler';
 
-function BuildingSheet(props: SheetProps<"building-sheet">) {
+export default function MapActionSheet(props: SheetProps<"mapaction-sheet">) {
 
     // temp for now
     const [events, setEvents] = useState<any[] | null>(null);
@@ -30,25 +30,23 @@ function BuildingSheet(props: SheetProps<"building-sheet">) {
 
 
     return (
-      <ActionSheet
-        indicatorStyle={{ backgroundColor: 'lightgray' }}
-        headerAlwaysVisible={true}
-        gestureEnabled
-        initialSnapIndex={1} 
-        snapPoints={[20, 55]} 
-      >
+            <ActionSheet
 
-            <Text style={styles.heading}> {props.payload?.value.name} </Text>
-            <EventList events={events} />
+            indicatorStyle={{ backgroundColor: 'lightgray' }}
+            headerAlwaysVisible={true}
+            gestureEnabled
+            enableGesturesInScrollView
+            initialSnapIndex={1} 
+            snapPoints={[20, 55]} 
+            >
 
+                <Text style={styles.heading}> {props.payload?.value.name} </Text>
+                <EventList events={events} />
 
-      </ActionSheet>
-    );
-  }
+        </ActionSheet>
+    )
+}
    
-  export default BuildingSheet;
-
-
 
 
 const styles = StyleSheet.create({
@@ -69,5 +67,9 @@ const styles = StyleSheet.create({
     eventList: {
       flex: 0
     }
+
+
+
+    
   });
   

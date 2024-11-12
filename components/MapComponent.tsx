@@ -9,10 +9,18 @@ export default function MapComponent({ buildings }: BuildingProp) {
     if (!buildings) return <Text>No buildings available</Text>;
     
     const handleMarkerPress = (building: Building) => {
-        SheetManager.show('building-sheet', {
+        SheetManager.show('mapaction-sheet', {
             payload: { value: building },
           }
         );
+    };
+
+    const handleMapPress = (building: Building) => {
+        console.log("shjfkahskfas")
+        // SheetManager.show('building-sheet', {
+        //     payload: { value: building },
+        //   }
+        // );
     };
 
     return (
