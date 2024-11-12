@@ -6,10 +6,6 @@ import { Link } from 'expo-router';
 import OrgProfile from "@/components/OrgProfile";
 
 
-import ActionSheet, { SheetManager, ActionSheetRef, useScrollHandlers } from 'react-native-actions-sheet';
-import {NativeViewGestureHandler} from 'react-native-gesture-handler';
-
-
 export default function List() {
   const [events, setEvents] = useState<any[] | null>(null);
   const [error, setError] = useState<string | null>(null);

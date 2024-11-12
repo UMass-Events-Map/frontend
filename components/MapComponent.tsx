@@ -26,30 +26,25 @@ export default function MapComponent({ buildings }: BuildingProp) {
     const actionSheetRef = useRef<ActionSheetRef>(null);
 
     
-    const snapPoints = useMemo(() => ['45%', '85%'], []);
+    //const snapPoints = useMemo(() => ['45%', '85%'], []);
 
     const handleMarkerPress = (building: Building) => {
-        SheetManager.show('building-sheet');
+        SheetManager.show('building-sheet', {
+            payload: { value: building },
+          }
+
+        );
+
         // setSelectedLocation(building);
         // isUserInteraction.current = false;
         // actionSheetRef.current?.show();
     };
 
     const handleMapPress = () => {
-        actionSheetRef.current?.hide();
-        setSelectedLocation(null);
+        // actionSheetRef.current?.hide();
+        // setSelectedLocation(null);
     };
 
-    const handleRegionChange = () => {
-        if (isUserInteraction.current) {
-            actionSheetRef.current?.hide();
-            setSelectedLocation(null);
-        }
-    };
-
-    const handleRegionChangeComplete = () => {
-        isUserInteraction.current = true;
-    };
 
 
     return (
@@ -64,8 +59,8 @@ export default function MapComponent({ buildings }: BuildingProp) {
                     longitudeDelta: 0.012,
                 }}
                 onPress={handleMapPress}
-                onRegionChange={handleRegionChange}
-                onRegionChangeComplete={handleRegionChangeComplete}
+                // onRegionChange={handleRegionChange}
+                // onRegionChangeComplete={handleRegionChangeComplete}
             >
                 {buildings.map((building) => (
                     <Marker
@@ -103,6 +98,10 @@ export default function MapComponent({ buildings }: BuildingProp) {
     );
 }
 
+
+const resizedWidth = 30;
+const resizedHeight = resizedWidth / 0.860;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
         color: '#666',
     },
     markerImage: {
-        width: 39,
-        height: 45.3,
+        width: resizedWidth,
+        height: resizedHeight,
     },
 });
