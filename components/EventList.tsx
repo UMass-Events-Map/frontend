@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -7,12 +7,14 @@ import {
   TouchableHighlight,
   ActivityIndicator,
 } from "react-native";
-import { FlatList } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Event, EventListProps } from "@/constants/Interfaces";
-
+import { FlatList, useSheetRef } from 'react-native-actions-sheet';
+//import { FlatList } from "react-native";
 
 export default function EventList({ events }: EventListProps) {
+
+  
   if (!events) {
     return (
       <View style={styles.container}>
@@ -29,10 +31,12 @@ export default function EventList({ events }: EventListProps) {
 
   return (
     <FlatList
+  
       columnWrapperStyle={{ justifyContent: "space-between" }}
       data={events}
       numColumns={2}
       style={styles.eventList}
+     
       renderItem={({ item }) => EventCard(item)}
     />
   );

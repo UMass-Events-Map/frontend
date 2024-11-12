@@ -1,14 +1,17 @@
-import ActionSheet, { SheetProps } from 'react-native-actions-sheet';
-import { View, Text, StyleSheet } from 'react-native'
+import ActionSheet, { SheetProps, useScrollHandlers } from 'react-native-actions-sheet';
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { useState, useEffect } from "react";
 import { supabase } from '@/utils/supabase';
 import EventList from "@/components/EventList";
+import {NativeViewGestureHandler} from 'react-native-gesture-handler';
 
 function BuildingSheet(props: SheetProps<"building-sheet">) {
 
     // temp for now
     const [events, setEvents] = useState<any[] | null>(null);
     const [error, setError] = useState<string | null>(null);
+
+    const handlers = useScrollHandlers();
   
     useEffect(() => {
       const fetchEvents = async () => {
@@ -28,13 +31,16 @@ function BuildingSheet(props: SheetProps<"building-sheet">) {
 
     return (
       <ActionSheet
-        enableGesturesInScrollView
+        indicatorStyle={{ backgroundColor: 'lightgray' }}
+        headerAlwaysVisible={true}
         gestureEnabled
         initialSnapIndex={1} 
-        snapPoints={[40, 92]} 
+        snapPoints={[55, 97]} 
       >
-       <Text style={styles.heading}> {props.payload?.value.name} </Text>
-        <EventList events={events} />
+
+            <Text style={styles.heading}> {props.payload?.value.name} </Text>
+            <EventList events={events} />
+
 
       </ActionSheet>
     );
