@@ -4,6 +4,8 @@ import {
   Text,
   StyleSheet,
   Image,
+  ScrollView,
+  TouchableOpacity
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -23,50 +25,72 @@ interface Event {
 interface ImageBannerProps {
     thumbnail: string
 }
+ 
+function Buttons() {
+    return (
+        <View style={styles.absoluteContainer}>
+            <View style={styles.sideContainer}>
+
+            <TouchableOpacity style={styles.leftCircleButton}>
+                <Ionicons name={"arrow-back-outline"} size={25} style={styles.icon} />
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.rightCircleButton}>
+                <Ionicons name={"close-outline"} size={25} style={styles.closeIcon} />
+            </TouchableOpacity>
+
+            </View>
+
+            <TouchableOpacity style={styles.bottomCircleButton}>
+                <Ionicons name={"star-outline"} size={25} style={styles.starIcon} />
+            </TouchableOpacity>
+        </View>
+    )
+}
 
 function ImageBanner(props: ImageBannerProps) {
     return (
         <View>
-            <Image source={{ uri: props.thumbnail }} />
+            <Image style={styles.bannerImage} source={{ uri: props.thumbnail }} />
         </View>
     )
 }
 
 function Details(event: Event) {
     return (
-        <View style={styles.container}>
-            <View style={styles.container}>
-                <Text>{event.name}</Text>
+        <View style={styles.detailsContainer}>
+            <View style={styles.icon}>
+                <Text style={styles.eventName}>{event.name}</Text>
             </View>
 
             <View style={styles.sideContainer}>
-                <Text style={styles.leftItem}>{event.attendance}</Text>
-                <Text style={styles.rightItem}>Free</Text>
+                <Text style={styles.detailText}>Attendance: {event.attendance}</Text>
+                <Text style={styles.detailText}>Free</Text>
             </View>
 
             <View style={styles.sideContainer}>
-                <Text style={styles.leftItem}>Building</Text>
-                <Text style={styles.rightItem}>Directions</Text>
+                <Text style={styles.eventDetailsTitle}>Building</Text>
+                <Text style={styles.directionsTitle}>Directions</Text>
             </View>
 
-            <View style={styles.container}>
-                <View style={styles.sideContainer}>
-                    <Ionicons name={"calendar-outline"} size={16} style={styles.leftItem}/>
-                    <Text style={styles.rightItem}>{event.room_number}</Text>
-                </View>
+            <View style={styles.calendarContainer}>
+                <Ionicons name={"calendar-outline"} size={25} style={styles.icon} />
+                <View style={styles.addressContainer}><Text style={styles.addressText}>Address</Text></View>
+            </View>
 
-                <View>
-                    <Text style={styles.leftItem}>{formatter.format(new Date(event.date))}</Text>
-                    <View style={styles.rightItem}>
-                        <Text>{event.time}</Text>
-                        <Text>Length</Text>
-                    </View>
+            <View style={styles.calendarContainer}>
+                {/*<Ionicons name={"calendar-outline"} size={16} style={styles.leftItem}/>*/}
+                <Ionicons name={"calendar-outline"} size={25} style={styles.icon} />
+                <View style={styles.timeContainer}>
+                    <Text style={styles.addressText}>{formatter.format(new Date(event.date))}</Text>
+                    <Text style={styles.addressText}>Starts: {event.time}</Text>
+                    <Text style={styles.addressText}>Length: </Text>
                 </View>
             </View>
 
-            <View>
-                <Text>Event Details</Text>
-                <Text>{event.description}</Text>
+            <View style={styles.detailsParagraphContainer}>
+                <Text style={styles.eventDetailsTitle}>Event Details</Text>
+                <Text style={styles.detailText}>{event.description}</Text>
             </View>
         </View>
     )
@@ -74,42 +98,157 @@ function Details(event: Event) {
 
 function ContactInfo(event: Event) {
     return (
-        <View>
-            <Text>{event.organization_id}</Text>
-            <Text>{event.organization_id}</Text>
+        <View style={styles.contactContainer}>
+            <Text style={styles.eventDetailsTitle}>ORGANIZATION NAME</Text>
+            <Text style={styles.eventDetailsTitle}>ORGANIZATION EMAIL</Text>
         </View>
     )
 }
 
 export default function EventDetails(event: Event) {
   return (
-    <View style={styles.container}>
-        <ImageBanner thumbnail={event.thumbnail}/>
-        <Details {...event}/>
-        <ContactInfo {...event}/>
+    <View style={styles.pageContainer}>
+        <ScrollView style={styles.pageContainer}>
+                <ImageBanner thumbnail={event.thumbnail}/>
+                <Details {...event}/>
+                <ContactInfo {...event}/>
+        </ScrollView>
+
+        <Buttons/>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  sideContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: "space-between",
-  },
-  leftItem: {
-    flex: 1,
-    textAlign: 'left',
-  },
-  rightItem: {
-    flex: 1,
-    textAlign: 'right',
-  }
+    icon: {
+        display: "flex",
+        width: "auto",        
+        height: "auto",   
+        alignItems: "center",  
+        justifyContent: "center", 
+    },
+    starIcon: {
+        display: "flex",
+        width: "auto",        
+        height: "auto",   
+        alignItems: "center",  
+        justifyContent: "center", 
+        color: "#FDDA0D"
+    },
+    closeIcon: {
+        display: "flex",
+        width: "auto",        
+        height: "auto",   
+        alignItems: "center",  
+        justifyContent: "center", 
+        color: "red"
+    },
+    absoluteContainer: {
+       position: "absolute",
+       marginLeft: "2%",
+       marginRight: "2%"
+    },
+    detailsParagraphContainer: {
+        paddingTop: "7%",
+    },
+    detailsContainer: {
+        marginLeft: "6%",
+        marginRight: "6%",
+        marginTop: "3%"
+    },
+    pageContainer: {
+        flexDirection: 'column',
+        display: "flex",
+        backgroundColor: "#2C2C2C",
+        height: "auto"
+    },
+    contactContainer: {   
+        backgroundColor: "#2C2C2C",
+        alignItems: "center",
+        marginTop: "10%",
+        marginBottom: "5%"
+    },
+    timeContainer: {
+        color: "white",
+        marginLeft: "8%",
+        marginTop: "0.7%",
+        gap: 10
+    },
+    calendarContainer: {
+        flexDirection: 'row',
+        justifyContent: "flex-start",
+        marginTop: "4%"
+    },
+    eventName: {
+        color: "white",
+        fontSize: 20
+    },
+    bannerImage: {
+        width: "100%",
+        height: 200,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+    },
+    sideContainer: {
+        flexDirection: 'row',
+        justifyContent: "space-between",
+        color: "white",
+        marginTop: "3%",
+    },
+    addressText: {
+        color: "white"
+    },
+    detailText: {
+        color: "white",
+        paddingTop: "2%"
+    },
+    eventDetailsTitle: {
+        color: "white",
+        fontSize: 16
+    },
+    directionsTitle: {
+        color: "#48FF37",
+        fontSize: 15
+    },
+    addressContainer: {
+        marginLeft: "8%",
+        marginTop: "1.5%"
+    },
+    farRight: {
+        marginLeft: "60%"
+    },
+    leftCircleButton: {
+        borderWidth:1,
+        borderColor:'rgba(0,0,0,0.2)',
+        alignItems:'center',
+        justifyContent:'center',
+        width:35,
+        height:35,
+        backgroundColor:'#fff',
+        borderRadius:100,
+    },
+    rightCircleButton: {
+        borderWidth:1,
+        borderColor:'rgba(0,0,0,0.2)',
+        alignItems:'center',
+        justifyContent:'center',
+        width:35,
+        height:35,
+        backgroundColor:'#fff',
+        borderRadius:100,
+        marginLeft: "80%"
+    },
+    bottomCircleButton: {
+        borderWidth:1,
+        borderColor:'rgba(0,0,0,0.2)',
+        alignItems:'center',
+        justifyContent:'center',
+        width:35,
+        height:35,
+        backgroundColor:'#fff',
+        borderRadius:100,
+        marginTop: "3%"
+    },
 });
 
 const options: Intl.DateTimeFormatOptions = {
