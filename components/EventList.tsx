@@ -6,11 +6,11 @@ import {
   Image,
   TouchableHighlight,
   ActivityIndicator,
+  FlatList
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Event, EventListProps } from "@/constants/Interfaces";
-import { FlatList, useSheetRef } from 'react-native-actions-sheet';
-//import { FlatList } from "react-native";
+import { Link } from "expo-router";
 
 export default function EventList({ events }: EventListProps) {
 
@@ -50,36 +50,53 @@ function EventCard(event: Event) {
   const newDate = new Date(event.date);
 
   return (
-    <TouchableHighlight
-      style={styles.eventContainer}
-      onPress={onPressEvent}
-      underlayColor="white"
-    >
-      <View>
-        <Image style={styles.eventImage} source={{ uri: event.thumbnail }} />
-        <View style={styles.eventInfoContainer}>
-          <Text style={styles.eventName} numberOfLines={2} ellipsizeMode="tail">
-            {event.name}
-          </Text>
-          <View style={styles.eventDetailLayout}>
-            <Ionicons name={"calendar-outline"} size={16} style={styles.icon} />
-            <Text style={styles.eventDetailText}>
-              {formatter.format(newDate)}
-            </Text>
-          </View>
-          <View style={styles.eventDetailLayout}>
-            <Ionicons name={"time-outline"} size={16} style={styles.icon} />
-            <Text style={styles.eventDetailText}>{event.time}</Text>
-          </View>
-          <View style={styles.eventDetailLayout}>
-            <Ionicons name={"location-outline"} size={16} style={styles.icon} />
+    <Link href={{
+      pathname: "/blank",
+      params: { value: "Test passing data"}
+    }} asChild>
+      <TouchableHighlight
+        style={styles.eventContainer}
+        onPress={onPressEvent}
+        underlayColor="white"
+      >
+        <View>
+          <Image style={styles.eventImage} source={{ uri: event.thumbnail }} />
+          <View style={styles.eventInfoContainer}>
             <Text
-              style={styles.eventDetailText}
-            >{`Student Union • ${event.room_number}`}</Text>
+              style={styles.eventName}
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              {event.name}
+            </Text>
+            <View style={styles.eventDetailLayout}>
+              <Ionicons
+                name={"calendar-outline"}
+                size={16}
+                style={styles.icon}
+              />
+              <Text style={styles.eventDetailText}>
+                {formatter.format(newDate)}
+              </Text>
+            </View>
+            <View style={styles.eventDetailLayout}>
+              <Ionicons name={"time-outline"} size={16} style={styles.icon} />
+              <Text style={styles.eventDetailText}>{event.time}</Text>
+            </View>
+            <View style={styles.eventDetailLayout}>
+              <Ionicons
+                name={"location-outline"}
+                size={16}
+                style={styles.icon}
+              />
+              <Text
+                style={styles.eventDetailText}
+              >{`Student Union • ${event.room_number}`}</Text>
+            </View>
           </View>
         </View>
-      </View>
-    </TouchableHighlight>
+      </TouchableHighlight>
+    </Link>
   );
 }
 
