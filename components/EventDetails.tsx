@@ -34,31 +34,33 @@ function ImageBanner(props: ImageBannerProps) {
 
 function Details(event: Event) {
     return (
-        <View>
-            <View>
+        <View style={styles.container}>
+            <View style={styles.container}>
                 <Text>{event.name}</Text>
             </View>
 
-            <View>
-                <Text>{event.attendance}</Text>
-                <Text>Free</Text>
+            <View style={styles.sideContainer}>
+                <Text style={styles.leftItem}>{event.attendance}</Text>
+                <Text style={styles.rightItem}>Free</Text>
             </View>
 
-            <View>
-                <Text>{event.building_id}</Text>
-                <Text>Directions</Text>
+            <View style={styles.sideContainer}>
+                <Text style={styles.leftItem}>Building</Text>
+                <Text style={styles.rightItem}>Directions</Text>
             </View>
 
-            <View>
-                <View>
-                    <Ionicons name={"calendar-outline"} size={16}/>
-                    <Text>{event.room_number}</Text>
+            <View style={styles.container}>
+                <View style={styles.sideContainer}>
+                    <Ionicons name={"calendar-outline"} size={16} style={styles.leftItem}/>
+                    <Text style={styles.rightItem}>{event.room_number}</Text>
                 </View>
 
                 <View>
-                    <Text>{event.date}</Text>
-                    <Text>{event.time}</Text>
-                    <Text>Length</Text>
+                    <Text style={styles.leftItem}>{formatter.format(new Date(event.date))}</Text>
+                    <View style={styles.rightItem}>
+                        <Text>{event.time}</Text>
+                        <Text>Length</Text>
+                    </View>
                 </View>
             </View>
 
@@ -81,7 +83,7 @@ function ContactInfo(event: Event) {
 
 export default function EventDetails(event: Event) {
   return (
-    <View>
+    <View style={styles.container}>
         <ImageBanner thumbnail={event.thumbnail}/>
         <Details {...event}/>
         <ContactInfo {...event}/>
@@ -95,6 +97,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  sideContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: "space-between",
+  },
+  leftItem: {
+    flex: 1,
+    textAlign: 'left',
+  },
+  rightItem: {
+    flex: 1,
+    textAlign: 'right',
+  }
 });
 
 const options: Intl.DateTimeFormatOptions = {
