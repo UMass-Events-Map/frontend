@@ -35,7 +35,7 @@ function BuildingSheet(props: SheetProps<"building-sheet">) {
         headerAlwaysVisible={true}
         gestureEnabled
         initialSnapIndex={1} 
-        snapPoints={[55, 97]} 
+        snapPoints={[20, 55]} 
       >
 
             <Text style={styles.heading}> {props.payload?.value.name} </Text>

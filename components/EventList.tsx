@@ -6,11 +6,11 @@ import {
   Image,
   TouchableHighlight,
   ActivityIndicator,
-  FlatList
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Event, EventListProps } from "@/constants/Interfaces";
 import { Link } from "expo-router";
+import { FlatList, useSheetRef} from 'react-native-actions-sheet';
 
 export default function EventList({ events }: EventListProps) {
 
