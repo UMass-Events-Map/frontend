@@ -3,21 +3,8 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import EventList from './EventList';
 import { supabase } from '@/utils/supabase';
+import { Event, EventListProps } from '@/constants/Interfaces';
 
-
-type Event = {
-  id: string;
-  name: string;
-  description: string;
-  date: string;
-  time: string;
-  room_number: string;
-  thumbnail: string;
-};
-
-type EventListProps = {
-  events: Event[] | null;
-};
 
 export default function OrgProfile({ events }: EventListProps) {
   return (

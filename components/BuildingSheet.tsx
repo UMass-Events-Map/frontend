@@ -31,7 +31,7 @@ function BuildingSheet(props: SheetProps<"building-sheet">) {
         enableGesturesInScrollView
         gestureEnabled
         initialSnapIndex={1} 
-        snapPoints={[40, 93]} 
+        snapPoints={[40, 92]} 
       >
        <Text style={styles.heading}> {props.payload?.value.name} </Text>
         <EventList events={events} />

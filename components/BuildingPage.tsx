@@ -2,6 +2,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import EventList from './EventList';
 import { useState, useEffect } from "react";
 import { supabase } from '@/utils/supabase';
+//import { BuildingProp, Building } from '@/constants/Interfaces'
 
 type Building = {
     id: string;

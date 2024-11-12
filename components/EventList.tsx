@@ -9,23 +9,8 @@ import {
 } from "react-native";
 import { FlatList } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Event, EventListProps } from "@/constants/Interfaces";
 
-type Event = {
-  id: string;
-  name: string;
-  description: string;
-  date: string;
-  time: string;
-  room_number: string;
-  thumbnail: string;
-  building_id: string;
-  organization_id: string;
-  attendance: string;
-};
-
-type EventListProps = {
-  events: Event[] | null;
-};
 
 export default function EventList({ events }: EventListProps) {
   if (!events) {
