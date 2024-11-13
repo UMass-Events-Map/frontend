@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { useState, useEffect } from "react";
 import { supabase } from '@/utils/supabase';
 import EventList from "@/components/EventList";
+import BuildingPage from "@/components/BuildingPage";
 import {NativeViewGestureHandler} from 'react-native-gesture-handler';
 
-function BuildingSheet(props: SheetProps<"building-sheet">) {
+export default function MapActionSheet(props: SheetProps<"mapaction-sheet">) {
 
     // temp for now
     const [events, setEvents] = useState<any[] | null>(null);
@@ -28,27 +29,35 @@ function BuildingSheet(props: SheetProps<"building-sheet">) {
       fetchEvents();
     }, []);
 
+    let temp = {
+      id: "5238905902",
+      name: "dsafhasjf",
+      latitude: "shgadkjga",
+      longitude: "sdghsdkjg"
+    }
+    
 
     return (
-      <ActionSheet
-        indicatorStyle={{ backgroundColor: 'lightgray' }}
-        headerAlwaysVisible={true}
-        gestureEnabled
-        initialSnapIndex={1} 
-        snapPoints={[20, 55]} 
-      >
+            <ActionSheet
 
-            <Text style={styles.heading}> {props.payload?.value.name} </Text>
-            <EventList events={events} />
+            indicatorStyle={{ backgroundColor: 'lightgray' }}
+            headerAlwaysVisible={true}
+            gestureEnabled
+            enableGesturesInScrollView
+            initialSnapIndex={1} 
+            snapPoints={[55, 100]} 
+            >
 
+                {/* <Text style={styles.heading}> {props.payload?.value.name} </Text> */}
 
-      </ActionSheet>
-    );
-  }
+                <BuildingPage building={temp}></BuildingPage>
+
+                {/* <EventList events={events} /> */}
+
+        </ActionSheet>
+    )
+}
    
-  export default BuildingSheet;
-
-
 
 
 const styles = StyleSheet.create({
@@ -68,6 +77,6 @@ const styles = StyleSheet.create({
     },
     eventList: {
       flex: 0
-    }
+    }    
   });
   

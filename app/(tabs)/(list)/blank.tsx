@@ -5,3 +5,6 @@ export default function Blank({ value }: { value: string}) {
         <Text>{value}</Text>
     );
 }
+
+
+
