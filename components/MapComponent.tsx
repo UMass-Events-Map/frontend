@@ -4,6 +4,12 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import ActionSheet, { SheetManager, ActionSheetRef, useScrollHandlers } from 'react-native-actions-sheet';
 import { BuildingProp, Building } from '@/constants/Interfaces'
 
+const amherstRegion = { // Data to have map focus in on Amherst Area on load
+    latitude: 42.390309,
+    longitude: -72.527682,
+    latitudeDelta: 0.012,
+    longitudeDelta: 0.012,
+}
 
 export default function MapComponent({ buildings }: BuildingProp) {
     if (!buildings) return <Text>No buildings available</Text>;
@@ -15,34 +21,18 @@ export default function MapComponent({ buildings }: BuildingProp) {
         );
     };
 
-    const handleMapPress = (building: Building) => {
-        console.log("shjfkahskfas")
-        // SheetManager.show('building-sheet', {
-        //     payload: { value: building },
-        //   }
-        // );
-    };
-
     return (
         <View style={styles.container}>
             <MapView
                 provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
                 style={styles.map}
-                region={{
-                    latitude: 42.390309,
-                    longitude: -72.527682,
-                    latitudeDelta: 0.012,
-                    longitudeDelta: 0.012,
-                }}
+                region={amherstRegion}
             >
                 {buildings.map((building) => (
                     <Marker
                         key={building.id}
                         coordinate={{ latitude: building.latitude, longitude: building.longitude }}
-                        //title={building.name}
-                        
                         onPress={() => handleMarkerPress(building)}
-                        
                         zIndex={9999999}
                     >
                         <Image style={styles.markerImage} source={require('../assets/icons/pin.png')} />
@@ -54,7 +44,6 @@ export default function MapComponent({ buildings }: BuildingProp) {
         </View>
     );
 }
-
 
 const resizedWidth = 30;
 const resizedHeight = resizedWidth / 0.860;

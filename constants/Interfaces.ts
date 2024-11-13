@@ -1,9 +1,11 @@
-
 export type Building = {
     id: string;
     name: string;
     latitude: number;
     longitude: number;
+    created_at?: string;
+    updated_at?: string;
+    events?: any[];
 };
 
 export type BuildingProp = {
@@ -17,13 +19,18 @@ export type Event = {
     description: string;
     date: string;
     time: string;
-    room_number: string;
-    thumbnail: string;
     building_id: string;
-    organization_id: string;
-    attendance: string;
-  };
-  
+    room_number: string;
+    organization_id?: string;
+    thumbnail: string;
+    attendance: number;
+    created_at?: string; 
+    updated_at?: string;
+    building?: Building;
+    organization?: object;
+    event_logs?: any[];
+  }
+
 export type EventListProps = {
     events: Event[] | null;
-  };
+};
