@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   buildingImage: {
-    height: 200,
+    height: '30%',
   },
   buildingName: {
     width: "100%",
