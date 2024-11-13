@@ -1,0 +1,49 @@
+.loginregister {
+    text-align: center;
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-image: linear-gradient(79deg, #971B2F, #572932, #B1B3B3);
+  }
+  .auth-form-container, .login-form, .register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .auth-form-container {
+    padding: 5rem;
+    border: 1px solid white;
+    border-radius: 10px;
+    margin: 0.5rem;
+  }
+  
+  label {
+    text-align: left;
+    padding: 0.25rem 0;
+  }
+  
+  input {
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border-radius: 10px;
+    border: none;
+  }
+  
+  button {
+    border: none;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #971B2F;
+    display: block;
+  }
+  
+  .link-btn {
+    background: none;
+    color: white;
+    text-decoration: underline;
+  }
