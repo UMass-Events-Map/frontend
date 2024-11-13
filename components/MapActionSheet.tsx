@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { useState, useEffect } from "react";
 import { supabase } from '@/utils/supabase';
 import EventList from "@/components/EventList";
+import BuildingPage from "@/components/BuildingPage";
 import {NativeViewGestureHandler} from 'react-native-gesture-handler';
 
 export default function MapActionSheet(props: SheetProps<"mapaction-sheet">) {
@@ -28,6 +29,13 @@ export default function MapActionSheet(props: SheetProps<"mapaction-sheet">) {
       fetchEvents();
     }, []);
 
+    let temp = {
+      id: "5238905902",
+      name: "dsafhasjf",
+      latitude: "shgadkjga",
+      longitude: "sdghsdkjg"
+    }
+    
 
     return (
             <ActionSheet
@@ -37,11 +45,14 @@ export default function MapActionSheet(props: SheetProps<"mapaction-sheet">) {
             gestureEnabled
             enableGesturesInScrollView
             initialSnapIndex={1} 
-            snapPoints={[20, 55]} 
+            snapPoints={[55, 100]} 
             >
 
-                <Text style={styles.heading}> {props.payload?.value.name} </Text>
-                <EventList events={events} />
+                {/* <Text style={styles.heading}> {props.payload?.value.name} </Text> */}
+
+                <BuildingPage building={temp}></BuildingPage>
+
+                {/* <EventList events={events} /> */}
 
         </ActionSheet>
     )

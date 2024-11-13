@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     buildingImage: {
-        height: 275,
+        height: 200,
     },
     buildingName: {
         width: '100%',

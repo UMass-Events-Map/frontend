@@ -13,31 +13,15 @@ export default function EventDetailSheet(props: SheetProps<"eventdetail-sheet">)
 
         >
 
-            <Text style={styles.heading}>
-                insert vinayak event detail page 
-            </Text>
-            <Text style={styles.heading}>
-                insert vinayak event detail page 
-            </Text>
-            <Text style={styles.heading}>
-                insert vinayak event detail page 
-            </Text>
-            <Text style={styles.heading}>
-                insert vinayak event detail page 
-            </Text>
-            <Text style={styles.heading}>
-                insert vinayak event detail page 
-            </Text>
-            <Text style={styles.heading}>
-                insert vinayak event detail page 
-            </Text>
-            <Text style={styles.heading}>
-                insert vinayak event detail page 
-            </Text>
-            <Text style={styles.heading}>
-                insert vinayak event detail page 
-            </Text>
-
+            
+            <Text style={styles.heading}>vinayak event detail page goes here </Text>
+            <Text style={styles.heading}>vinayak event detail page goes here </Text>
+            <Text style={styles.heading}>vinayak event detail page goes here </Text>
+            <Text style={styles.heading}>vinayak event detail page goes here </Text>
+            <Text style={styles.heading}>vinayak event detail page goes here </Text>
+            <Text style={styles.heading}>vinayak event detail page goes here </Text>
+            <Text style={styles.heading}>vinayak event detail page goes here </Text>
+         
             
         
         </ActionSheet>
