@@ -14,7 +14,6 @@ import { FlatList, useSheetRef, SheetManager} from 'react-native-actions-sheet';
 
 export default function EventList({ events }: EventListProps) {
 
-  
   if (!events) {
     return (
       <View style={styles.container}>
@@ -27,25 +26,26 @@ export default function EventList({ events }: EventListProps) {
         <Text style={styles.noEventText}>No events available</Text>
       </View>
     );
+  } else {
+    return (
+      <FlatList
+        columnWrapperStyle={{ justifyContent: "space-between" }}
+        data={events}
+        numColumns={2}
+        style={styles.eventList}
+        renderItem={({ item }) => EventCard(item)}
+      />
+    );
   }
-
-  return (
-    <FlatList
-  
-      columnWrapperStyle={{ justifyContent: "space-between" }}
-      data={events}
-      numColumns={2}
-      style={styles.eventList}
-     
-      renderItem={({ item }) => EventCard(item)}
-    />
-  );
 }
 
 function EventCard(event: Event) {
   const onPressEvent = () => {
     // navigate to event detail page
-    SheetManager.show('eventdetail-sheet');
+    SheetManager.show('eventdetail-sheet', {
+        payload: { value: event },
+      }
+    );
   };
 
   const newDate = new Date(event.date);
@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
   noEventText: {
     fontSize: 20,
     color: "#D6D6D6",
+    flex: 1
   },
   eventList: {
     paddingHorizontal: 8,

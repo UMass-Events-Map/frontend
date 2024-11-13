@@ -8,19 +8,8 @@ import {
   TouchableOpacity
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
-interface Event {
-  id: string;
-  name: string;
-  description: string;
-  date: string;
-  time: string;
-  room_number: string;
-  thumbnail: string;
-  building_id: string;
-  organization_id: string;
-  attendance: string;
-};
+import { Event } from "@/constants/Interfaces";
+import { FlatList } from "react-native-reanimated/lib/typescript/Animated";
 
 interface ImageBannerProps {
     thumbnail: string
@@ -68,14 +57,16 @@ function Details(event: Event) {
                 <Text style={styles.detailText}>Free</Text>
             </View>
 
-            <View style={styles.sideContainer}>
-                <Text style={styles.eventDetailsTitle}>Building</Text>
+            {/* <View style={styles.sideContainer}>
+                <Text style={styles.eventDetailsTitle}>{event?.building?.name}</Text>
                 <Text style={styles.directionsTitle}>Directions</Text>
-            </View>
+            </View> */}
 
             <View style={styles.calendarContainer}>
                 <Ionicons name={"calendar-outline"} size={25} style={styles.icon} />
-                <View style={styles.addressContainer}><Text style={styles.addressText}>Address</Text></View>
+                <View style={styles.addressContainer}>
+                    <Text style={styles.addressText}>Room Number: {event.room_number}</Text>
+                </View>
             </View>
 
             <View style={styles.calendarContainer}>
@@ -108,7 +99,9 @@ function ContactInfo(event: Event) {
 export default function EventDetails(event: Event) {
   return (
     <View style={styles.pageContainer}>
-        <ScrollView style={styles.pageContainer}>
+        <ScrollView style={styles.pageContainer}
+            scrollEnabled={false}
+            >
                 <ImageBanner thumbnail={event.thumbnail}/>
                 <Details {...event}/>
                 <ContactInfo {...event}/>
@@ -154,13 +147,13 @@ const styles = StyleSheet.create({
     detailsContainer: {
         marginLeft: "6%",
         marginRight: "6%",
-        marginTop: "3%"
+        marginTop: "3%",
     },
     pageContainer: {
         flexDirection: 'column',
         display: "flex",
         backgroundColor: "#2C2C2C",
-        height: "auto"
+        height: "100%"
     },
     contactContainer: {   
         backgroundColor: "#2C2C2C",
@@ -181,7 +174,8 @@ const styles = StyleSheet.create({
     },
     eventName: {
         color: "white",
-        fontSize: 20
+        fontSize: 20,
+        marginBottom: "1%"
     },
     bannerImage: {
         width: "100%",

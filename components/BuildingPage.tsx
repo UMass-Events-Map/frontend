@@ -2,50 +2,48 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import EventList from './EventList';
 import { useState, useEffect } from "react";
 import { supabase } from '@/utils/supabase';
-//import { BuildingProp, Building } from '@/constants/Interfaces'
+import { BuildingProp, Building, EventListProps, Event } from '@/constants/Interfaces'
 
-type Building = {
-    id: string;
-    name: string;
-    latitude: string;
-    longitude: string;
-}
 
-type BuildingProp = {
-    building: Building | null
-}
 
-export default function BuildingPage( { building }: BuildingProp ) {
-    const [events, setEvents] = useState<any[] | null>(null);
+export default function BuildingPage(building: Building ) {
+    const [events, setEvents] = useState<Event[] | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchEvents = async () => {
-        const { data: events, error } = await supabase
-            .from('events')
-            .select('*');
-        
-        if (error) {
-            console.error("Error fetching events:", error.message);
-            setError(error.message);
+      const fetchEventByBuildingId = async (id: string) => {
+        const response = await fetch(`https://umaps.phoenixfi.app/buildings/${id}/events`, {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json",
+          },
+        });
+  
+        if(response.status === 200 || 304) {
+          const data = await response.json();
+          setEvents(data);
         } else {
-            setEvents(events);
+          console.error("Error fetching events by building id");
         }
-        };
-        fetchEvents();
+      };
+      fetchEventByBuildingId(building.id)
     }, []);
     
-    return (
-        <View style={styles.container}>
-            <Image
-                style={styles.buildingImage}
-                source={{uri: 'https://lh3.googleusercontent.com/p/AF1QipOAOXvcSZqndVKoR-P1VXKmLjcvdzRPtwQATsnG=s1360-w1360-h1020'}}
-            />
-            <Text style={styles.buildingName}>Student Union</Text>
-            <Text style={styles.buildingAddress}>41 Campus Center Way, Amherst, MA, 01002</Text>
-            <EventList events={events}/>
-        </View>
-    );
+    if(!events) {
+        return <Text> No Events at this Building right now </Text>
+    } else {
+        return (
+            <View style={styles.container}>
+                <Image
+                    style={styles.buildingImage}
+                    source={{uri: 'https://lh3.googleusercontent.com/p/AF1QipOAOXvcSZqndVKoR-P1VXKmLjcvdzRPtwQATsnG=s1360-w1360-h1020'}}
+                />
+                <Text style={styles.buildingName}> {building.name} </Text>
+                <Text style={styles.buildingAddress}> Temporary Address, Amherst, MA, 01002 </Text>
+                <EventList events={events}/>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -57,12 +55,12 @@ const styles = StyleSheet.create({
     },
     buildingName: {
         width: '100%',
-        fontSize: 32,
+        fontSize: 26,
         fontWeight: 'bold',
         color: '#7E2622',
         textAlign: 'center',
-        marginTop: 7
-
+        marginTop: 7,
+        marginBottom: 3,
     },
     buildingAddress: {
         width: '100%',
@@ -70,6 +68,6 @@ const styles = StyleSheet.create({
         fontFamily: 'regular',
         color: '#000',
         textAlign: 'center',
-        marginBottom: 20
+        marginBottom: 10
     }
 });

@@ -10,13 +10,13 @@ declare module 'react-native-actions-sheet' {
   interface Sheets {
     'mapaction-sheet': SheetDefinition<{
         payload: {
-            value: Building;
-          };
+          value: Building;
+        };
     }>;
     'eventdetail-sheet': SheetDefinition<{
         payload: {
-            value: Event;
-          };
+          value: Event;
+        };
     }>;
     
   }

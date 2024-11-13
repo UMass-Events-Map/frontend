@@ -4,42 +4,16 @@ import { useState, useEffect } from "react";
 import { supabase } from '@/utils/supabase';
 import EventList from "@/components/EventList";
 import BuildingPage from "@/components/BuildingPage";
-import {NativeViewGestureHandler} from 'react-native-gesture-handler';
+import { Building } from '@/constants/Interfaces';
 
-export default function MapActionSheet(props: SheetProps<"mapaction-sheet">) {
 
-    // temp for now
-    const [events, setEvents] = useState<any[] | null>(null);
-    const [error, setError] = useState<string | null>(null);
-
-    const handlers = useScrollHandlers();
-  
-    useEffect(() => {
-      const fetchEvents = async () => {
-        const { data: events, error } = await supabase
-          .from('events')
-          .select('*');
-        if (error) {
-          console.error("Error fetching events:", error.message);
-          setError(error.message);
-        } else {
-          setEvents(events);
-        }
-      };
-      fetchEvents();
-    }, []);
-
-    let temp = {
-      id: "5238905902",
-      name: "dsafhasjf",
-      latitude: "shgadkjga",
-      longitude: "sdghsdkjg"
-    }
+export default function MapActionSheet(props: SheetProps<'mapaction-sheet'>) {
     
-
-    return (
-            <ActionSheet
-
+    if(!props.payload?.value) {
+      return(<Text> Cannot Find Building </Text>)
+    } else {
+      return (
+        <ActionSheet
             indicatorStyle={{ backgroundColor: 'lightgray' }}
             headerAlwaysVisible={true}
             gestureEnabled
@@ -47,18 +21,11 @@ export default function MapActionSheet(props: SheetProps<"mapaction-sheet">) {
             initialSnapIndex={1} 
             snapPoints={[55, 100]} 
             >
-
-                {/* <Text style={styles.heading}> {props.payload?.value.name} </Text> */}
-
-                <BuildingPage building={temp}></BuildingPage>
-
-                {/* <EventList events={events} /> */}
-
+              <BuildingPage {...props.payload?.value}></BuildingPage>
         </ActionSheet>
-    )
+      )
+    } 
 }
-   
-
 
 const styles = StyleSheet.create({
     container: {

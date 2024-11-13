@@ -6,7 +6,7 @@ import { supabase } from '@/utils/supabase';
 import { Event, EventListProps } from '@/constants/Interfaces';
 
 
-export default function OrgProfile({ events }: EventListProps) {
+export default function OrgProfile(events: Event[]) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -20,7 +20,7 @@ export default function OrgProfile({ events }: EventListProps) {
         </View>
       </View>
       <Text style={styles.listTitle}>Your events:</Text>
-      <EventList events={events} />
+      {/* <EventList events={events} /> */}
     </View>
   );
 };
