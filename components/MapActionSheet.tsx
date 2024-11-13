@@ -9,22 +9,22 @@ import { Building } from '@/constants/Interfaces';
 
 export default function MapActionSheet(props: SheetProps<'mapaction-sheet'>) {
     
-    if(!props.payload?.value) {
-      return(<Text> Cannot Find Building </Text>)
-    } else {
+    // if(!props.payload?.value) {
+    //   return(<Text> Cannot Find Building </Text>)
+    // } else {
       return (
         <ActionSheet
             indicatorStyle={{ backgroundColor: 'lightgray' }}
             headerAlwaysVisible={true}
             gestureEnabled
             enableGesturesInScrollView
-            initialSnapIndex={1} 
+            initialSnapIndex={0} 
             snapPoints={[55, 100]} 
             >
               <BuildingPage {...props.payload?.value}></BuildingPage>
         </ActionSheet>
       )
-    } 
+    // } 
 }
 
 const styles = StyleSheet.create({

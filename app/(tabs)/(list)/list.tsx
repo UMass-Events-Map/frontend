@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet, Button, TextInput } from "react-native";
 import EventList from "@/components/EventList";
 import { useState, useEffect } from "react";
 import { supabase } from '@/utils/supabase';
@@ -9,6 +9,12 @@ import OrgProfile from "@/components/OrgProfile";
 export default function List() {
   const [events, setEvents] = useState<any[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+ const handleSearch = (query: string) => {
+    // handle searching 
+    setSearchQuery(query);
+ }
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -29,12 +35,16 @@ export default function List() {
 
   return (
     <View style={styles.container}>
-      
-
-      <Text style={styles.heading}>EVENT LIST</Text>
+      <TextInput 
+        placeholder='Search' 
+        placeholderTextColor={'grey'}
+        style={styles.searchBar}
+        clearButtonMode="always"
+        value={searchQuery}
+        autoCorrect={false}
+        onChangeText={(query) => handleSearch(query)}/>
       <EventList events={events} />
     </View>
-    // <BuildingPage/>
   );
 }
 
@@ -52,7 +62,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 15
   },
-  eventList: {
-    flex: 0
-  }
+  searchBar: {
+    marginHorizontal: 10,
+    marginBottom: 20,
+    padding: 10,
+    borderColor: '#D6D6D6',
+    borderWidth: 1,
+    borderRadius: 20
+  },
 });
