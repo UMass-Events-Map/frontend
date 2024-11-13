@@ -26,7 +26,7 @@ export default function EventList({ events }: EventListProps) {
         <Text style={styles.noEventText}>No events available</Text>
       </View>
     );
-  } else {
+  } 
     return (
       <FlatList
         columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -37,7 +37,7 @@ export default function EventList({ events }: EventListProps) {
       />
     );
   }
-}
+
 
 function EventCard(event: Event) {
   const onPressEvent = () => {
@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
   noEventText: {
     fontSize: 20,
     color: "#D6D6D6",
-    flex: 1
   },
   eventList: {
     paddingHorizontal: 8,
