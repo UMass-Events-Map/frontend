@@ -75,7 +75,6 @@ export function EventCard(event: Event) {
             >{`Student Union • ${event.room_number}`}</Text>
           </View>
         </View>
-      </View>
     </TouchableHighlight>
   );
 }
