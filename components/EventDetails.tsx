@@ -63,7 +63,7 @@ function Details(event: Event) {
             </View> */}
 
             <View style={styles.calendarContainer}>
-                <Ionicons name={"calendar-outline"} size={25} style={styles.icon} />
+                <Ionicons name={"location"} size={25} style={styles.icon} color={'#AD3835'} />
                 <View style={styles.addressContainer}>
                     <Text style={styles.addressText}>Room Number: {event.room_number}</Text>
                 </View>
@@ -71,7 +71,7 @@ function Details(event: Event) {
 
             <View style={styles.calendarContainer}>
                 {/*<Ionicons name={"calendar-outline"} size={16} style={styles.leftItem}/>*/}
-                <Ionicons name={"calendar-outline"} size={25} style={styles.icon} />
+                <Ionicons name={"calendar"} size={25} style={styles.icon}  color={'#AD3835'} />
                 <View style={styles.timeContainer}>
                     <Text style={styles.addressText}>{formatter.format(new Date(event.date))}</Text>
                     <Text style={styles.addressText}>Starts: {event.time}</Text>
@@ -175,7 +175,8 @@ const styles = StyleSheet.create({
     eventName: {
         color: "white",
         fontSize: 20,
-        marginBottom: "1%"
+        marginBottom: "1%",
+        fontWeight: 'bold'
     },
     bannerImage: {
         width: "100%",
@@ -190,7 +191,7 @@ const styles = StyleSheet.create({
         marginTop: "3%",
     },
     addressText: {
-        color: "white"
+        color: "white",
     },
     detailText: {
         color: "white",
@@ -198,7 +199,8 @@ const styles = StyleSheet.create({
     },
     eventDetailsTitle: {
         color: "white",
-        fontSize: 16
+        fontSize: 16,
+        fontWeight: 'bold'
     },
     directionsTitle: {
         color: "#48FF37",
