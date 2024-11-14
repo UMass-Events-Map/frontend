@@ -6,7 +6,7 @@ import { supabase } from '@/utils/supabase';
 import { Event, EventListProps } from '@/constants/Interfaces';
 
 
-export default function OrgProfile(events: Event[]) {
+export default function OrgProfile({ events }: EventListProps) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>

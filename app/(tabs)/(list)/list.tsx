@@ -1,9 +1,9 @@
 import { Text, View, StyleSheet, Button, TextInput } from "react-native";
-import EventList from "@/components/EventList";
+import EventList from "../../../components/EventList";
 import { useState, useEffect } from "react";
-import { supabase } from '@/utils/supabase';
+import { supabase } from '../../../utils/supabase';
 import { Link } from 'expo-router';
-import OrgProfile from "@/components/OrgProfile";
+
 
 
 export default function List() {

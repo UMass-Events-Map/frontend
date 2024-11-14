@@ -1,11 +1,10 @@
-import OrgProfile from "@/components/OrgProfile";
+import OrgProfile from "../../../components/OrgProfile";
 import { Text, View } from "react-native";
-import EventList from "@/components/EventList";
-import { supabase } from '@/utils/supabase';
+import { supabase } from '../../../utils/supabase';
 import { useState, useEffect } from "react";
 
 export default function Org() {
-  const [events, setEvents] = useState<any[] | null>(null);
+  const [events, setEvents] = useState<Event[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -24,10 +23,15 @@ export default function Org() {
     fetchEvents();
   }, []);
   
-  return (
-    <View style={{ flex: 1 }}>
-      <OrgProfile events={events} />
-      
-    </View>
-  );
+  if(!events) {
+    return <View></View>
+  } else {
+    return (
+      <View style={{ flex: 1 }}>
+        <OrgProfile events={events} />
+        
+      </View>
+    );
+  }
+  
 }
