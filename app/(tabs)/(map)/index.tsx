@@ -26,9 +26,11 @@ export default function Index() { // Map Component (index as default entry point
     fetchBuildings();
   }, []);
  
+  const filteredBuildings : Building[] = (!buildings) ? [] : (buildings as Building[]).filter(building => (building.events !== undefined && building.events.length > 0));
+
   return (
     <View style={{ flex: 1 }}>
-      <MapComponent buildings={buildings}/>
+      <MapComponent buildings={filteredBuildings}/>
     </View>
   );
   
