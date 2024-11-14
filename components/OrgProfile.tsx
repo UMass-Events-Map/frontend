@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import EventList from './EventList';
-import { supabase } from '@/utils/supabase';
 import { Event, EventListProps } from '@/constants/Interfaces';
 
 
