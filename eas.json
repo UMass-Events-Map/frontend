@@ -1,10 +1,27 @@
 {
   "cli": {
-    "version": ">= 3.0.0",
+    "version": "^3.13.3",
     "appVersionSource": "remote",
     "requireCommit": true
   },
   "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PACKAGE_NAME": "app.phoenixfi.umaps",
+        "SUPABASE_URL": "https://gdacboczcpnnnqfxkjsj.supabase.co",
+        "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkYWNib2N6Y3Bubm5xZnhranNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2MjQwMzIsImV4cCI6MjA0NTIwMDAzMn0.z9pvzajPfB_qPYmFMD-U-_hcdfarXF3Kq7WHG3OPz5c"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PACKAGE_NAME": "app.phoenixfi.umaps",
+        "SUPABASE_URL": "https://gdacboczcpnnnqfxkjsj.supabase.co",
+        "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkYWNib2N6Y3Bubm5xZnhranNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2MjQwMzIsImV4cCI6MjA0NTIwMDAzMn0.z9pvzajPfB_qPYmFMD-U-_hcdfarXF3Kq7WHG3OPz5c"
+      }
+    },
     "production": {
       "android": {
         "buildType": "app-bundle"
@@ -15,5 +32,8 @@
         "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkYWNib2N6Y3Bubm5xZnhranNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2MjQwMzIsImV4cCI6MjA0NTIwMDAzMn0.z9pvzajPfB_qPYmFMD-U-_hcdfarXF3Kq7WHG3OPz5c"
       }
     }
+  },
+  "submit": {
+    "production": {}
   }
 }
