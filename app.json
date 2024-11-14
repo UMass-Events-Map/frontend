@@ -14,21 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "config": {
-        "googleMapsApiKey": "AIzaSyChyvrO28j8T_Ux9VtoLaSe6qtXN0AwF0w"
-      },
-      "bundleIdentifier": "com.umassevents.umasseventsmap"
-
+      "bundleIdentifier": "app.phoenixfi.umaps"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "config": {
-        "googleMaps": {}
-      },
-      "package": "com.anonymous.frontend"
+      "package": "app.phoenixfi.umaps"
     },
     "web": {
       "bundler": "metro",
@@ -40,6 +33,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "c1e7dadb-4359-41d9-9787-20fc4dd951ed"
+      }
+    },
+    "owner": "umaps"
   }
 }
