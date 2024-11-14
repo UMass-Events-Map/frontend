@@ -70,13 +70,13 @@ export function EventCard(event: Event) {
           </View>
           <View style={styles.eventDetailLayout}>
             <Ionicons name={"time-outline"} size={16} style={styles.icon} />
-            <Text style={styles.eventDetailText}>{event.time}</Text>
+            <Text style={styles.eventDetailText}>{event.time.substring(0, event.time.length - 3)}</Text>
           </View>
           <View style={styles.eventDetailLayout}>
             <Ionicons name={"location-outline"} size={16} style={styles.icon} />
             <Text
               style={styles.eventDetailText}
-            >{`Student Union • ${event.room_number}`}</Text>
+            >{`${event.room_number}`}</Text>
           </View>
         </View>
     </TouchableHighlight>

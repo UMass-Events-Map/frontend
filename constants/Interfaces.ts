@@ -3,6 +3,8 @@ export type Building = {
     name: string;
     latitude: number;
     longitude: number;
+    thumbnail: string;
+    address: string;
     created_at?: string;
     updated_at?: string;
     events?: any[];

@@ -33,13 +33,12 @@ export default function BuildingPage(building: Building) {
       <Image
         style={styles.buildingImage}
         source={{
-          uri: "https://lh3.googleusercontent.com/p/AF1QipOAOXvcSZqndVKoR-P1VXKmLjcvdzRPtwQATsnG=s1360-w1360-h1020",
+          uri: building.thumbnail,
         }}
       />
       <Text style={styles.buildingName}> {building.name} </Text>
       <Text style={styles.buildingAddress}>
-        {" "}
-        Temporary Address, Amherst, MA, 01002{" "}
+        {building.address}
       </Text>
       <EventList events={events} />
     </View>
