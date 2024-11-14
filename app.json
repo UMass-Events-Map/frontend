@@ -18,7 +18,6 @@
         "googleMapsApiKey": "AIzaSyChyvrO28j8T_Ux9VtoLaSe6qtXN0AwF0w"
       },
       "bundleIdentifier": "com.umassevents.umasseventsmap"
-
     },
     "android": {
       "adaptiveIcon": {
@@ -40,6 +39,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "94c82aed-ddbd-4f42-b124-f3f2404ff474"
+      }
     }
   }
 }
