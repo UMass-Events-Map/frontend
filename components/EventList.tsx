@@ -7,7 +7,7 @@ import {
   TouchableHighlight,
   ActivityIndicator,
 } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
+//import Ionicons from "@expo/vector-icons/Ionicons";
 import { Event, EventListProps } from "@/constants/Interfaces";
 import { FlatList, SheetManager } from "react-native-actions-sheet";
 
@@ -65,11 +65,11 @@ export function EventCard(event: Event) {
             </Text>
           </View>
           <View style={styles.eventDetailLayout}>
-            <Ionicons name={"time-outline"} size={16} style={styles.icon} />
+            {/* <Ionicons name={"time-outline"} size={16} style={styles.icon} /> */}
             <Text style={styles.eventDetailText}>{event.time}</Text>
           </View>
           <View style={styles.eventDetailLayout}>
-            <Ionicons name={"location-outline"} size={16} style={styles.icon} />
+            {/* <Ionicons name={"location-outline"} size={16} style={styles.icon} /> */}
             <Text
               style={styles.eventDetailText}
             >{`Student Union • ${event.room_number}`}</Text>

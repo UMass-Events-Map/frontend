@@ -7,8 +7,8 @@ import {
   ScrollView,
   TouchableOpacity
 } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { Event } from "@/constants/Interfaces";
+//import Ionicons from "@expo/vector-icons/Ionicons";
+import { Event } from "../constants/Interfaces";
 import { FlatList } from "react-native-reanimated/lib/typescript/Animated";
 
 interface ImageBannerProps {
@@ -21,17 +21,17 @@ function Buttons() {
             <View style={styles.sideContainer}>
 
             <TouchableOpacity style={styles.leftCircleButton}>
-                <Ionicons name={"arrow-back-outline"} size={25} style={styles.icon} />
+                {/* <Ionicons name={"arrow-back-outline"} size={25} style={styles.icon} /> */}
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.rightCircleButton}>
-                <Ionicons name={"close-outline"} size={25} style={styles.closeIcon} />
+                {/* <Ionicons name={"close-outline"} size={25} style={styles.closeIcon} /> */}
             </TouchableOpacity>
 
             </View>
 
             <TouchableOpacity style={styles.bottomCircleButton}>
-                <Ionicons name={"star-outline"} size={25} style={styles.starIcon} />
+                {/* <Ionicons name={"star-outline"} size={25} style={styles.starIcon} /> */}
             </TouchableOpacity>
         </View>
     )
@@ -63,7 +63,7 @@ function Details(event: Event) {
             </View> */}
 
             <View style={styles.calendarContainer}>
-                <Ionicons name={"location"} size={25} style={styles.icon} color={'#AD3835'} />
+                {/* <Ionicons name={"location"} size={25} style={styles.icon} color={'#AD3835'} /> */}
                 <View style={styles.addressContainer}>
                     <Text style={styles.addressText}>Room Number: {event.room_number}</Text>
                 </View>
@@ -71,7 +71,7 @@ function Details(event: Event) {
 
             <View style={styles.calendarContainer}>
                 {/*<Ionicons name={"calendar-outline"} size={16} style={styles.leftItem}/>*/}
-                <Ionicons name={"calendar"} size={25} style={styles.icon}  color={'#AD3835'} />
+                {/* <Ionicons name={"calendar"} size={25} style={styles.icon}  color={'#AD3835'} /> */}
                 <View style={styles.timeContainer}>
                     <Text style={styles.addressText}>{formatter.format(new Date(event.date))}</Text>
                     <Text style={styles.addressText}>Starts: {event.time}</Text>

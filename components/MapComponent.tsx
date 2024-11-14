@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState, memo } from 'react';
 import { Platform, Text, StyleSheet, View, Image, ScrollView} from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import ActionSheet, { SheetManager, ActionSheetRef, useScrollHandlers } from 'react-native-actions-sheet';
-import { BuildingProp, Building } from '@/constants/Interfaces'
+import { BuildingProp, Building } from '../constants/Interfaces'
 
 const amherstRegion = { // Data to have map focus in on Amherst Area on load
     latitude: 42.390309,

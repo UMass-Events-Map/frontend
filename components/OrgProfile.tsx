@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import EventList from './EventList';
-import { supabase } from '@/utils/supabase';
+//import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 import { Event, EventListProps } from '@/constants/Interfaces';
 
 
@@ -16,7 +15,7 @@ export default function OrgProfile({ events }: EventListProps) {
         />
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Org Name</Text>
-          <MaterialCommunityIcons name="power-plug" size={24} color="#34C759" />
+          {/* <MaterialCommunityIcons name="power-plug" size={24} color="#34C759" /> */}
         </View>
       </View>
       <Text style={styles.listTitle}>Your events:</Text>

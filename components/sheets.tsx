@@ -1,7 +1,7 @@
 import {registerSheet, SheetDefinition} from 'react-native-actions-sheet';
 import MapActionSheet from './MapActionSheet';
 import EventDetailSheet from './EventDetailSheet';
-import { Building, Event } from '@/constants/Interfaces';
+import { Building, Event } from '../constants/Interfaces';
 
 registerSheet('mapaction-sheet', MapActionSheet);
 registerSheet('eventdetail-sheet', EventDetailSheet);

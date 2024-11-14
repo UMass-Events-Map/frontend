@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import EventList from "./EventList";
 import { useState, useEffect } from "react";
-import { Building, Event } from "@/constants/Interfaces";
+import { Building, Event } from "../constants/Interfaces";
 
 export default function BuildingPage(building: Building) {
   const [events, setEvents] = useState<Event[] | null>(null);

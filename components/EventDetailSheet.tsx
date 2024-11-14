@@ -1,7 +1,5 @@
 import ActionSheet, { SheetProps, useScrollHandlers } from 'react-native-actions-sheet';
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import { useState, useEffect } from "react";
-import { supabase } from '@/utils/supabase';
 import React from 'react';
 import EventDetails from './EventDetails';
 
