@@ -15,7 +15,7 @@ export default function EventList({ events }: EventListProps) {
   if (!events) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator color="#7E2622" size="large" />
+        <ActivityIndicator testID="ActivityIndicator" color="#7E2622" size="large" />
       </View>
     );
   } else if (events.length == 0) {
@@ -36,7 +36,7 @@ export default function EventList({ events }: EventListProps) {
   );
 }
 
-function EventCard(event: Event) {
+export function EventCard(event: Event) {
   const onPressEvent = () => {
     // navigate to event detail page
     SheetManager.show("eventdetail-sheet", {
@@ -47,21 +47,21 @@ function EventCard(event: Event) {
   const newDate = new Date(event.date);
 
   return (
-    <TouchableHighlight
-      style={styles.eventContainer}
-      onPress={onPressEvent}
-      underlayColor="white"
-    >
-      <View>
-        <Image style={styles.eventImage} source={{ uri: event.thumbnail }} />
-        <View style={styles.eventInfoContainer}>
-          <Text style={styles.eventName} numberOfLines={2} ellipsizeMode="tail">
-            {event.name}
-          </Text>
-          <View style={styles.eventDetailLayout}>
-            <Ionicons name={"calendar-outline"} size={16} style={styles.icon} />
-            <Text style={styles.eventDetailText}>
-              {formatter.format(newDate)}
+      <TouchableHighlight
+        style={styles.eventContainer}
+        onPress={onPressEvent}
+        underlayColor="white"
+        testID="eventCardTouchable"
+      >
+        <View>
+          <Image testID="eventImage" style={styles.eventImage} source={{ uri: event.thumbnail }} />
+          <View style={styles.eventInfoContainer}>
+            <Text
+              style={styles.eventName}
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              {event.name}
             </Text>
           </View>
           <View style={styles.eventDetailLayout}>
