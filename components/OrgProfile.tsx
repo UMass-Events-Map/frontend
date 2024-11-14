@@ -15,7 +15,7 @@ export default function OrgProfile(events: Event[]) {
           style={styles.logo}
         />
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Organization Name</Text>
+          <Text style={styles.title}>Org Name</Text>
           <MaterialCommunityIcons name="power-plug" size={24} color="#34C759" />
         </View>
       </View>
