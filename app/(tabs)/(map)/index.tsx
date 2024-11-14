@@ -18,7 +18,7 @@ export default function Index() { // Map Component (index as default entry point
 
       if(response.status === 200 || 304) {
         const data = await response.json();
-        setBuildings(data.buildings);
+        setBuildings(data.data);
       } else {
         console.error("Error fetching buildings");
       }
@@ -26,11 +26,11 @@ export default function Index() { // Map Component (index as default entry point
     fetchBuildings();
   }, []);
  
-  const filteredBuildings : Building[] = (!buildings) ? [] : (buildings as Building[]).filter(building => (building.events !== undefined && building.events.length > 0));
+  // const filteredBuildings : Building[] = (!buildings) ? [] : (buildings as Building[]).filter(building => (building.events !== undefined && building.events.length > 0));
 
   return (
     <View style={{ flex: 1 }}>
-      <MapComponent buildings={filteredBuildings}/>
+      <MapComponent buildings={buildings}/>
     </View>
   );
   

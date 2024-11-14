@@ -104,7 +104,7 @@ export default function EventDetails(event: Event) {
             >
                 <ImageBanner thumbnail={event.thumbnail}/>
                 <Details {...event}/>
-                <ContactInfo {...event}/>
+                {/* <ContactInfo {...event}/> */}
         </ScrollView>
 
         <Buttons/>
