@@ -12,6 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Create .env file
+        run: |
+          echo "EXPO_PACKAGE_NAME=${{ secrets.EXPO_PACKAGE_NAME }}" >> .env
+          echo "GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}" >> .env
+      
       - name: Set up environment variables
         run: |
           echo "APP_VERSION=$(cat app.json | jq -r '.expo.version')" >> $GITHUB_ENV
