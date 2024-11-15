@@ -2,9 +2,6 @@
 
 source .env
 
-echo "Keystore password: $KEYSTORE_PASSWORD"
-echo "Key password: $KEY_PASSWORD"
-
 cd "$(dirname "$0")"
 
 APP_VERSION=$(cat app.json | jq -r '.expo.version' 2>/dev/null || echo "unknown")
