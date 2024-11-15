@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: west
+    runs-on: tuna
     
     steps:
       - uses: actions/checkout@v4
