@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, TouchableHighlight } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, TouchableHighlight, SafeAreaView } from "react-native";
 import { Link, router } from "expo-router";
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -17,35 +17,37 @@ const LoginScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Login as Organization</Text>
+    <SafeAreaView style={styles.safeAreaContainer}>
+      <View style={styles.container}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Login as Organization</Text>
+        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <TouchableHighlight style={styles.signInButton} onPress={handleLogin}>
+              <Text style={styles.buttonText}>Sign In</Text>
+        </TouchableHighlight>
+        <Text
+          style={[styles.text, { textDecorationLine: "underline" }]}
+          onPress={handleAccountCreation}
+        >
+          Organization doesn’t have an account?
+        </Text>
       </View>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <TouchableHighlight style={styles.signInButton} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Sign In</Text>
-      </TouchableHighlight>
-      <Text
-        style={[styles.text, { textDecorationLine: "underline" }]}
-        onPress={handleAccountCreation}
-      >
-        Organization doesn’t have an account?
-      </Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -56,12 +58,14 @@ const styles = StyleSheet.create({
     marginTop: 9,
     textAlign: "center",
   },
+  safeAreaContainer: {
+    flex: 1,
+    backgroundColor: '#fff'
+  },
   container: {
     flex: 1,
-    paddingTop: 70,
     paddingHorizontal: 10,
     alignItems: 'center',
-    backgroundColor: '#fff'
   },
   titleContainer: {
     height: '40%',

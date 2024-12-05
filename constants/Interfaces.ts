@@ -7,7 +7,7 @@ export type Building = {
     address: string;
     created_at?: string;
     updated_at?: string;
-    events?: any[];
+    events: Event[] | null;
 };
 
 export type BuildingProp = {

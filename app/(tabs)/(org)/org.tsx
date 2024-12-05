@@ -1,5 +1,5 @@
 import OrgProfile from "@/components/OrgProfile";
-import { Text, View } from "react-native";
+import { Text, View, SafeAreaView } from "react-native";
 import EventList from "@/components/EventList";
 import { supabase } from '@/utils/supabase';
 import { useState, useEffect } from "react";
@@ -25,9 +25,8 @@ export default function Org() {
   }, []);
   
   return (
-    <View style={{ flex: 1 }}>
-      <OrgProfile events={events} />
+    <SafeAreaView style={{ flex: 1 }}>
       
-    </View>
+    </SafeAreaView>
   );
 }
