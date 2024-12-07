@@ -12,6 +12,7 @@ import { Event, EventListProps } from "@/constants/Interfaces";
 import { FlatList, SheetManager } from "react-native-actions-sheet";
 
 export default function EventList({ events }: EventListProps) {
+  // console.log(events);
   if (!events) {
     return (
       <View style={styles.container}>
@@ -24,16 +25,18 @@ export default function EventList({ events }: EventListProps) {
         <Text style={styles.noEventText}>No events available</Text>
       </View>
     );
-  }
-  return (
-    <FlatList
-      columnWrapperStyle={{ justifyContent: "space-between" }}
-      data={events}
-      numColumns={2}
-      style={styles.eventList}
-      renderItem={({ item }) => EventCard(item)}
-    />
-  );
+  } else {
+    return (
+      <FlatList
+        columnWrapperStyle={{ justifyContent: "space-between" }}
+        data={events}
+        numColumns={2}
+        style={styles.eventList}
+        renderItem={({ item }) => EventCard(item)}
+        extraData={events}
+      />
+    )
+  };
 }
 
 export function EventCard(event: Event) {
@@ -63,20 +66,21 @@ export function EventCard(event: Event) {
             >
               {event.name}
             </Text>
-          </View>
-          <View style={styles.eventDetailLayout}>
-            <Ionicons name={"time-outline"} size={16} style={styles.icon} />
-            <Text style={styles.eventDetailText}>{formatter.format(newDate)}</Text>
-          </View>
-          <View style={styles.eventDetailLayout}>
-            <Ionicons name={"time-outline"} size={16} style={styles.icon} />
-            <Text style={styles.eventDetailText}>{event.time.substring(0, event.time.length - 3)}</Text>
-          </View>
-          <View style={styles.eventDetailLayout}>
-            <Ionicons name={"location-outline"} size={16} style={styles.icon} />
-            <Text
-              style={styles.eventDetailText}
-            >{`${event.room_number}`}</Text>
+            <View style={styles.eventDetailLayout}>
+              <Ionicons name={"calendar-outline"} size={16} style={styles.icon} />
+              <Text style={styles.eventDetailText}>{formatter.format(newDate)}</Text>
+            </View>
+            <View style={styles.eventDetailLayout}>
+              <Ionicons name={"time-outline"} size={16} style={styles.icon} />
+              <Text style={styles.eventDetailText}>{event.time}</Text>
+            </View>
+            <View style={styles.eventDetailLayout}>
+              <Ionicons name={"location-outline"} size={16} style={styles.icon} />
+              <Text
+                style={styles.eventDetailText}
+                numberOfLines={2}
+              >{`${event.building?.name} • ${event.room_number}`}</Text>
+            </View>
           </View>
         </View>
     </TouchableHighlight>
@@ -103,10 +107,10 @@ const styles = StyleSheet.create({
     height: 260,
     width: "49%",
     marginBottom: 10,
-    shadowColor: "#000",
+    shadowColor: "#000000",
     shadowOffset: { width: 0, height: 0.5 },
     shadowOpacity: 0.3,
-    shadowRadius: 1,
+    shadowRadius: 2,
   },
   eventDetailLayout: {
     flexDirection: "row",
@@ -114,12 +118,12 @@ const styles = StyleSheet.create({
   },
   eventImage: {
     width: "100%",
-    height: 140,
+    height: '60%',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
   eventInfoContainer: {
-    marginHorizontal: 5,
+    marginHorizontal:'5%',
   },
   eventDetailText: {
     fontSize: 12,

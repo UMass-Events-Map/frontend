@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Button, TextInput } from "react-native";
+import { Text, View, StyleSheet, Button, TextInput, SafeAreaView } from "react-native";
 import React from 'react';
 import EventList from "@/components/EventList";
 import { useState, useEffect, useMemo } from "react";
@@ -36,22 +36,54 @@ export default function List() {
  const handleSearch = (query: string) => {
     // handle searching 
     setSearchQuery(query);
- }
+  };
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      const { data: events, error } = await supabase
-        .from('events')
-        .select('*');
-      
-      if (error) {
-        console.error("Error fetching events:", error.message);
-        setError(error.message);
+    const fetchEvent = async (id: string): Promise<Event | null> => {
+      const response = await fetch(`https://umaps.phoenixfi.app/events/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200 || 304) {
+        const data = await response.json();
+        return data;
       } else {
-        setEvents(events);
+        console.error("Error fetching event by id");
+        return null;
       }
     };
-    fetchEvents();
+
+    const fetchEventsId = async (): Promise<string[]> => {
+      const response = await fetch(`https://umaps.phoenixfi.app/events/ids`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200 || 304) {
+        const data = await response.json();
+        return data.ids;
+      } else {
+        console.error("Error fetching events");
+        return [];
+      }
+    };
+
+    fetchEventsId()
+      .then(async (data): Promise<Event[]> => {
+        const promises: Promise<Event | null>[] = data.map((id) =>
+          fetchEvent(id)
+        );
+        const response: (Event | null)[] = await Promise.all(promises);
+        return response.filter((e) => e !== null);
+      })
+      .then((data) => {
+        setEvents(data);
+      });
   }, []);
 
 
@@ -118,7 +150,7 @@ export default function List() {
   
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView>
       <TextInput
         placeholder="Search by name, date, or time"
         placeholderTextColor="grey"
@@ -161,36 +193,33 @@ export default function List() {
           zIndex={1000} // Prevent overlap issues
         />
       </View>
-
-      <View style={styles.container}>
-        <EventList events={filteredEvents as Event[]} />
-      </View>
-    </View>
+     
+      <EventList events={filteredEvents as Event[]} />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 70,
+    backgroundColor: "#fff",
   },
   heading: {
     flex: 0,
     fontSize: 35,
-    fontWeight: 'bold',
-    color: '#7E2622',
+    fontWeight: "bold",
+    color: "#7E2622",
     marginLeft: 10,
-    marginBottom: 15
+    marginBottom: 15,
   },
   searchBar: {
     marginHorizontal: 10,
     marginBottom: 10,
     padding: 10,
-    borderColor: '#D6D6D6',
+    borderColor: "#D6D6D6",
     borderWidth: 1,
     borderRadius: 20,
-    height: "8%"
+    height: 50
   },
   dropdownContainer: {
     paddingHorizontal: 5,
@@ -208,10 +237,7 @@ const styles = StyleSheet.create({
     flexDirection: "row", // Aligns the dropdowns side by side
     justifyContent: "space-between", // Ensures they are spaced evenly
     marginHorizontal: 6,
-    marginTop: 5,
-    marginBottom: 20,
-    position: "absolute",
-    top: 120, 
+    marginBottom: 10,
     zIndex: 10
   },
 });

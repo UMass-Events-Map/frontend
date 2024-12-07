@@ -10,10 +10,10 @@ export default function EventDetailSheet(props: SheetProps<"eventdetail-sheet">)
         return(<Text> Error fetching Event Details </Text>)
     } else {
         return(
-            <ActionSheet
+          <ActionSheet
                 gestureEnabled
                 initialSnapIndex={0}
-                snapPoints={[100]}
+                snapPoints={[95]}
             >
                 <EventDetails {...props.payload?.value}/>
             </ActionSheet>

@@ -7,27 +7,27 @@ export default function BuildingPage(building: Building) {
   const [events, setEvents] = useState<Event[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchEventByBuildingId = async (id: string) => {
-      const response = await fetch(
-        `https://umaps.phoenixfi.app/buildings/${id}/events`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+  // useEffect(() => {
+  //   const fetchEventByBuildingId = async (id: string) => {
+  //     const response = await fetch(
+  //       `https://umaps.phoenixfi.app/buildings/${id}/events`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
 
-      if (response.status === 200 || 304) {
-        const data = await response.json();
-        setEvents(data);
-      } else {
-        console.error("Error fetching events by building id");
-      }
-    };
-    fetchEventByBuildingId(building.id);
-  }, []);
+  //     if (response.status === 200 || 304) {
+  //       const data = await response.json();
+  //       setEvents(data);
+  //     } else {
+  //       console.error("Error fetching events by building id");
+  //     }
+  //   };
+  //   fetchEventByBuildingId(building.id);
+  // }, []);
   return (
     <View style={styles.container}>
       <Image
@@ -40,7 +40,7 @@ export default function BuildingPage(building: Building) {
       <Text style={styles.buildingAddress}>
         {building.address}
       </Text>
-      <EventList events={events} />
+      <EventList events={building.events} />
     </View>
   );
 }
