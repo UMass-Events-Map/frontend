@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet, Button, TextInput } from "react-native";
+import React from 'react';
 import EventList from "@/components/EventList";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { supabase } from '@/utils/supabase';
 import { Link } from 'expo-router';
 import OrgProfile from "@/components/OrgProfile";
@@ -31,6 +32,22 @@ export default function List() {
     };
     fetchEvents();
   }, []);
+
+  // Filtered events based on search query
+  const filteredEvents = useMemo(() => {
+    if (!events) return [];
+
+    return events.filter((event) => {
+      const formattedDate = formatter.format(new Date(event.date));
+      const eventTime = event.time.substring(0, event.time.length - 3);
+
+      return (
+        event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        formattedDate.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        eventTime.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
+  }, [events, searchQuery]);
   
 
   return (
@@ -43,7 +60,7 @@ export default function List() {
         value={searchQuery}
         autoCorrect={false}
         onChangeText={(query) => handleSearch(query)}/>
-      <EventList events={events} />
+      <EventList events={filteredEvents} />
     </View>
   );
 }
@@ -71,3 +88,12 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
 });
+
+const options: Intl.DateTimeFormatOptions = {
+  weekday: "short",
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+};
+
+const formatter = new Intl.DateTimeFormat("en-US", options);
