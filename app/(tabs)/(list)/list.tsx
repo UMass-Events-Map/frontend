@@ -193,7 +193,7 @@ export default function List() {
           zIndex={1000} // Prevent overlap issues
         />
       </View>
-      
+     
       <EventList events={filteredEvents as Event[]} />
     </SafeAreaView>
   );
