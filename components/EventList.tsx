@@ -32,8 +32,10 @@ export default function EventList({ events }: EventListProps) {
         data={events}
         numColumns={2}
         style={styles.eventList}
+        contentContainerStyle={{ paddingBottom: 200 }} 
         renderItem={({ item }) => EventCard(item)}
         extraData={events}
+        keyExtractor={(item) => item.id.toString()}
       />
     )
   };
@@ -52,6 +54,7 @@ export function EventCard(event: Event) {
   return (
       <TouchableHighlight
         style={styles.eventContainer}
+        accessibilityLabel={`Event ${event.name}`}
         onPress={onPressEvent}
         underlayColor="white"
         testID="eventCardTouchable"
@@ -61,6 +64,7 @@ export function EventCard(event: Event) {
           <View style={styles.eventInfoContainer}>
             <Text
               style={styles.eventName}
+              adjustsFontSizeToFit={true}
               numberOfLines={2}
               ellipsizeMode="tail"
             >
@@ -79,6 +83,7 @@ export function EventCard(event: Event) {
               <Text
                 style={styles.eventDetailText}
                 numberOfLines={2}
+                ellipsizeMode="tail"
               >{`${event.building?.name} • ${event.room_number}`}</Text>
             </View>
           </View>
@@ -98,14 +103,15 @@ const styles = StyleSheet.create({
     color: "#D6D6D6",
   },
   eventList: {
-    paddingHorizontal: 8,
+    flex: 0,
+    paddingHorizontal: 15,
   },
   eventContainer: {
-    flex: 0,
     backgroundColor: "#FAFAFA",
     borderRadius: 10,
     height: 260,
     width: "49%",
+    paddingBottom: 10,
     marginBottom: 10,
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 0.5 },
@@ -123,19 +129,23 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   eventInfoContainer: {
+    height: '40%',
     marginHorizontal:'5%',
   },
   eventDetailText: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: "light",
+    flexWrap: 'wrap',
+    width: "90%"
   },
   eventName: {
-    fontSize: 15,
-    fontWeight: "bold",
+    height: '35%',
+    fontWeight: "500",
     marginVertical: 3,
+    fontSize: 15
   },
   icon: {
-    marginRight: 3,
+    marginRight: 2,
   },
 });
 
