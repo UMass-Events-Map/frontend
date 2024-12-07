@@ -3,15 +3,36 @@ import React from 'react';
 import EventList from "@/components/EventList";
 import { useState, useEffect, useMemo } from "react";
 import { supabase } from '@/utils/supabase';
+import { Event } from "@/constants/Interfaces";
 import { Link } from 'expo-router';
 import OrgProfile from "@/components/OrgProfile";
+import DropDownPicker from "react-native-dropdown-picker";
 
 
 export default function List() {
+  // State management for the events that are shown
   const [events, setEvents] = useState<any[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // State management for the search bar
   const [searchQuery, setSearchQuery] = useState("");
 
+  // State management for filtering the day via a dropdown menu
+  const [selectedDay, setSelectedDay] = useState<string>("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // State management for filtering the week via a dropdown menu
+  const [rangeOpen, setRangeOpen] = useState(false);
+  const [rangeValue, setRangeValue] = useState<string | null>(null);
+  const [rangeItems, setRangeItems] = useState([
+    { label: "All Weeks", value: "" },
+    { label: "1 Week", value: "1_week" },
+    { label: "2 Weeks", value: "2_weeks" },
+    { label: "3 Weeks", value: "3_weeks" },
+    { label: "1 Month", value: "1_month" },
+  ]);
+
+ 
  const handleSearch = (query: string) => {
     // handle searching 
     setSearchQuery(query);
@@ -33,11 +54,46 @@ export default function List() {
     fetchEvents();
   }, []);
 
-  // Filtered events based on search query
+
+  // Calculate Time Range
+  const filterByTimeRange = (events: any[], range: string | null) => {
+    if (!range) return events;
+
+    const now = new Date();
+    let endDate: any;
+    let startDate: any;
+
+    switch (range) {
+      case "1_week":
+        endDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+        endDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+        break;
+      case "2_weeks":
+        endDate = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+        break;
+      case "3_weeks":
+        endDate = new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000);
+        break;
+      case "1_month":
+        endDate = new Date(now.setMonth(now.getMonth() + 1));
+        break;
+      default:
+        startDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+        return events.filter;
+    }
+
+    return events.filter((event) => {
+      const eventDate = new Date(event.date);
+      return eventDate <= endDate;
+    });
+  };
+
+
+  // Filtered Events
   const filteredEvents = useMemo(() => {
     if (!events) return [];
 
-    return events.filter((event) => {
+    const searchFiltered = events.filter((event) => {
       const formattedDate = formatter.format(new Date(event.date));
       const eventTime = event.time.substring(0, event.time.length - 3);
 
@@ -47,20 +103,68 @@ export default function List() {
         eventTime.toLowerCase().includes(searchQuery.toLowerCase())
       );
     });
-  }, [events, searchQuery]);
+
+    const dayFiltered = selectedDay
+      ? searchFiltered.filter((event) => {
+          const eventDay = new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
+            new Date(event.date)
+          );
+          return eventDay.toLowerCase() === selectedDay.toLowerCase();
+        })
+      : searchFiltered;
+
+    return filterByTimeRange(dayFiltered, rangeValue);
+  }, [events, searchQuery, selectedDay, rangeValue]);
   
 
   return (
     <View style={styles.container}>
-      <TextInput 
-        placeholder='Search' 
-        placeholderTextColor={'grey'}
+      <TextInput
+        placeholder="Search by name, date, or time"
+        placeholderTextColor="grey"
         style={styles.searchBar}
-        clearButtonMode="always"
         value={searchQuery}
-        autoCorrect={false}
-        onChangeText={(query) => handleSearch(query)}/>
-      <EventList events={filteredEvents} />
+        onChangeText={setSearchQuery}
+      />
+      <View style={styles.dropdownRow}>
+        <DropDownPicker
+          open={isDropdownOpen}
+          setOpen={setIsDropdownOpen}
+          value={selectedDay}
+          setValue={setSelectedDay}
+          items={[
+            { label: "All Days", value: "" },
+            { label: "Sunday", value: "Sunday" },
+            { label: "Monday", value: "Monday" },
+            { label: "Tuesday", value: "Tuesday" },
+            { label: "Wednesday", value: "Wednesday" },
+            { label: "Thursday", value: "Thursday" },
+            { label: "Friday", value: "Friday" },
+            { label: "Saturday", value: "Saturday" },
+          ]}
+          placeholder="Select Day"
+          containerStyle={styles.dropdownContainer}
+          style={styles.dropdown}
+          maxHeight={200}
+        />
+        <DropDownPicker
+          open={rangeOpen}
+          value={rangeValue}
+          items={rangeItems}
+          setOpen={setRangeOpen}
+          setValue={setRangeValue}
+          setItems={setRangeItems}
+          placeholder="All Weeks"
+          style={styles.dropdown}
+          containerStyle={styles.dropdownContainer}
+          maxHeight={200}
+          zIndex={1000} // Prevent overlap issues
+        />
+      </View>
+
+      <View style={styles.container}>
+        <EventList events={filteredEvents as Event[]} />
+      </View>
     </View>
   );
 }
@@ -81,11 +185,34 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     marginHorizontal: 10,
-    marginBottom: 20,
+    marginBottom: 10,
     padding: 10,
     borderColor: '#D6D6D6',
     borderWidth: 1,
-    borderRadius: 20
+    borderRadius: 20,
+    height: "8%"
+  },
+  dropdownContainer: {
+    paddingHorizontal: 5,
+    paddingTop: 5,
+    marginBottom: 5,
+    width: "50%",
+    flexDirection: "row",
+  },
+  dropdown: {
+    borderColor: "#D6D6D6",
+    borderRadius: 10,
+    zIndex: 10
+  },
+  dropdownRow: {
+    flexDirection: "row", // Aligns the dropdowns side by side
+    justifyContent: "space-between", // Ensures they are spaced evenly
+    marginHorizontal: 6,
+    marginTop: 5,
+    marginBottom: 20,
+    position: "absolute",
+    top: 120, 
+    zIndex: 10
   },
 });
 
