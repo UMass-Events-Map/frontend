@@ -9,7 +9,7 @@ const LoginScreen: React.FC = () => {
     // Handle login logic here
     // console.log("Email:", email);
     // console.log("Password:", password);
-    router.push('/org')
+    router.replace('/org')
   };
 
   const handleAccountCreation = () => {

@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   eventContainer: {
     flex: 0,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: "#F9F9F9",
     borderRadius: 10,
     height: 260,
     width: "49%",
