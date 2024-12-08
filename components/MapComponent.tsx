@@ -123,9 +123,14 @@ export default function MapComponent() {
           </Marker>
         ))}
       </MapView>
-      <TouchableOpacity style={styles.calendarButton} > 
-        <Ionicons name={"calendar-outline"} size={30} color={'#7E2622'}/>
-      </TouchableOpacity>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={styles.circleButton} > 
+          <Ionicons name={"calendar"} size={30} color={'#7E2622'}/>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.circleButton} > 
+          <Ionicons name={"navigate"} size={30} color={'#7E2622'}/>
+        </TouchableOpacity>
+      </View>
       {loading && (
         <View style={styles.loading}>
           <ActivityIndicator color="#7E2622" size="large" animating={loading} />
@@ -172,10 +177,12 @@ const styles = StyleSheet.create({
     width: resizedWidth,
     height: resizedHeight,
   },
-  calendarButton: {
+  buttonsContainer: {
     position: 'absolute',
     top: '30%',
     right: '3%',
+  },
+  circleButton: {
     height: 55,
     backgroundColor: 'white',
     width: 55,
@@ -186,5 +193,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0.5 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
-  }
+    marginBottom: 10
+  },
 });

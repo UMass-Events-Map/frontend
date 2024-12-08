@@ -111,7 +111,6 @@ export default function EventForm() {
                     </TouchableOpacity>
                 </View>
                 <Modal
-                    animationType="slide"
                     transparent={true}
                     visible={modalVisible}
                     onRequestClose={() => {
@@ -273,6 +272,5 @@ const buildings = [
     { label: "Isenberg", value: "63a5d025-896b-4168-a2e5-6800c3879f80" },
     { label: "Franklin Dining Commons", value: "316b4fff-79a9-4668-8ca5-2e0c1edf169a" },
     { label: "Mullins Center", value: "070c9890-49e0-46f6-a92b-6a7fc0c3f33e" },
-    { label: "Worcester Commons", value: "ed2d1571-99f6-4d26-8ac0-63f647aacda4" },
     { label: "Worcester Commons", value: "ed2d1571-99f6-4d26-8ac0-63f647aacda4" },
 ];
