@@ -72,7 +72,7 @@ export function EventCard(event: Event) {
             </View>
             <View style={styles.eventDetailLayout}>
               <Ionicons name={"time-outline"} size={16} style={styles.icon} />
-              <Text style={styles.eventDetailText}>{event.time}</Text>
+              <Text style={styles.eventDetailText}>{event.time.substring(0,event.time.length - 3)}</Text>
             </View>
             <View style={styles.eventDetailLayout}>
               <Ionicons name={"location-outline"} size={16} style={styles.icon} />
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   eventContainer: {
     flex: 0,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: "#F9F9F9",
     borderRadius: 10,
     height: 260,
     width: "49%",
