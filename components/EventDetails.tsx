@@ -248,9 +248,13 @@ const styles = StyleSheet.create({
 });
 
 const options: Intl.DateTimeFormatOptions = {
-  weekday: "short",
-  year: "numeric",
-  month: "short",
-  day: "numeric",
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
 };
+  
 const formatter = new Intl.DateTimeFormat("en-US", options);

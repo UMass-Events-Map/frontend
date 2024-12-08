@@ -49,14 +49,21 @@ export function EventCard(event: Event) {
     });
   };
 
+  // Get the current time and event time
+  const currentTime = new Date();
+  const eventTime = new Date(event.date + " " + event.time);
+
+  // Check if the event is within the next hour
+  const isEventSoon = eventTime > currentTime && (eventTime.getTime() - currentTime.getTime()) <= 3600000;
+
   const newDate = new Date(event.date);
 
   return (
       <TouchableHighlight
-        style={styles.eventContainer}
+      style={[styles.eventContainer, isEventSoon && styles.eventSoon]}
         accessibilityLabel={`Event ${event.name}`}
         onPress={onPressEvent}
-        underlayColor="white"
+        underlayColor={"white"}
         testID="eventCardTouchable"
       >
         <View>
@@ -72,7 +79,7 @@ export function EventCard(event: Event) {
             </Text>
             <View style={styles.eventDetailLayout}>
               <Ionicons name={"calendar-outline"} size={16} style={styles.icon} />
-              <Text style={styles.eventDetailText}>{formatter.format(newDate)}</Text>
+              <Text style={styles.eventDetailText}>{formatter2.format(newDate)}</Text>
             </View>
             <View style={styles.eventDetailLayout}>
               <Ionicons name={"time-outline"} size={16} style={styles.icon} />
@@ -106,12 +113,15 @@ const styles = StyleSheet.create({
     flex: 0,
     paddingHorizontal: 15,
   },
+  eventSoon: {
+    backgroundColor: "#FFB5B3", // Highlight the event in green
+  },
   eventContainer: {
     backgroundColor: "#FAFAFA",
     borderRadius: 10,
     height: 260,
     width: "49%",
-    paddingBottom: 10,
+    paddingBottom: 20,
     marginBottom: 10,
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 0.5 },
@@ -149,10 +159,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const options: Intl.DateTimeFormatOptions = {
-  weekday: "short",
+// Options for formatting the day of the month an year
+const options2: Intl.DateTimeFormatOptions = {
+  timeZone: "America/New_York",
   year: "numeric",
-  month: "short",
+  month: "long",
   day: "numeric",
 };
-const formatter = new Intl.DateTimeFormat("en-US", options);
+
+const formatter2 = new Intl.DateTimeFormat("en-US", options2);
