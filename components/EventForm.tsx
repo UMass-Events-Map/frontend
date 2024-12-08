@@ -1,5 +1,5 @@
 import { Building, CreateEvent, Event } from "@/constants/Interfaces";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, SafeAreaView, TextInput, Button, Modal, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import DateTimePicker from 'react-native-ui-datepicker';
@@ -20,10 +20,13 @@ export default function EventForm() {
     const [modalVisible, setModalVisible] = useState(false);
 
     // Manage loading screen
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
 
     // Manage dropdown
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    // Store all buildings
+    // const [buildings, setBuildings] = useState<{label: string; value: string}[]>([]);
 
     const handleEventCreation = async () => {
         const response = await fetch(`https://umaps.phoenixfi.app/events/organization/${"6a0583c1-dc38-44e0-8a7a-9742ea90b61e"}`, {
@@ -53,6 +56,31 @@ export default function EventForm() {
             console.log(data.error);
         }
     }
+    
+    // const fetchBuildings = async () => {
+    //         const response = await fetch(
+    //           `https://umaps.phoenixfi.app/buildings?limit=${30}`,
+    //           {
+    //             method: "GET",
+    //             headers: {
+    //               "Content-Type": "application/json",
+    //             },
+    //           }
+    //         );
+      
+    //         if (response.status === 200 || 304) {
+    //           const data = await response.json();
+    //           const buildingList = data.data.map((e: Building) => {label: e.name; value: e.id});
+    //           setBuildings(buildingList);  
+    //         } else {
+    //           console.error("Error fetching buildings");
+    //         }
+    //         setLoading(false);
+    //       };
+
+    // useEffect(() => {
+    //     fetchBuildings();
+    // });
 
     const addEventButton = async () => {
         setLoading(true);
@@ -118,23 +146,13 @@ export default function EventForm() {
                     style={styles.textInput}/>
                 <Text style={styles.attributeText}>Building:</Text>
                 <DropDownPicker
+                    listMode="MODAL"
                     open={isDropdownOpen}
                     setOpen={setIsDropdownOpen}
                     value={building}
                     setValue={setBuilding}
                     style={{ borderColor: '#AD3835', borderWidth: 2}}
-                    items={[
-                        { label: "Science & Engineering Library", value: "8620cbb2-7da9-48fd-a0fe-883ddf9e1b72" },
-                        { label: "Campus Center", value: "7364af36-b61c-43cd-820d-a3d905dbfd8c" },
-                        { label: "UMass Campus Recreation", value: "d7eff2b2-63ca-4236-adb9-0a88bf7b96ea" },
-                        { label: "Manning Computer Science Building", value: "c9e08449-318d-4540-b392-7c0cfc3d6ef7" },
-                        { label: "Berkshire Dining Commons", value: "e1c7eab5-d176-4f1d-ae51-3a7716e27c8b" },
-                        { label: "Hampshire Dining Commons", value: "bd5da697-3862-439f-9ee1-0d97fdd84ec3" },
-                        { label: "Isenberg", value: "63a5d025-896b-4168-a2e5-6800c3879f80" },
-                        { label: "Franklin Dining Commons", value: "316b4fff-79a9-4668-8ca5-2e0c1edf169a" },
-                        { label: "Mullins Center", value: "070c9890-49e0-46f6-a92b-6a7fc0c3f33e" },
-                        { label: "Worcester Commons", value: "ed2d1571-99f6-4d26-8ac0-63f647aacda4" },
-                    ]}
+                    items={buildings}
                     placeholder="Select a building"/>
                 <Text style={styles.attributeText}>Room Number:</Text>
                 <TextInput
@@ -160,7 +178,7 @@ export default function EventForm() {
 
             </ScrollView>
             {loading && (
-                <View>
+                <View style={styles.loading}>
                     <ActivityIndicator color="#7E2622" size="large" animating={loading} />
                 </View>
             )}
@@ -228,14 +246,33 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     loading: {
-        position: "absolute",
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#F5FCFF88",
-    },
+        flex: 1
+      },
     datePickerContainer: {
         flex: 1, 
         justifyContent: 'center', 
         backgroundColor: 'white'
     }
 });
+
+const buildings = [
+    { label: "Science & Engineering Library", value: "8620cbb2-7da9-48fd-a0fe-883ddf9e1b72" },
+    { label: "Campus Center", value: "7364af36-b61c-43cd-820d-a3d905dbfd8c" },
+    { label: "UMass Campus Recreation", value: "d7eff2b2-63ca-4236-adb9-0a88bf7b96ea" },
+    { label: "Manning Computer Science Building", value: "c9e08449-318d-4540-b392-7c0cfc3d6ef7" },
+    { label: "Berkshire Dining Commons", value: "e1c7eab5-d176-4f1d-ae51-3a7716e27c8b" },
+    { label: "Hampshire Dining Commons", value: "bd5da697-3862-439f-9ee1-0d97fdd84ec3" },
+    { label: "Isenberg", value: "63a5d025-896b-4168-a2e5-6800c3879f80" },
+    { label: "Franklin Dining Commons", value: "316b4fff-79a9-4668-8ca5-2e0c1edf169a" },
+    { label: "Mullins Center", value: "070c9890-49e0-46f6-a92b-6a7fc0c3f33e" },
+    { label: "Worcester Commons", value: "ed2d1571-99f6-4d26-8ac0-63f647aacda4" },
+    { label: "Worcester Commons", value: "ed2d1571-99f6-4d26-8ac0-63f647aacda4" },
+];
