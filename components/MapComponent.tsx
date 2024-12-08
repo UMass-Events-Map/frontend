@@ -15,6 +15,8 @@ import {
   Modal,
   ScrollView,
   ActivityIndicator,
+  TouchableHighlight,
+  TouchableOpacity
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import ActionSheet, {
@@ -24,6 +26,7 @@ import ActionSheet, {
 } from "react-native-actions-sheet";
 import { BuildingProp, Building, Event } from "@/constants/Interfaces";
 import { ApiService } from "@/service/api.service";
+import { Ionicons } from "@expo/vector-icons";
 
 const amherstRegion = {
   // Data to have map focus in on Amherst Area on load
@@ -120,6 +123,9 @@ export default function MapComponent() {
           </Marker>
         ))}
       </MapView>
+      <TouchableOpacity style={styles.calendarButton} > 
+        <Ionicons name={"calendar-outline"} size={30} color={'#7E2622'}/>
+      </TouchableOpacity>
       {loading && (
         <View style={styles.loading}>
           <ActivityIndicator color="#7E2622" size="large" animating={loading} />
@@ -137,14 +143,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   loading: {
-    position: "absolute",
-    left: 0,
-    right: 0,
+    position: 'absolute',
     top: 0,
+    right: 0,
     bottom: 0,
+    left: 0,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#F5FCFF88",
+    flex: 1
   },
   map: {
     flex: 1,
@@ -165,4 +172,19 @@ const styles = StyleSheet.create({
     width: resizedWidth,
     height: resizedHeight,
   },
+  calendarButton: {
+    position: 'absolute',
+    top: '30%',
+    right: '3%',
+    height: 55,
+    backgroundColor: 'white',
+    width: 55,
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 0.5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+  }
 });

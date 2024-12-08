@@ -10,20 +10,19 @@ export default function EventForm() {
     // Store new event details
     const [eventName, setEventName] = useState<string>("");
     const [thumbnail, setThumbnail] = useState<string>("");
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(dayjs());
     const [time, setTime] = useState<string>("");
     const [building, setBuilding] = useState<string>("");
     const [room, setRoom] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
-    // Store all buildings
-    const [buildings, setBuildings] = useState<Building[]>();
-
-    // Manage modal
+    // Manage modal visibility
     const [modalVisible, setModalVisible] = useState(false);
 
+    // Manage loading screen
     const [loading, setLoading] = useState<boolean>(true);
 
+    // Manage dropdown
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const handleEventCreation = async () => {
@@ -34,7 +33,7 @@ export default function EventForm() {
             body:JSON.stringify({
                 name: eventName,
                 description: description,
-                date: date.format("YYYY-MM-DD"),
+                date: date,
                 time: time,
                 building_id: building,
                 room_number: room,
@@ -78,7 +77,7 @@ export default function EventForm() {
                     style={styles.textInput}/>
                 <Text style={styles.attributeText}>Date:</Text>
                 <View style={styles.dateLayout}>
-                    <Text style={styles.dateInput}>{formatter.format(date)}</Text>
+                    <Text style={styles.dateInput}>{date.format('ddd, MMM D, YYYY')}</Text>
                     <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.calendarButton}>
                         <Ionicons name={"calendar-outline"} size={30} color={'white'}/>
                     </TouchableOpacity>
@@ -90,16 +89,21 @@ export default function EventForm() {
                     onRequestClose={() => {
                     setModalVisible(!modalVisible);}}
                     >
-                    <View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white'}}>
+                    <View style={styles.datePickerContainer}>
                         <DateTimePicker
                         mode="single"
                         date={date}
                         onChange={(params) => setDate(params.date)}
                         selectedItemColor="#AD3835"
-                        
+                        headerButtonColor="#AD3835"
+                        displayFullDays
+                        todayContainerStyle={{
+                            borderWidth: 1,
+                          }}
                         />
                         <Button 
-                            title="Close"
+                            title="Done"
+                            color={'#AD3835'}
                             onPress={() => setModalVisible(!modalVisible)}
                         />
                     </View>
@@ -228,13 +232,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#F5FCFF88",
-      },
+    },
+    datePickerContainer: {
+        flex: 1, 
+        justifyContent: 'center', 
+        backgroundColor: 'white'
+    }
 });
-
-const options: Intl.DateTimeFormatOptions = {
-    weekday: "short",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  };
-  const formatter = new Intl.DateTimeFormat("en-US", options);
