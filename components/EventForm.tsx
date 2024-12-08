@@ -7,11 +7,12 @@ import dayjs from 'dayjs';
 import { Ionicons } from "@expo/vector-icons";
 
 export default function EventForm() {
+    
+    
     // Store new event details
     const [eventName, setEventName] = useState<string>("");
     const [thumbnail, setThumbnail] = useState<string>("");
-    const [date, setDate] = useState(dayjs());
-    const [time, setTime] = useState<string>("");
+    const [dateTime, setDateTime] = useState(dayjs());
     const [building, setBuilding] = useState<string>("");
     const [room, setRoom] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -36,8 +37,8 @@ export default function EventForm() {
             body:JSON.stringify({
                 name: eventName,
                 description: description,
-                date: date,
-                time: time,
+                date: dateTime.format('YYYY-MM-D'),
+                time: dateTime.format('HH:mm'),
                 building_id: building,
                 room_number: room,
                 organization_id: "6a0583c1-dc38-44e0-8a7a-9742ea90b61e",
@@ -84,7 +85,18 @@ export default function EventForm() {
 
     const addEventButton = async () => {
         setLoading(true);
-        await handleEventCreation();
+        const newEvent = {
+            name: eventName,
+            description: description,
+            date: dateTime.format("YYYY-MM-DD"),
+            building_id: building,
+            room_number: room,
+            organization_id: "123e4567-e89b-12d3-a456-426614174000",
+            thumbnail: thumbnail,
+            attendance: 150
+        };
+        console.log(newEvent);
+        // await handleEventCreation();
         setLoading(false);
     }
     
@@ -103,9 +115,10 @@ export default function EventForm() {
                     onChangeText={setThumbnail}
                     placeholder="Provide a thumbnail link"
                     style={styles.textInput}/>
-                <Text style={styles.attributeText}>Date:</Text>
+                <Text style={styles.attributeText}>Date & Time:</Text>
                 <View style={styles.dateLayout}>
-                    <Text style={styles.dateInput}>{date.format('ddd, MMM D, YYYY')}</Text>
+                    <Text style={styles.dateInput}>{dateTime.format('ddd, MMM DD, YYYY')}</Text>
+                    <Text style={styles.timeInput}>{dateTime.format('HH:mm')}</Text>
                     <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.calendarButton}>
                         <Ionicons name={"calendar-outline"} size={30} color={'white'}/>
                     </TouchableOpacity>
@@ -119,10 +132,11 @@ export default function EventForm() {
                     <View style={styles.datePickerContainer}>
                         <DateTimePicker
                         mode="single"
-                        date={date}
-                        onChange={(params) => setDate(params.date)}
+                        date={dateTime}
+                        onChange={(params) => setDateTime(dayjs(params.date))}
                         selectedItemColor="#AD3835"
                         headerButtonColor="#AD3835"
+                        timePicker
                         displayFullDays
                         todayContainerStyle={{
                             borderWidth: 1,
@@ -135,14 +149,6 @@ export default function EventForm() {
                         />
                     </View>
                 </Modal>
-
-
-                <Text style={styles.attributeText}>Time:</Text>
-                <TextInput
-                    value={time}
-                    onChangeText={setTime}
-                    placeholder="Enter start time"
-                    style={styles.textInput}/>
                 <Text style={styles.attributeText}>Building:</Text>
                 <DropDownPicker
                     listMode="MODAL"
@@ -170,7 +176,7 @@ export default function EventForm() {
                     placeholder="Enter a description"
                     style={styles.textInput}/>
                 <View style={styles.footerContainer}>
-                    <TouchableOpacity style={styles.addEventButton}>
+                    <TouchableOpacity style={styles.addEventButton} onPress={addEventButton}>
                         <Text style={styles.addEventButtonText}>ADD EVENT</Text>
                     </TouchableOpacity>
                 </View>
@@ -215,6 +221,16 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         marginRight: '1%'
     },
+    timeInput: {
+        fontSize: 15,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        justifyContent: 'center',
+        borderColor: "#D6D6D6",
+        borderWidth: 1,
+        borderRadius: 3,
+        marginRight: '1%'
+    },
     calendarButton: {
         borderRadius: 3,
         backgroundColor: '#AD3835',
@@ -228,7 +244,8 @@ const styles = StyleSheet.create({
     footerContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: '20%'
+        height: '20%',
+        marginBottom: 200
     },
     addEventButton: {
         backgroundColor: '#AD3835',
@@ -274,3 +291,5 @@ const buildings = [
     { label: "Mullins Center", value: "070c9890-49e0-46f6-a92b-6a7fc0c3f33e" },
     { label: "Worcester Commons", value: "ed2d1571-99f6-4d26-8ac0-63f647aacda4" },
 ];
+
+const localizedFormat = require("dayjs/plugin/localizedFormat");
