@@ -40,6 +40,14 @@ export default function MapComponent() {
   const [buildings, setBuildings] = useState<Building[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const mapRef = useRef<MapView>(null)
+
+  const zoomToRegion = () => {
+    if (mapRef.current) {
+      mapRef.current.animateToRegion(amherstRegion, 250);
+    }
+  };
+
   useEffect(() => {
     const fetchBuildings = async (): Promise<Building[]> => {
       const response = await fetch(
@@ -102,6 +110,7 @@ export default function MapComponent() {
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
         style={styles.map}
         region={amherstRegion}
@@ -130,7 +139,7 @@ export default function MapComponent() {
         <TouchableOpacity style={styles.circleButton} > 
           <Ionicons name={"calendar"} size={30} color={'#7E2622'}/>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.circleButton} > 
+        <TouchableOpacity style={styles.circleButton} onPress={zoomToRegion}> 
           <Ionicons name={"navigate"} size={30} color={'#7E2622'}/>
         </TouchableOpacity>
       </View>
