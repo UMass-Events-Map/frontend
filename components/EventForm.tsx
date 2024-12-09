@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
         shadowColor: "#000000",
         shadowOffset: { width: 0, height: 0.5 },
         shadowOpacity: 0.4,
-        shadowRadius: 2
+        shadowRadius: 1
     },
     button: {
         borderWidth: 1

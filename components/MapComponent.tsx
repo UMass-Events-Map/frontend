@@ -163,6 +163,7 @@ export default function MapComponent() {
       )}
       <Modal
           transparent={true}
+          animationType="slide"
           visible={modalVisible}
           onRequestClose={() => {
           setModalVisible(!modalVisible);}}
