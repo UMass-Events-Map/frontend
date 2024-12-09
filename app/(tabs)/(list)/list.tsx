@@ -1,11 +1,8 @@
-import { Text, View, StyleSheet, Button, TextInput, SafeAreaView } from "react-native";
+import { View, StyleSheet, TextInput, SafeAreaView } from "react-native";
 import React from 'react';
 import EventList from "@/components/EventList";
 import { useState, useEffect, useMemo } from "react";
-import { supabase } from '@/utils/supabase';
 import { Event } from "@/constants/Interfaces";
-import { Link } from 'expo-router';
-import OrgProfile from "@/components/OrgProfile";
 import DropDownPicker from "react-native-dropdown-picker";
 
 
@@ -45,7 +42,7 @@ export default function List() {
           "Content-Type": "application/json",
         },
       });
-
+  
       if (response.status === 200 || 304) {
         const data = await response.json();
         return data;
@@ -54,36 +51,33 @@ export default function List() {
         return null;
       }
     };
-
-    const fetchEventsId = async (): Promise<string[]> => {
+  
+    const fetchEventsId = async (): Promise<(Event & { buildingName?: string })[]> => {
       const response = await fetch(`https://umaps.phoenixfi.app/events/ids`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
-
+  
       if (response.status === 200 || 304) {
         const data = await response.json();
-        return data.ids;
+        const eventPromises = data.ids.map(async (id: string) => {
+          const event = await fetchEvent(id);
+          return event;
+        });
+        return (await Promise.all(eventPromises)).filter((e) => e !== null) as Event[];
       } else {
         console.error("Error fetching events");
         return [];
       }
     };
-
-    fetchEventsId()
-      .then(async (data): Promise<Event[]> => {
-        const promises: Promise<Event | null>[] = data.map((id) =>
-          fetchEvent(id)
-        );
-        const response: (Event | null)[] = await Promise.all(promises);
-        return response.filter((e) => e !== null);
-      })
-      .then((data) => {
-        setEvents(data);
-      });
+  
+    fetchEventsId().then((data) => {
+      setEvents(data);
+    });
   }, []);
+  
 
 
   // Calculate Time Range
@@ -118,15 +112,16 @@ export default function List() {
   // Filtered Events
   const filteredEvents = useMemo(() => {
     if (!events) return [];
-
+  
     const searchFiltered = events.filter((event) => {
       const formattedDate = formatter.format(new Date(event.date));
       const eventTime = event.time.substring(0, event.time.length - 3);
-
+    
       return (
-        event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        formattedDate.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        eventTime.toLowerCase().includes(searchQuery.toLowerCase())
+        event.name.toLowerCase().includes(searchQuery.toLowerCase()) || // Search by name
+        formattedDate.toLowerCase().includes(searchQuery.toLowerCase()) || // Search by date
+        eventTime.toLowerCase().includes(searchQuery.toLowerCase()) || // Search by time
+        event.building.name.toLowerCase().includes(searchQuery.toLowerCase()) // Search by building
       );
     });
 
@@ -141,8 +136,8 @@ export default function List() {
       : searchFiltered;
 
 
-    return filterByTimeRange(dayFiltered, rangeValue);
-  }, [events, searchQuery, selectedDay, rangeValue]);
+      return filterByTimeRange(dayFiltered, rangeValue);
+    }, [events, searchQuery, selectedDay, rangeValue]);
   
 
   return (
