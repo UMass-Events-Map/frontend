@@ -119,7 +119,7 @@ export default function EventForm() {
                 <View style={styles.dateLayout}>
                     <Text style={styles.dateInput}>{dateTime.format('ddd, MMM DD, YYYY')}</Text>
                     <Text style={styles.timeInput}>{dateTime.format('HH:mm')}</Text>
-                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.calendarButton}>
+                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.calendarButton} activeOpacity={0.8}>
                         <Ionicons name={"calendar-outline"} size={30} color={'white'}/>
                     </TouchableOpacity>
                 </View>
@@ -176,7 +176,7 @@ export default function EventForm() {
                     placeholder="Enter a description"
                     style={styles.textInput}/>
                 <View style={styles.footerContainer}>
-                    <TouchableOpacity style={styles.addEventButton} onPress={addEventButton}>
+                    <TouchableOpacity style={styles.addEventButton} onPress={addEventButton} activeOpacity={0.8}>
                         <Text style={styles.addEventButtonText}>ADD EVENT</Text>
                     </TouchableOpacity>
                 </View>
