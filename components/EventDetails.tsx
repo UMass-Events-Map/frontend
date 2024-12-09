@@ -10,6 +10,7 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Event } from "@/constants/Interfaces";
 import { FlatList } from "react-native-reanimated/lib/typescript/Animated";
+import dayjs from "dayjs";
 
 interface ImageBannerProps {
     thumbnail: string
@@ -73,7 +74,7 @@ function Details(event: Event) {
                 {/*<Ionicons name={"calendar-outline"} size={16} style={styles.leftItem}/>*/}
                 <Ionicons name={"calendar"} size={25} style={styles.icon}  color={'#AD3835'} />
                 <View style={styles.timeContainer}>
-                    <Text style={styles.addressText}>{formatter.format(new Date(event.date))}</Text>
+                    <Text style={styles.addressText}>{dayjs(event.date).format('MMMM D, YYYY')}</Text>
                     <Text style={styles.addressText}>Starts: {event.time}</Text>
                     <Text style={styles.addressText}>Length: </Text>
                 </View>
@@ -246,15 +247,3 @@ const styles = StyleSheet.create({
         marginTop: "3%"
     },
 });
-
-const options: Intl.DateTimeFormatOptions = {
-    timeZone: "America/New_York",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZoneName: "short",
-};
-  
-const formatter = new Intl.DateTimeFormat("en-US", options);

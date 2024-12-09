@@ -117,7 +117,7 @@ export default function EventForm() {
                     style={styles.textInput}/>
                 <Text style={styles.attributeText}>Date & Time:</Text>
                 <View style={styles.dateLayout}>
-                    <Text style={styles.dateInput}>{dateTime.format('ddd, MMM DD, YYYY')}</Text>
+                    <Text style={styles.dateInput}>{dateTime.format('ddd, MMMM DD, YYYY')}</Text>
                     <Text style={styles.timeInput}>{dateTime.format('HH:mm')}</Text>
                     <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.calendarButton} activeOpacity={0.8}>
                         <Ionicons name={"calendar-outline"} size={30} color={'white'}/>
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
         borderColor: "#D6D6D6",
         borderWidth: 1,
         borderRadius: 3,
-        marginRight: '1%'
+        marginRight: '2%'
     },
     timeInput: {
         fontSize: 15,
@@ -229,14 +229,17 @@ const styles = StyleSheet.create({
         borderColor: "#D6D6D6",
         borderWidth: 1,
         borderRadius: 3,
-        marginRight: '1%'
+        marginRight: '2%'
     },
     calendarButton: {
         borderRadius: 3,
         backgroundColor: '#AD3835',
         padding: 5,
         height: "auto",
-
+        shadowColor: "#000000",
+        shadowOffset: { width: 0, height: 0.5 },
+        shadowOpacity: 0.4,
+        shadowRadius: 2
     },
     button: {
         borderWidth: 1
