@@ -14,7 +14,11 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "app.phoenixfi.umaps"
+      "bundleIdentifier": "app.phoenixfi.umaps",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We need your location to display it on the map."
+      }
+      
     },
     "android": {
       "adaptiveIcon": {
