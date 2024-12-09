@@ -105,6 +105,9 @@ export default function MapComponent() {
         provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
         style={styles.map}
         region={amherstRegion}
+        showsMyLocationButton
+        showsCompass
+        showsUserLocation
       >
         {buildings?.map((building) => (
           <Marker
