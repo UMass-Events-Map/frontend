@@ -12,7 +12,6 @@ import DropDownPicker from "react-native-dropdown-picker";
 export default function List() {
   // State management for the events that are shown
   const [events, setEvents] = useState<any[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   // State management for the search bar
   const [searchQuery, setSearchQuery] = useState("");
@@ -93,11 +92,9 @@ export default function List() {
 
     const now = new Date();
     let endDate: any;
-    let startDate: any;
 
     switch (range) {
       case "1_week":
-        endDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
         endDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
         break;
       case "2_weeks":
@@ -109,9 +106,6 @@ export default function List() {
       case "1_month":
         endDate = new Date(now.setMonth(now.getMonth() + 1));
         break;
-      default:
-        startDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-        return events.filter;
     }
 
     return events.filter((event) => {
@@ -138,12 +132,14 @@ export default function List() {
 
     const dayFiltered = selectedDay
       ? searchFiltered.filter((event) => {
+          const eventDate = new Date(event.date);
           const eventDay = new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
-            new Date(event.date)
+            new Date(eventDate.getTime() + eventDate.getTimezoneOffset() * 60000)
           );
           return eventDay.toLowerCase() === selectedDay.toLowerCase();
         })
       : searchFiltered;
+
 
     return filterByTimeRange(dayFiltered, rangeValue);
   }, [events, searchQuery, selectedDay, rangeValue]);
@@ -232,14 +228,14 @@ const styles = StyleSheet.create({
   dropdown: {
     borderColor: "#D6D6D6",
     borderRadius: 10,
-    zIndex: 10
+    zIndex: 1000
   },
   dropdownRow: {
     flexDirection: "row", // Aligns the dropdowns side by side
     justifyContent: "space-between", // Ensures they are spaced evenly
     marginHorizontal: 6,
     marginBottom: 10,
-    zIndex: 10
+    zIndex: 1000
   },
 });
 
