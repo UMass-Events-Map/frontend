@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Alert, StyleSheet, View } from 'react-native'
 import { supabase } from '@/utils/supabase';
-import { Button, TextInput } from 'react-native'
+import { Button, TextInput, Text } from 'react-native'
 import { useRouter } from 'expo-router';
 
 export default function Auth() {
@@ -45,7 +45,20 @@ export default function Auth() {
   return (
     <View style={styles.container}>
       <View style={[styles.verticallySpaced, styles.mt20]}>
+        <Text style={{
+          paddingBottom: '30%',
+          fontSize: 30,
+          color: "#7E2622",
+          fontWeight: 'bold'}}>Login as Organization</Text>
         <TextInput
+          style={{ 
+            width: '95%', 
+            borderWidth: 1, 
+            borderColor: "#7E2622",
+            borderRadius: 3, 
+            paddingHorizontal: 10,
+            paddingVertical: 15
+          }}
           label="Email"
           leftIcon={{ type: 'font-awesome', name: 'envelope' }}
           onChangeText={(text) => setEmail(text)}
@@ -56,6 +69,14 @@ export default function Auth() {
       </View>
       <View style={styles.verticallySpaced}>
         <TextInput
+          style={{ 
+            width: '95%', 
+            borderWidth: 1, 
+            borderColor: "#7E2622",
+            borderRadius: 3, 
+            paddingHorizontal: 10,
+            paddingVertical: 15
+          }}
           label="Password"
           leftIcon={{ type: 'font-awesome', name: 'lock' }}
           onChangeText={(text) => setPassword(text)}
@@ -66,10 +87,10 @@ export default function Auth() {
         />
       </View>
       <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button title="Sign in" disabled={loading} onPress={() => signInWithEmail()} />
+        <Button title="Sign in" disabled={loading} onPress={() => signInWithEmail()} color={"#7E2622"}/>
       </View>
       <View style={styles.verticallySpaced}>
-        <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
+        <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} color={"#7E2622"} />
       </View>
     </View>
   )
@@ -79,11 +100,15 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 40,
     padding: 12,
+    justifyContent: 'center',
+    flex: 1
   },
   verticallySpaced: {
     paddingTop: 4,
     paddingBottom: 4,
     alignSelf: 'stretch',
+    alignItems: 'center',
+
   },
   mt20: {
     marginTop: 20,

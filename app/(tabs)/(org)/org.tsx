@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ActivityIndicator, Alert, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, Button } from 'react-native';
+import { View, Text, Image, ActivityIndicator, Alert, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, Button, SafeAreaView } from 'react-native';
 import { supabase } from '@/utils/supabase';
 import { useRouter } from 'expo-router';
 import { Session } from '@supabase/supabase-js';
@@ -344,6 +344,7 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
 
 
   return (
+    <SafeAreaView style={{flex: 1}}>
     <ScrollView style={styles.scrollContainer}>
       {/* Organization Header Section */}
       <View style={styles.card}>
@@ -529,6 +530,7 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
 
 
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
