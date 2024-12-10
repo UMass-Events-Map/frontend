@@ -15,6 +15,12 @@ export default function Auth() {
       email: email,
       password: password,
     })
+  const handleLogin = () => {
+    // Handle login logic here
+    // console.log("Email:", email);
+    // console.log("Password:", password);
+    router.replace('/org')
+  };
 
     if (error) Alert.alert(error.message)
     else router.push('/org')

@@ -14,6 +14,12 @@ import { Session } from '@supabase/supabase-js'
 import { supabase } from '@/utils/supabase';
 import { useState, useEffect } from 'react'
 
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
+
+// const Stack = createStackNavigator();
+
+
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
@@ -48,7 +54,10 @@ export default function RootLayout() {
         <SheetProvider>
             
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-              <Stack>
+              <Stack
+                screenOptions={{
+                  contentStyle: { backgroundColor: "white"}
+                }}>
 
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />  
                 <Stack.Screen name="+not-found" />

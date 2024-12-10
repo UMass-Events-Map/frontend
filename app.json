@@ -14,14 +14,16 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "app.phoenixfi.umaps"
+      "bundleIdentifier": "app.phoenixfi.umaps",
+      "newArchEnabled": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/umass_event_maps_logo_adaptive.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "app.phoenixfi.umaps"
+      "package": "app.phoenixfi.umaps",
+      "newArchEnabled": true
     },
     "web": {
       "bundler": "metro",
@@ -30,7 +32,8 @@
     },
     "plugins": [
       "expo-router",
-      "./plugins/android-manifest.js"
+      "./plugins/android-manifest.js",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

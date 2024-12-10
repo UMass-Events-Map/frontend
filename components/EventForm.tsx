@@ -173,18 +173,8 @@ export default function EventForm() {
                     placeholder="Enter a description"
                     style={styles.textInput}/>
                 <View style={{ height: 300}}/>
-                {/* <View style={styles.footerContainer}>
-                    <TouchableOpacity style={styles.addEventButton} onPress={addEventButton} activeOpacity={0.8}>
-                        <Text style={styles.addEventButtonText}>ADD EVENT</Text>
-                    </TouchableOpacity>
-                </View> */}
 
             </ScrollView>
-            // {loading && (
-            //     <View style={styles.loading}>
-            //         <ActivityIndicator color="#7E2622" size="large" animating={loading} />
-            //     </View>
-            // )}
     );
 }
 
@@ -290,5 +280,3 @@ const buildings = [
     { label: "Mullins Center", value: "070c9890-49e0-46f6-a92b-6a7fc0c3f33e" },
     { label: "Worcester Commons", value: "ed2d1571-99f6-4d26-8ac0-63f647aacda4" },
 ];
-
-const localizedFormat = require("dayjs/plugin/localizedFormat");

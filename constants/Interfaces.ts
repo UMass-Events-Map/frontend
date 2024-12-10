@@ -36,3 +36,15 @@ export type Event = {
 export type EventListProps = {
     events: Event[] | null;
 };
+
+export type CreateEvent = {
+    name: string,
+    description: string,
+    date: string,
+    time: string,
+    building_id: string,
+    room_number: string,
+    organization_id: string,
+    thumbnail: string,
+    attendance: number
+}

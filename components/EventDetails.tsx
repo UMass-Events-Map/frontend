@@ -10,6 +10,7 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Event } from "@/constants/Interfaces";
 import { FlatList } from "react-native-reanimated/lib/typescript/Animated";
+import dayjs from "dayjs";
 
 interface ImageBannerProps {
     thumbnail: string
@@ -52,11 +53,6 @@ function Details(event: Event) {
                 <Text style={styles.eventName}>{event.name}</Text>
             </View>
 
-            <View style={styles.sideContainer}>
-                <Text style={styles.detailText}>Attendance: {event.attendance}</Text>
-                <Text style={styles.detailText}>Free</Text>
-            </View>
-
             {/* <View style={styles.sideContainer}>
                 <Text style={styles.eventDetailsTitle}>{event?.building?.name}</Text>
                 <Text style={styles.directionsTitle}>Directions</Text>
@@ -73,9 +69,8 @@ function Details(event: Event) {
                 {/*<Ionicons name={"calendar-outline"} size={16} style={styles.leftItem}/>*/}
                 <Ionicons name={"calendar"} size={25} style={styles.icon}  color={'#AD3835'} />
                 <View style={styles.timeContainer}>
-                    <Text style={styles.addressText}>{formatter.format(new Date(event.date))}</Text>
+                    <Text style={styles.addressText}>{dayjs(event.date).format('MMMM D, YYYY')}</Text>
                     <Text style={styles.addressText}>Starts: {event.time}</Text>
-                    <Text style={styles.addressText}>Length: </Text>
                 </View>
             </View>
 
@@ -106,8 +101,6 @@ export default function EventDetails(event: Event) {
                 <Details {...event}/>
                 {/* <ContactInfo {...event}/> */}
         </ScrollView>
-
-        <Buttons/>
     </View>
   );
 }
@@ -246,11 +239,3 @@ const styles = StyleSheet.create({
         marginTop: "3%"
     },
 });
-
-const options: Intl.DateTimeFormatOptions = {
-  weekday: "short",
-  year: "numeric",
-  month: "short",
-  day: "numeric",
-};
-const formatter = new Intl.DateTimeFormat("en-US", options);
