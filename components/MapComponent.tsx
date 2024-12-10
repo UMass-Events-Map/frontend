@@ -41,6 +41,7 @@ const amherstRegion = {
 
 export default function MapComponent() {
   const [buildings, setBuildings] = useState<Building[]>([]);
+  const [allBuildings, setAllBuildings] = useState<Building[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [date, setDate] = useState(dayjs());
 
@@ -102,23 +103,22 @@ export default function MapComponent() {
 
   const filterBuildingByDate = async () => {
     setLoading(true);
-    await fetchBuildings().then(async (data) => {
-      const promises: Promise<Event[]>[] = new Array(data.length);
-      data.forEach(async (building, index) => {
-        const promise = fetchEventByBuildingId(building.id);
-        promises[index] = promise;
-        building.events = (await promise).filter((e) => e.date === date.format('YYYY-MM-DD'));
-      });
-      await Promise.all(promises);
-      setBuildings(data.filter(b => b.events !== null && b.events.length > 0));
-    })
+    const promises: Promise<Event[]>[] = new Array(allBuildings.length);
+    allBuildings.forEach(async (building, index) => {
+      const promise = fetchEventByBuildingId(building.id);
+      promises[index] = promise;
+      building.events = (await promise).filter((e) => e.date === date.format('YYYY-MM-DD'));
+    });
+    await Promise.all(promises);
+    setBuildings(allBuildings.filter(b => b.events !== null && b.events.length > 0));
     setLoading(false);
-
     reloadMap()
   }
 
   useEffect(() => {
-    filterBuildingByDate();
+    fetchBuildings()
+    .then((data) => setAllBuildings(data))
+    .then(filterBuildingByDate);
   }, []);
 
   const handleMarkerPress = (building: Building) => {

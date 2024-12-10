@@ -23,80 +23,6 @@ export default function EventForm() {
 
     // Manage dropdown
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-    // Store all buildings
-    // const [buildings, setBuildings] = useState<{label: string; value: string}[]>([]);
-
-    // const handleEventCreation = async () => {
-    //     const response = await fetch(`https://umaps.phoenixfi.app/events/organization/${"6a0583c1-dc38-44e0-8a7a-9742ea90b61e"}`, {
-    //         method: "POST",
-    //         headers: {
-    //         "Content-Type": "application/json",
-    //         body:JSON.stringify({
-    //             name: eventName,
-    //             description: description,
-    //             date: dateTime.format('YYYY-MM-D'),
-    //             time: dateTime.format('HH:mm'),
-    //             building_id: building,
-    //             room_number: room,
-    //             organization_id: "6a0583c1-dc38-44e0-8a7a-9742ea90b61e",
-    //             thumbnail: thumbnail,
-    //             attendance: 150
-    //         })
-    //         },
-    //     });
-
-
-    //     if (response.status === 200) {
-    //         console.log("SUCCESS");
-    //     }
-    //     else {
-    //         const data = await response.json();
-    //         console.log(data.error);
-    //     }
-    // }
-    
-    // const fetchBuildings = async () => {
-    //         const response = await fetch(
-    //           `https://umaps.phoenixfi.app/buildings?limit=${30}`,
-    //           {
-    //             method: "GET",
-    //             headers: {
-    //               "Content-Type": "application/json",
-    //             },
-    //           }
-    //         );
-      
-    //         if (response.status === 200 || 304) {
-    //           const data = await response.json();
-    //           const buildingList = data.data.map((e: Building) => {label: e.name; value: e.id});
-    //           setBuildings(buildingList);  
-    //         } else {
-    //           console.error("Error fetching buildings");
-    //         }
-    //         setLoading(false);
-    //       };
-
-    // useEffect(() => {
-    //     fetchBuildings();
-    // });
-
-    // const addEventButton = async () => {
-    //     setLoading(true);
-    //     const newEvent = {
-    //         name: eventName,
-    //         description: description,
-    //         date: dateTime.format("YYYY-MM-DD"),
-    //         building_id: building,
-    //         room_number: room,
-    //         organization_id: "123e4567-e89b-12d3-a456-426614174000",
-    //         thumbnail: thumbnail,
-    //         attendance: 150
-    //     };
-    //     console.log(newEvent);
-    //     // await handleEventCreation();
-    //     setLoading(false);
-    // }
     
     return (
             <ScrollView style={styles.container}>
@@ -173,18 +99,8 @@ export default function EventForm() {
                     placeholder="Enter a description"
                     style={styles.textInput}/>
                 <View style={{ height: 300}}/>
-                {/* <View style={styles.footerContainer}>
-                    <TouchableOpacity style={styles.addEventButton} onPress={addEventButton} activeOpacity={0.8}>
-                        <Text style={styles.addEventButtonText}>ADD EVENT</Text>
-                    </TouchableOpacity>
-                </View> */}
 
             </ScrollView>
-            // {loading && (
-            //     <View style={styles.loading}>
-            //         <ActivityIndicator color="#7E2622" size="large" animating={loading} />
-            //     </View>
-            // )}
     );
 }
 
@@ -290,5 +206,3 @@ const buildings = [
     { label: "Mullins Center", value: "070c9890-49e0-46f6-a92b-6a7fc0c3f33e" },
     { label: "Worcester Commons", value: "ed2d1571-99f6-4d26-8ac0-63f647aacda4" },
 ];
-
-const localizedFormat = require("dayjs/plugin/localizedFormat");
