@@ -74,6 +74,7 @@ export default function MapComponent() {
 
     if (response.status === 200 || 304) {
       const data = await response.json();
+      setAllBuildings(data.data);
       return data.data;
     } else {
       console.error("Error fetching buildings");
@@ -117,8 +118,20 @@ export default function MapComponent() {
 
   useEffect(() => {
     fetchBuildings()
-    .then((data) => setAllBuildings(data))
-    .then(filterBuildingByDate);
+    .then(async (data) => {
+      setAllBuildings(data);
+      setLoading(true);
+      const promises: Promise<Event[]>[] = new Array(data.length);
+      data.forEach(async (building, index) => {
+        const promise = fetchEventByBuildingId(building.id);
+        promises[index] = promise;
+        building.events = (await promise).filter((e) => e.date === date.format('YYYY-MM-DD'));
+      });
+      await Promise.all(promises);
+      setBuildings(data.filter(b => b.events !== null && b.events.length > 0));
+      setLoading(false);
+      reloadMap()
+    })
   }, []);
 
   const handleMarkerPress = (building: Building) => {
