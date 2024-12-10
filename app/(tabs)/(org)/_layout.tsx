@@ -5,8 +5,6 @@ export default function OrgLayout() {
         <Stack>
             <Stack.Screen name="login" options={{ headerShown: false }}/>
             <Stack.Screen name="org" options={{ headerShown: false }}/>
-            <Stack.Screen name="addEvent" options={{ headerShown: false }}/>
-            <Stack.Screen name="editEvent" options={{ headerShown: false }}/>
         </Stack>
     );
 }
