@@ -49,6 +49,11 @@ export default function MapComponent() {
 
   const mapRef = useRef<MapView>(null)
 
+  const [mapKey, setMapKey] = useState(0);
+  const reloadMap = () => {
+    setMapKey(prevKey => prevKey + 1);
+  };
+
   const zoomToRegion = () => {
     if (mapRef.current) {
       mapRef.current.animateToRegion(amherstRegion, 250);
@@ -109,6 +114,7 @@ export default function MapComponent() {
     })
     setLoading(false);
 
+    reloadMap()
   }
 
   useEffect(() => {
@@ -124,6 +130,7 @@ export default function MapComponent() {
   return (
     <View style={styles.container}>
       <MapView
+        key={mapKey}
         ref={mapRef}
         provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
         style={styles.map}
