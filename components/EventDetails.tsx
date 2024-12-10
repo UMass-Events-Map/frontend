@@ -53,11 +53,6 @@ function Details(event: Event) {
                 <Text style={styles.eventName}>{event.name}</Text>
             </View>
 
-            <View style={styles.sideContainer}>
-                <Text style={styles.detailText}>Attendance: {event.attendance}</Text>
-                <Text style={styles.detailText}>Free</Text>
-            </View>
-
             {/* <View style={styles.sideContainer}>
                 <Text style={styles.eventDetailsTitle}>{event?.building?.name}</Text>
                 <Text style={styles.directionsTitle}>Directions</Text>
@@ -76,7 +71,6 @@ function Details(event: Event) {
                 <View style={styles.timeContainer}>
                     <Text style={styles.addressText}>{dayjs(event.date).format('MMMM D, YYYY')}</Text>
                     <Text style={styles.addressText}>Starts: {event.time}</Text>
-                    <Text style={styles.addressText}>Length: </Text>
                 </View>
             </View>
 
@@ -107,8 +101,6 @@ export default function EventDetails(event: Event) {
                 <Details {...event}/>
                 {/* <ContactInfo {...event}/> */}
         </ScrollView>
-
-        <Buttons/>
     </View>
   );
 }
