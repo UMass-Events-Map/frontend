@@ -2,7 +2,7 @@ import EventForm from "@/components/EventForm";
 import { useState } from "react";
 import { SafeAreaView, TouchableHighlight, View, StyleSheet, Text } from "react-native";
 
-export default function addEventForm() {
+export default function editEventForm() {
     return (
         <SafeAreaView style={{flex: 1}}>
                 <EventForm/>
