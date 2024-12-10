@@ -15,9 +15,9 @@ import dayjs from 'dayjs';
 export default function EventList({ events }: EventListProps) {
   if (!events) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator testID="ActivityIndicator" color="#7E2622" size="large" />
-      </View>
+        <View style={styles.container}>
+          <ActivityIndicator testID="ActivityIndicator" color="#7E2622" size="large" />
+        </View>
     );
   } else if (events.length == 0) {
     return (
@@ -101,11 +101,13 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    flex: 1,
+    height: '80%'
   },
   noEventText: {
     fontSize: 20,
     color: "#D6D6D6",
+    textAlign: 'center',
+    
   },
   eventList: {
     flex: 0,

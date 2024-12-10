@@ -1,4 +1,4 @@
-import { View, StyleSheet, TextInput, SafeAreaView } from "react-native";
+import { View, StyleSheet, TextInput, SafeAreaView, ActivityIndicator, Text } from "react-native";
 import React from 'react';
 import EventList from "@/components/EventList";
 import { useState, useEffect, useMemo } from "react";
@@ -12,6 +12,9 @@ export default function List() {
 
   // State management for the search bar
   const [searchQuery, setSearchQuery] = useState("");
+
+  // State management for the loading screen
+  const [loading, setLoading] = useState<boolean>(false);
 
   // State management for filtering the day via a dropdown menu
   const [selectedDay, setSelectedDay] = useState<string>("");
@@ -111,7 +114,8 @@ export default function List() {
 
   // Filtered Events
   const filteredEvents = useMemo(() => {
-    if (!events) return [];
+    setLoading(true);
+    if (!events) return null;
   
     const searchFiltered = events.filter((event) => {
       const formattedDate = formatter.format(new Date(event.date));
@@ -135,7 +139,7 @@ export default function List() {
         })
       : searchFiltered;
 
-
+      setLoading(false);
       return filterByTimeRange(dayFiltered, rangeValue);
     }, [events, searchQuery, selectedDay, rangeValue]);
   
@@ -184,8 +188,7 @@ export default function List() {
           zIndex={1000} // Prevent overlap issues
         />
       </View>
-     
-      <EventList events={filteredEvents as Event[]} />
+        <EventList events={filteredEvents as Event[]} />
     </SafeAreaView>
   );
 }
@@ -207,7 +210,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 10,
     padding: 10,
-    marginTop: 30,
     borderColor: "#D6D6D6",
     borderWidth: 1,
     borderRadius: 20,
@@ -231,6 +233,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
     marginBottom: 10,
     zIndex: 1000
+  },
+  loading: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 100
   },
 });
 
