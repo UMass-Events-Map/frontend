@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import { View, Text, Image, ActivityIndicator, Alert, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { supabase } from '@/utils/supabase';
 import { useRouter } from 'expo-router';
-
+import { Session } from '@supabase/supabase-js'
+import { Building, Event } from '@/constants/Interfaces';
+import EventList from '@/components/EventList';
 interface Organization {
   id: string;
   name: string;
@@ -11,15 +13,6 @@ interface Organization {
   email?: string;
   address?: string;
   verified?: boolean;
-}
-
-interface Event {
-  id: string;
-  name: string;
-  date: string;
-  time: string;
-  description?: string;
-  // Add other event fields as necessary
 }
 
 interface MainOrgPageProps {
@@ -32,62 +25,117 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
   const [loadingOrg, setLoadingOrg] = useState(true);
   const [loadingEvents, setLoadingEvents] = useState(true);
   const router = useRouter();
+  const [session, setSession] = useState<Session | null>(null)
 
+  function handleNav() {
+    router.push('/addEvent')
+  }
   useEffect(() => {
     const fetchOrganizations = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('organizations')
-          .select('*')
-          .eq('user_id', userId);
-
-        if (error) throw error;
-        if (data && data.length > 0) {
-          setOrganization(data[0]);
-        } else {
-          // No organizations found for the user
-          setOrganization(null);
+      const { data, error } = await supabase.auth.getSession();
+      if (!data.session || error) {
+        router.push('/login');
+        return null;
+      } else {
+        const uid = data.session.user.id;
+        try {
+          const response = await fetch(`https://umaps.phoenixfi.app/organizations/profile/${uid}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+  
+          if (response.ok) {
+            const data = await response.json();
+            return data;
+          } else {
+            console.error("Error fetching organizations");
+            return null;
+          }
+  
+        } catch (err: any) {
+          console.error('Failed to fetch organizations:', err.message);
+          Alert.alert('Error', 'Failed to fetch organizations');
+          return null;
+        } finally {
+          setLoadingOrg(false);
         }
-      } catch (err: any) {
-        console.error('Failed to fetch organizations:', err.message);
-        Alert.alert('Error', 'Failed to fetch organizations');
-      } finally {
-        setLoadingOrg(false);
       }
     };
-
-    fetchOrganizations();
+  
+    const loadOrgs = async () => {
+      const orgData = await fetchOrganizations();
+      if (orgData && orgData.length > 0) {
+        setOrganization(orgData[0]);
+      } else {
+        setOrganization(null);
+      }
+    };
+  
+    loadOrgs();
   }, [userId]);
+  
+
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      if (!organization) {
-        setLoadingEvents(false);
-        return;
+    const fetchEvents = async (organizationId: string) => {
+        const { data, error } = await supabase.auth.getSession();
+        if (!data.session || error) {
+          router.push('/login');
+          return null;
+        } else {
+          try {
+            setLoadingEvents(true);
+            const response = await fetch(`https://umaps.phoenixfi.app/events/organization/${organizationId}/events`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+            
+            if (response.ok) {
+              const data = await response.json();
+              // Assuming `data` is an array of events directly
+              return data;
+            } else {
+              console.error("Error fetching events");
+              return null;
+            }
+          } catch (err: any) {
+            console.error('Failed to fetch events:', err.message);
+            Alert.alert('Error', 'Failed to fetch events');
+            return null;
+          } finally {
+            setLoadingEvents(false);
+          }
+        }
+      };
+    
+      const loadEvents = async () => {
+        if (!organization) {
+          // No organization means no events to fetch
+          setEvents([]);
+          setLoadingEvents(false);
+          return;
+        }
+    
+        const eventsData = await fetchEvents(organization.id);
+        if (eventsData && eventsData.length > 0) {
+          // eventsData is an array of events
+          setEvents(eventsData);
+        } else {
+          // If no events returned, set an empty array
+          setEvents([]);
+        }
+      };
+    
+      if (organization) {
+        loadEvents();
       }
-
-      try {
-        const { data, error } = await supabase
-          .from('events')
-          .select('*')
-          .eq('organization_id', organization.id)
-          .order('date', { ascending: true });
-
-        if (error) throw error;
-        setEvents(data || []);
-      } catch (err: any) {
-        console.error('Failed to fetch events:', err.message);
-        Alert.alert('Error', 'Failed to fetch events');
-      } finally {
-        setLoadingEvents(false);
-      }
-    };
-
-    if (organization) {
-      fetchEvents();
-    }
-  }, [organization]);
-
+    }, [organization]);
+    
+  
   if (loadingOrg) {
     return (
       <View style={styles.loaderContainer}>
@@ -95,13 +143,12 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
       </View>
     );
   }
-
   // If no organization found
   if (!organization) {
     return (
       <View style={styles.emptyContainer}>
         <Text style={styles.emptyTitle}>No organizations</Text>
-        <Text style={styles.emptyDescription}>Get started by creating a new organization.</Text>
+        <Text style={styles.emptyDescription}>Get started by reuquesting to add your organization.</Text>
       </View>
     );
   }
@@ -145,7 +192,7 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
       <View style={{ marginBottom: 20, alignItems: 'center' }}>
         <TouchableOpacity
           style={styles.addEventButton}
-          onPress={() => router.push('/addEvent')}
+          onPress={() => handleNav()}
         >
           <Text style={styles.addEventButtonText}>Add Event</Text>
         </TouchableOpacity>

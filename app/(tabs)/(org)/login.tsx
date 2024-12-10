@@ -1,150 +1,85 @@
-import React, { useState } from "react";
-import {
-  View, Text, TextInput, TouchableHighlight, SafeAreaView, StyleSheet, Alert
-} from "react-native";
-import { router } from "expo-router";
-import { createClient } from '@supabase/supabase-js';
+import React, { useState } from 'react'
+import { Alert, StyleSheet, View } from 'react-native'
+import { supabase } from '@/utils/supabase';
+import { Button, TextInput } from 'react-native'
+import { useRouter } from 'expo-router';
 
-// Initialize Supabase client for React Native.
-// It's generally recommended to keep keys secret in production and load from env.
-const supabaseClient = createClient(
-  'https://gdacboczcpnnnqfxkjsj.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkYWNib2N6Y3Bubm5xZnhranNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2MjQwMzIsImV4cCI6MjA0NTIwMDAzMn0.z9pvzajPfB_qPYmFMD-U-_hcdfarXF3Kq7WHG3OPz5c'
-);
+export default function Auth() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+  async function signInWithEmail() {
+    setLoading(true)
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    })
 
-const LoginScreen: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+    if (error) Alert.alert(error.message)
+    else router.push('/org')
+    setLoading(false)
+  }
 
-  const handleLogin = async () => {
-    setLoading(true);
-    try {
-      // Sign in with Supabase
-      const { data: { user, session }, error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-      });
-      if (error) throw error;
-      if (!user || !session || !session.access_token) {
-        throw new Error("No user session found.");
-      }
+  async function signUpWithEmail() {
+    setLoading(true)
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    })
 
-      // Use the session token to check if the user has a profile
-      const token = session.access_token;
-      const profileCheckResponse = await fetch('https://gdacboczcpnnnqfxkjsj.supabase.co/orgainzations${user.id}', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (profileCheckResponse.ok) {
-        // Profile exists, navigate to the main screen
-        router.push('/OrganizationCreationModal');
-      } else if (profileCheckResponse.status === 404) {
-        // Profile does not exist, navigate to profile creation screen
-        router.push('/profileCreation');
-      } else {
-        const errorData = await profileCheckResponse.json();
-        throw new Error(errorData?.error || "Unknown error checking profile.");
-      }
-
-    } catch (error: any) {
-      Alert.alert("Error", error.message || "An error occurred during sign in.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAccountCreation = () => {
-    router.push('/OrganizationCreationModal');
-  };
+    if (error) Alert.alert(error.message)
+    if (!session) Alert.alert('Please check your inbox for email verification!')
+    setLoading(false)
+  }
 
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
-      <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Login as Organization</Text>
-        </View>
+    <View style={styles.container}>
+      <View style={[styles.verticallySpaced, styles.mt20]}>
         <TextInput
-          style={styles.input}
-          placeholder="Email"
+          label="Email"
+          leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+          onChangeText={(text) => setEmail(text)}
           value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
+          placeholder="email@address.com"
+          autoCapitalize={'none'}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <TouchableHighlight style={styles.signInButton} onPress={handleLogin} disabled={loading}>
-          <Text style={styles.buttonText}>{loading ? 'Signing in...' : 'Sign In'}</Text>
-        </TouchableHighlight>
-        <Text
-          style={[styles.text, { textDecorationLine: "underline" }]}
-          onPress={handleAccountCreation}
-        >
-          Organization doesn’t have an account?
-        </Text>
       </View>
-    </SafeAreaView>
-  );
-};
+      <View style={styles.verticallySpaced}>
+        <TextInput
+          label="Password"
+          leftIcon={{ type: 'font-awesome', name: 'lock' }}
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+          secureTextEntry={true}
+          placeholder="Password"
+          autoCapitalize={'none'}
+        />
+      </View>
+      <View style={[styles.verticallySpaced, styles.mt20]}>
+        <Button title="Sign in" disabled={loading} onPress={() => signInWithEmail()} />
+      </View>
+      <View style={styles.verticallySpaced}>
+        <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
+      </View>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
-  text: {
-    color: "#000",
-    fontSize: 15,
-    marginTop: 9,
-    textAlign: "center",
-  },
-  safeAreaContainer: {
-    flex: 1,
-    backgroundColor: '#fff'
-  },
   container: {
-    flex: 1,
-    paddingHorizontal: 10,
-    alignItems: 'center',
+    marginTop: 40,
+    padding: 12,
   },
-  titleContainer: {
-    height: '40%',
-    justifyContent: 'center'
+  verticallySpaced: {
+    paddingTop: 4,
+    paddingBottom: 4,
+    alignSelf: 'stretch',
   },
-  title: {
-    color: "#000",
-    fontSize: 20,
-    marginBottom: 8,
-    textAlign: "center",
+  mt20: {
+    marginTop: 20,
   },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-    borderRadius: 7,
-    width: '100%'
-  },
-  signInButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: '#7E2622',
-    width: '60%'
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 15
-  }
-});
-
-export default LoginScreen;
+})
