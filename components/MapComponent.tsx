@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     left: 0,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F5FCFF88",
+    backgroundColor: "  ",
     flex: 1
   },
   map: {

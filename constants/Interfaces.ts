@@ -48,3 +48,19 @@ export type CreateEvent = {
     thumbnail: string,
     attendance: number
 }
+
+export type UserInfo = {
+    first_name: string,
+    last_name: string,
+    email: string
+}
+
+export type Organization = {
+    id: string,
+    name: string,
+    email: string,
+    description: string,
+    image_url: string,
+    address: string,
+    verified: boolean
+}

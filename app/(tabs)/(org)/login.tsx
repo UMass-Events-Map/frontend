@@ -85,7 +85,6 @@ export default function Login() {
       .then(({ data: { session } }) => {
         setSession(session);
       })
-      .then(() => console.log(session?.access_token));
     return true;
   }
 
@@ -148,7 +147,9 @@ export default function Login() {
         >
           Organization doesn’t have an account?
         </Text>
-        <ActivityIndicator animating={loading} />
+        {loading && <View style={{ position: 'absolute', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#F5FCFF88' }}>
+          <ActivityIndicator  size={'large'} color={'#7E2622'} animating={loading} />
+        </View>}
         <Modal
           visible={modalVisible}
           onRequestClose={() => {
