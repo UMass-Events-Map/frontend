@@ -5,6 +5,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import { Ionicons } from "@expo/vector-icons";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 export default function EventForm() {
     
@@ -20,43 +21,40 @@ export default function EventForm() {
     // Manage modal visibility
     const [modalVisible, setModalVisible] = useState(false);
 
-    // Manage loading screen
-    const [loading, setLoading] = useState<boolean>(false);
-
     // Manage dropdown
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     // Store all buildings
     // const [buildings, setBuildings] = useState<{label: string; value: string}[]>([]);
 
-    const handleEventCreation = async () => {
-        const response = await fetch(`https://umaps.phoenixfi.app/events/organization/${"6a0583c1-dc38-44e0-8a7a-9742ea90b61e"}`, {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            body:JSON.stringify({
-                name: eventName,
-                description: description,
-                date: dateTime.format('YYYY-MM-D'),
-                time: dateTime.format('HH:mm'),
-                building_id: building,
-                room_number: room,
-                organization_id: "6a0583c1-dc38-44e0-8a7a-9742ea90b61e",
-                thumbnail: thumbnail,
-                attendance: 150
-            })
-            },
-        });
+    // const handleEventCreation = async () => {
+    //     const response = await fetch(`https://umaps.phoenixfi.app/events/organization/${"6a0583c1-dc38-44e0-8a7a-9742ea90b61e"}`, {
+    //         method: "POST",
+    //         headers: {
+    //         "Content-Type": "application/json",
+    //         body:JSON.stringify({
+    //             name: eventName,
+    //             description: description,
+    //             date: dateTime.format('YYYY-MM-D'),
+    //             time: dateTime.format('HH:mm'),
+    //             building_id: building,
+    //             room_number: room,
+    //             organization_id: "6a0583c1-dc38-44e0-8a7a-9742ea90b61e",
+    //             thumbnail: thumbnail,
+    //             attendance: 150
+    //         })
+    //         },
+    //     });
 
 
-        if (response.status === 200) {
-            console.log("SUCCESS");
-        }
-        else {
-            const data = await response.json();
-            console.log(data.error);
-        }
-    }
+    //     if (response.status === 200) {
+    //         console.log("SUCCESS");
+    //     }
+    //     else {
+    //         const data = await response.json();
+    //         console.log(data.error);
+    //     }
+    // }
     
     // const fetchBuildings = async () => {
     //         const response = await fetch(
@@ -83,25 +81,24 @@ export default function EventForm() {
     //     fetchBuildings();
     // });
 
-    const addEventButton = async () => {
-        setLoading(true);
-        const newEvent = {
-            name: eventName,
-            description: description,
-            date: dateTime.format("YYYY-MM-DD"),
-            building_id: building,
-            room_number: room,
-            organization_id: "123e4567-e89b-12d3-a456-426614174000",
-            thumbnail: thumbnail,
-            attendance: 150
-        };
-        console.log(newEvent);
-        // await handleEventCreation();
-        setLoading(false);
-    }
+    // const addEventButton = async () => {
+    //     setLoading(true);
+    //     const newEvent = {
+    //         name: eventName,
+    //         description: description,
+    //         date: dateTime.format("YYYY-MM-DD"),
+    //         building_id: building,
+    //         room_number: room,
+    //         organization_id: "123e4567-e89b-12d3-a456-426614174000",
+    //         thumbnail: thumbnail,
+    //         attendance: 150
+    //     };
+    //     console.log(newEvent);
+    //     // await handleEventCreation();
+    //     setLoading(false);
+    // }
     
     return (
-        <SafeAreaView>
             <ScrollView style={styles.container}>
                 <Text style={styles.attributeText}>Name:</Text>
                 <TextInput
@@ -119,9 +116,9 @@ export default function EventForm() {
                 <View style={styles.dateLayout}>
                     <Text style={styles.dateInput}>{dateTime.format('ddd, MMMM DD, YYYY')}</Text>
                     <Text style={styles.timeInput}>{dateTime.format('HH:mm')}</Text>
-                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.calendarButton} activeOpacity={0.8}>
+                    <TouchableHighlight onPress={() => setModalVisible(true)} style={styles.calendarButton} underlayColor={'#7E2622'}>
                         <Ionicons name={"calendar-outline"} size={30} color={'white'}/>
-                    </TouchableOpacity>
+                    </TouchableHighlight>
                 </View>
                 <Modal
                     transparent={true}
@@ -175,19 +172,19 @@ export default function EventForm() {
                     onChangeText={setDescription}
                     placeholder="Enter a description"
                     style={styles.textInput}/>
-                <View style={styles.footerContainer}>
+                <View style={{ height: 300}}/>
+                {/* <View style={styles.footerContainer}>
                     <TouchableOpacity style={styles.addEventButton} onPress={addEventButton} activeOpacity={0.8}>
                         <Text style={styles.addEventButtonText}>ADD EVENT</Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
 
             </ScrollView>
-            {loading && (
-                <View style={styles.loading}>
-                    <ActivityIndicator color="#7E2622" size="large" animating={loading} />
-                </View>
-            )}
-        </SafeAreaView>
+            // {loading && (
+            //     <View style={styles.loading}>
+            //         <ActivityIndicator color="#7E2622" size="large" animating={loading} />
+            //     </View>
+            // )}
     );
 }
 
@@ -195,7 +192,7 @@ const styles = StyleSheet.create({
     container: {
         paddingHorizontal: '5%',
         backgroundColor: "white",
-        height: '100%'
+        
     },
     attributeText: {
         fontSize: 18,
@@ -257,7 +254,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-
     },
     addEventButtonText: {
         fontWeight: 'bold',

@@ -31,7 +31,8 @@ export default function Org() {
         title="Add Event"
         onPress={() => router.push('/addEvent')}/>
       <Button 
-        title="Edit Event"/>
+        title="Edit Event"
+        onPress={() => router.push('/editEvent')}/>
     </SafeAreaView>
   );
 }
