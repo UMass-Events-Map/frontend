@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, TouchableHighlight, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  TouchableHighlight,
+  SafeAreaView,
+} from "react-native";
 import { Link, router } from "expo-router";
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +17,7 @@ const LoginScreen: React.FC = () => {
     // Handle login logic here
     // console.log("Email:", email);
     // console.log("Password:", password);
-    router.replace('/org')
+    router.replace("/org");
   };
 
   const handleAccountCreation = () => {
@@ -38,7 +46,7 @@ const LoginScreen: React.FC = () => {
           secureTextEntry
         />
         <TouchableHighlight style={styles.signInButton} onPress={handleLogin}>
-              <Text style={styles.buttonText}>Sign In</Text>
+          <Text style={stylres.buttonText}>Sign In</Text>
         </TouchableHighlight>
         <Text
           style={[styles.text, { textDecorationLine: "underline" }]}
@@ -60,16 +68,16 @@ const styles = StyleSheet.create({
   },
   safeAreaContainer: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: "#fff",
   },
   container: {
     flex: 1,
     paddingHorizontal: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   titleContainer: {
-    height: '40%',
-    justifyContent: 'center'
+    height: "40%",
+    justifyContent: "center",
   },
   title: {
     color: "#000",
@@ -89,23 +97,23 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 8,
     borderRadius: 7,
-    width: '100%'
+    width: "100%",
   },
   signInButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 10,
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: '#7E2622',
-    width: '60%'
+    backgroundColor: "#7E2622",
+    width: "60%",
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 15
-  }
+    color: "#fff",
+    fontSize: 15,
+  },
 });
 
 export default LoginScreen;

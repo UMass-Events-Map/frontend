@@ -11,9 +11,10 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "**/*.js",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "@types",
     "plugins/android-manifest.js"
-  ]
+, "app/(tabs)/ui/LoadingOverlay.js", "app/(tabs)/ui/IconButton.js", "app/(tabs)/ui/FlatButton.js", "app/(tabs)/ui/Button.js", "app/(tabs)/screens/WelcomeScreen.js", "app/(tabs)/screens/SignupScreen.js", "app/(tabs)/screens/LoginScreen.js", "app/(tabs)/constants/styles.js", "app/(tabs)/Auth/Input.js", "app/(tabs)/Auth/AuthForm.js"  ]
 }
