@@ -323,6 +323,7 @@ const handleUpdateEvent = async () => {
       body: JSON.stringify({
         name: editName || selectedEvent.name,
         room_number: editRoomNumber || selectedEvent.room_number,
+        description: editDescription||selectedEvent.description,
         time: editTime || selectedEvent.time,
         date: editDate || selectedEvent.date,
       })
