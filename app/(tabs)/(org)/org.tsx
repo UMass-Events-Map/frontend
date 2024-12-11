@@ -36,7 +36,7 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
 
 
   // State for calendar modal 
-  const [calendarModalVisible, setCalendarModalVisible] = useState(false);
+
 
   // State for Add Event Modal
   const [addModalVisible, setAddModalVisible] = useState(false);
@@ -51,6 +51,7 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
   const [buildings, setBuildings] = useState<Building[]>([]);
   const [loadingBuildings, setLoadingBuildings] = useState(false);
   const [addDropdownOpen, setAddDropdownOpen] = useState(false);
+  const [addCalendarModal, setAddCalendarModal] = useState(false);
 
 
   // State for Edit Event Modal
@@ -61,9 +62,13 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
   const [editDescription, setEditDescription] = useState('');
   const [editDate, setEditDate] = useState('');
   const [editTime, setEditTime] = useState('');
+  const [editDateTime, setEditDateTime] = useState(dayjs());
+  const [editBuildingId, setEditBuildingId] = useState('');
   const [editRoomNumber, setEditRoomNumber] = useState('');
   const [editThumbnail, setEditThumbnail] = useState('');
   const [editAttendance, setEditAttendance] = useState('');
+  const [editDropdownOpen, setEditDropdownOpen] = useState(false);
+  const [editCalendarModal, setEditCalendarModal] = useState(false);
 
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -272,87 +277,51 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
     setEditRoomNumber(event.room_number || '');
     setEditThumbnail(event.thumbnail || '');
     setEditAttendance(event.attendance ? event.attendance.toString() : '');
+    setEditBuildingId(event.building_id || '');
     setEditModalVisible(true);
     fetchBuildings();
   };
-
-
   
-  /*
   const handleUpdateEvent = async () => {
     if (!selectedEvent) return;
-
-
     setLoadingEdit(true);
     try {
       const { data: sessionData } = await supabase.auth.getSession();
       if (!sessionData?.session) throw new Error('No active session found');
       
-
-      const response = await fetch(`https://umaps.phoenixfi.app/events/${selectedEvent.id}`,{
+      const response = await fetch(`https://umaps.phoenixfi.app/events/${selectedEvent.id}`, {
         method: 'PATCH',
         headers: {
-          'Content-Type':'application/json',
-          'Authorization':`Bearer ${sessionData.session.access_token}`,
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${sessionData.session.access_token}`,
         },
+        
         body: JSON.stringify({
-          room_number: 1000,
+          name: editName || selectedEvent.name,
+          room_number: editRoomNumber || selectedEvent.room_number,
+          description: editDescription||selectedEvent.description,
+          time: editTime || selectedEvent.time,
+          date: editDate || selectedEvent.date,
+          //building_id: editBuildingId
         })
-      })
-      if (response.status == 400){
-        console.log(response)
-        throw new Error('400')
-       
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        console.error(`HTTP error! status: ${response.status}`, errorBody);
+        throw new Error(`Request failed with status ${response.status}`);
       }
+
       Alert.alert("Success", "Event updated successfully");
       setEditModalVisible(false);
       await refreshEvents();
     } catch (error: any) {
-      Alert.alert("Error", error.message || "Failed ");
+      console.error('Update event error:', error);
+      Alert.alert("Error", error.message || "Failed to update event");
     } finally {
       setLoadingEdit(false);
     }
   };
-*/
-const handleUpdateEvent = async () => {
-  if (!selectedEvent) return;
-  setLoadingEdit(true);
-  try {
-    const { data: sessionData } = await supabase.auth.getSession();
-    if (!sessionData?.session) throw new Error('No active session found');
-    
-    const response = await fetch(`https://umaps.phoenixfi.app/events/${selectedEvent.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionData.session.access_token}`,
-      },
-      
-      body: JSON.stringify({
-        name: editName || selectedEvent.name,
-        room_number: editRoomNumber || selectedEvent.room_number,
-        description: editDescription||selectedEvent.description,
-        time: editTime || selectedEvent.time,
-        date: editDate || selectedEvent.date,
-      })
-    });
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error(`HTTP error! status: ${response.status}`, errorBody);
-      throw new Error(`Request failed with status ${response.status}`);
-    }
-
-    Alert.alert("Success", "Event updated successfully");
-    setEditModalVisible(false);
-    await refreshEvents();
-  } catch (error: any) {
-    console.error('Update event error:', error);
-    Alert.alert("Error", error.message || "Failed to update event");
-  } finally {
-    setLoadingEdit(false);
-  }
-};
 
   const refreshEvents = async () => {
     if (!organization) return;
@@ -478,84 +447,84 @@ const handleUpdateEvent = async () => {
       animationType="slide"
       transparent={false} // Make the background transparent to show the dim layer
     >
-        <SafeAreaView>
-          <ScrollView style={styles.container}>
-              <Text style={styles.attributeText}>Name:</Text>
-              <TextInput
-                  value={addName}
-                  onChangeText={setAddName}
-                  placeholder="Enter event name"
-                  style={styles.textInput}/>
-              <Text style={styles.attributeText}>Thumbnail:</Text>
-              <TextInput
-                  value={addThumbnail}
-                  onChangeText={setAddThumbnail}
-                  placeholder="Provide a thumbnail link"
-                  style={styles.textInput}/>
-              <Text style={styles.attributeText}>Date & Time:</Text>
-              <View style={styles.dateLayout}>
-                  <Text style={styles.dateInput}>{dateTime.format('ddd, MMMM DD, YYYY')}</Text>
-                  <Text style={styles.timeInput}>{dateTime.format('HH:mm')}</Text>
-                  <TouchableHighlight onPress={() => setCalendarModalVisible(true)} style={styles.calendarButton} underlayColor={'#7E2622'}>
-                      <Ionicons name={"calendar-outline"} size={30} color={'white'}/>
-                  </TouchableHighlight>
-              </View>
-              <Modal
-                  transparent={true}
-                  visible={calendarModalVisible}
-                  onRequestClose={() => {
-                  setCalendarModalVisible(!calendarModalVisible);}}
-                  >
-                  <View style={styles.datePickerContainer}>
-                      <DateTimePicker
-                      mode="single"
-                      date={dateTime}
-                      onChange={(params) => setDateTime(dayjs(params.date))}
-                      selectedItemColor="#AD3835"
-                      headerButtonColor="#AD3835"
-                      timePicker
-                      displayFullDays
-                      todayContainerStyle={{
-                          borderWidth: 1,
-                        }}
-                      />
-                      <Button 
-                          title="Done"
-                          color={'#AD3835'}
-                          onPress={() => setCalendarModalVisible(!calendarModalVisible)}
-                      />
-                  </View>
-              </Modal>
-              <Text style={styles.attributeText}>Building:</Text>
-              <DropDownPicker
-                  listMode="MODAL"
-                  open={addDropdownOpen}
-                  setOpen={setAddDropdownOpen}
-                  value={addBuildingId}
-                  setValue={setAddBuildingId}
-                  style={{ borderColor: '#AD3835', borderWidth: 2}}
-                  items={buildings.map((b: Building) => {return {label: b.name, value: b.id}})}
-                  placeholder="Select a building"/>
-              <Text style={styles.attributeText}>Room Number:</Text>
-              <TextInput
-                  value={addRoomNumber}
-                  onChangeText={setAddRoomNumber}
-                  placeholder="Enter a room number"
-                  style={styles.textInput}/>
-                
-              <Text style={styles.attributeText}>Description:</Text>
-              <TextInput 
-                  editable
-                  multiline
-                  numberOfLines={10}
-                  value={addDescription}
-                  onChangeText={setAddDescription}
-                  placeholder="Enter a description"
-                  style={styles.textInput}/>
-              <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 30}}>
-                <Button title="Cancel" onPress={() => setAddModalVisible(false)} />
-                <Button title={loadingAdd ? 'Creating...' : 'Create Event'} onPress={handleAddEvent} disabled={loadingAdd}/>
-              </View>
+      <SafeAreaView>
+        <ScrollView style={styles.container}>
+            <Text style={styles.attributeText}>Name:</Text>
+            <TextInput
+                value={addName}
+                onChangeText={setAddName}
+                placeholder="Enter event name"
+                style={styles.textInput}/>
+            <Text style={styles.attributeText}>Thumbnail:</Text>
+            <TextInput
+                value={addThumbnail}
+                onChangeText={setAddThumbnail}
+                placeholder="Provide a thumbnail link"
+                style={styles.textInput}/>
+            <Text style={styles.attributeText}>Date & Time:</Text>
+            <View style={styles.dateLayout}>
+                <Text style={styles.dateInput}>{dateTime.format('ddd, MMMM DD, YYYY')}</Text>
+                <Text style={styles.timeInput}>{dateTime.format('HH:mm')}</Text>
+                <TouchableHighlight onPress={() => setAddCalendarModal(true)} style={styles.calendarButton} underlayColor={'#7E2622'}>
+                    <Ionicons name={"calendar-outline"} size={30} color={'white'}/>
+                </TouchableHighlight>
+            </View>
+            <Modal
+                transparent={true}
+                visible={addCalendarModal}
+                onRequestClose={() => {
+                setAddCalendarModal(!addCalendarModal);}}
+                >
+                <View style={styles.datePickerContainer}>
+                    <DateTimePicker
+                    mode="single"
+                    date={dateTime}
+                    onChange={(params) => setDateTime(dayjs(params.date))}
+                    selectedItemColor="#AD3835"
+                    headerButtonColor="#AD3835"
+                    timePicker
+                    displayFullDays
+                    todayContainerStyle={{
+                        borderWidth: 1,
+                      }}
+                    />
+                    <Button 
+                        title="Done"
+                        color={'#AD3835'}
+                        onPress={() => setAddCalendarModal(!addCalendarModal)}
+                    />
+                </View>
+            </Modal>
+            <Text style={styles.attributeText}>Building:</Text>
+            <DropDownPicker
+                listMode="MODAL"
+                open={addDropdownOpen}
+                setOpen={setAddDropdownOpen}
+                value={addBuildingId}
+                setValue={setAddBuildingId}
+                style={{ borderColor: '#AD3835', borderWidth: 2}}
+                items={buildings.map((b: Building) => {return {label: b.name, value: b.id}})}
+                placeholder="Select a building"/>
+            <Text style={styles.attributeText}>Room Number:</Text>
+            <TextInput
+                value={addRoomNumber}
+                onChangeText={setAddRoomNumber}
+                placeholder="Enter a room number"
+                style={styles.textInput}/>
+              
+            <Text style={styles.attributeText}>Description:</Text>
+            <TextInput 
+                editable
+                multiline
+                numberOfLines={10}
+                value={addDescription}
+                onChangeText={setAddDescription}
+                placeholder="Enter a description"
+                style={styles.textInput}/>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 30}}>
+              <Button title="Cancel" onPress={() => setAddModalVisible(false)} />
+              <Button title={loadingAdd ? 'Creating...' : 'Create Event'} onPress={handleAddEvent} disabled={loadingAdd}/>
+            </View>
 
           </ScrollView>
         </SafeAreaView>
@@ -564,11 +533,10 @@ const handleUpdateEvent = async () => {
       {/* Edit Event Modal */}
       <Modal
         visible={editModalVisible}
-        transparent
         onRequestClose={() => setEditModalVisible(false)}
         animationType="slide"
       >
-        <View style={styles.modalOverlay}>
+        {/* <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <Text style={styles.title}>Edit Event</Text>
           <Text>Name *</Text>
@@ -602,7 +570,90 @@ const handleUpdateEvent = async () => {
           <Button title={loadingEdit ? 'Updating...' : 'Update Event'} onPress={handleUpdateEvent} disabled={loadingEdit} />
           <Button title="Cancel" onPress={() => setEditModalVisible(false)} />
         </View>
-        </View>
+        </View> */}
+
+<SafeAreaView>
+        <ScrollView style={styles.container}>
+            <Text style={styles.attributeText}>Name:</Text>
+            <TextInput
+                value={editName}
+                onChangeText={setEditName}
+                placeholder="Enter event name"
+                style={styles.textInput}/>
+            <Text style={styles.attributeText}>Thumbnail:</Text>
+            <TextInput
+                value={editThumbnail}
+                onChangeText={setEditThumbnail}
+                placeholder="Provide a thumbnail link"
+                style={styles.textInput}/>
+            <Text style={styles.attributeText}>Date & Time:</Text>
+            <View style={styles.dateLayout}>
+                <Text style={styles.dateInput}>{editDateTime.format('ddd, MMMM DD, YYYY')}</Text>
+                <Text style={styles.timeInput}>{editDateTime.format('HH:mm')}</Text>
+                <TouchableHighlight onPress={() => setEditCalendarModal(true)} style={styles.calendarButton} underlayColor={'#7E2622'}>
+                    <Ionicons name={"calendar-outline"} size={30} color={'white'}/>
+                </TouchableHighlight>
+            </View>
+            <Modal
+                transparent={true}
+                visible={editCalendarModal}
+                onRequestClose={() => {
+                setEditCalendarModal(!editCalendarModal);}}
+                >
+                <View style={styles.datePickerContainer}>
+                    <DateTimePicker
+                    mode="single"
+                    date={editDateTime}
+                    onChange={(params) => setEditDateTime(dayjs(params.date))}
+                    selectedItemColor="#AD3835"
+                    headerButtonColor="#AD3835"
+                    timePicker
+                    displayFullDays
+                    todayContainerStyle={{
+                        borderWidth: 1,
+                      }}
+                    />
+                    <Button 
+                        title="Done"
+                        color={'#AD3835'}
+                        onPress={() => setEditCalendarModal(!editCalendarModal)}
+                    />
+                </View>
+            </Modal>
+            <Text style={styles.attributeText}>Building:</Text>
+            <DropDownPicker
+                listMode="MODAL"
+                open={editDropdownOpen}
+                setOpen={setEditDropdownOpen}
+                value={editBuildingId}
+                setValue={setEditBuildingId}
+                style={{ borderColor: '#AD3835', borderWidth: 2}}
+                items={buildings.map((b: Building) => {return {label: b.name, value: b.id}})}
+                placeholder="Select a building"/>
+            <Text style={styles.attributeText}>Room Number:</Text>
+            <TextInput
+                value={editRoomNumber}
+                onChangeText={setEditRoomNumber}
+                placeholder="Enter a room number"
+                style={styles.textInput}/>
+              
+            <Text style={styles.attributeText}>Description:</Text>
+            <TextInput 
+                editable
+                multiline
+                numberOfLines={10}
+                value={editDescription}
+                onChangeText={setEditDescription}
+                placeholder="Enter a description"
+                style={styles.textInput}/>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 30}}>
+              <Button title="Cancel" onPress={() => setEditModalVisible(false)} />
+              <Button title={loadingEdit ? 'Updating...' : 'Update Event'} onPress={handleUpdateEvent} disabled={loadingEdit} />
+            </View>
+
+          </ScrollView>
+        </SafeAreaView>
+
       </Modal>
 
 
