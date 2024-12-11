@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -12,38 +12,54 @@ import { Event, EventListProps } from "@/constants/Interfaces";
 import { FlatList, SheetManager } from "react-native-actions-sheet";
 import dayjs from 'dayjs';
 
+
+/**
+ * This function accepts a list of events data, and displays a list of cards that visually represent that data
+ * @param events -> A list of events 
+ * @returns a component that shows a list of events
+ */
 export default function EventList({ events }: EventListProps) {
+  // If the event list is null or is still loading, display a loading indicator
   if (!events) {
     return (
-        <View style={styles.container}>
+        <View>
           <ActivityIndicator testID="ActivityIndicator" color="#7E2622" size="large" />
         </View>
     );
-  } else if (events.length == 0) {
+  } 
+  
+  // If there are no events, display text that says there are no events
+  if (events.length == 0) {
     return (
-      <View style={styles.container}>
+      <View>
         <Text style={styles.noEventText}>No events available</Text>
       </View>
     );
-  } else {
-    return (
-      <FlatList
-        columnWrapperStyle={{ justifyContent: "space-between" }}
-        data={events}
-        numColumns={2}
-        style={styles.eventList}
-        contentContainerStyle={{ paddingBottom: 200 }} 
-        renderItem={({ item }) => EventCard(item)}
-        extraData={events}
-        keyExtractor={(item) => item.id.toString()}
-      />
-    )
-  };
+  } 
+  
+  // Return a list of events in two columns
+  return (
+    <FlatList
+      columnWrapperStyle={{ justifyContent: "space-between" }}
+      data={events}
+      numColumns={2}
+      style={styles.eventList}
+      contentContainerStyle={{ paddingBottom: 150 }} 
+      renderItem={({ item }) => EventCard(item)}
+      extraData={events}
+      keyExtractor={(item) => item.id.toString()}
+    />
+  );
 }
 
+/**
+ * This function accepts data of an event and returns a card that shows information about that event
+ * @param event -> contains data about an event
+ * @returns a card component with information about an events
+ */
 export function EventCard(event: Event) {
+  // When the card is pressed, pull up the event details page as a popup sheet
   const onPressEvent = () => {
-    // navigate to event detail page
     SheetManager.show("eventdetail-sheet", {
       payload: { value: event },
     });
@@ -54,35 +70,49 @@ export function EventCard(event: Event) {
   const eventTime = new Date(event.date + " " + event.time);
 
   // Check if the event is within the next hour
+  // This function is used to tell if the event is happening soon
+  // If the event is happening soon, the event will be colored maroon
   const isEventSoon = eventTime > currentTime && (eventTime.getTime() - currentTime.getTime()) <= 3600000;
 
   return (
+      // TouchableHighlight is a wrapper that makes views responsive to user touches
+      // Pressing will reduce the opacity of the view, indicating a press to the user
       <TouchableHighlight
-      style={[styles.eventContainer, isEventSoon && styles.eventSoon]}
+        style={[styles.eventContainer, isEventSoon && styles.eventSoon]}
         accessibilityLabel={`Event ${event.name}`}
         onPress={onPressEvent}
         underlayColor={"white"}
         testID="eventCardTouchable"
       >
         <View>
+          {/* Shows a thumbnail of the event image */}
           <Image testID="eventImage" style={styles.eventImage} source={{ uri: event.thumbnail }} />
+
+          {/* A container for the event card details */}
           <View style={styles.eventInfoContainer}>
+
+            {/* The event card title */}
             <Text
               style={styles.eventName}
-              adjustsFontSizeToFit={true}
               numberOfLines={2}
               ellipsizeMode="tail"
             >
               {event.name}
             </Text>
+
+            {/* The event date */}
             <View style={styles.eventDetailLayout}>
               <Ionicons name={"calendar-outline"} size={16} style={styles.icon} />
               <Text style={styles.eventDetailText}>{dayjs(event.date).format('ddd, MMM DD, YYYY')}</Text>
             </View>
+
+            {/* The event time */}
             <View style={styles.eventDetailLayout}>
               <Ionicons name={"time-outline"} size={16} style={styles.icon} />
               <Text style={styles.eventDetailText}>{event.time.substring(0,event.time.length - 3)}</Text>
             </View>
+
+            {/* The event location */}
             <View style={styles.eventDetailLayout}>
               <Ionicons name={"location-outline"} size={16} style={styles.icon} />
               <Text
@@ -98,30 +128,23 @@ export function EventCard(event: Event) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: '80%'
-  },
   noEventText: {
     fontSize: 20,
     color: "#D6D6D6",
     textAlign: 'center',
-    
   },
   eventList: {
-    flex: 0,
     paddingHorizontal: 15,
   },
   eventSoon: {
-    backgroundColor: "#FFB5B3", // Highlight the event in green
+    backgroundColor: "#FFB5B3", // Highlight the event in maroon if the event is happening soon
   },
   eventContainer: {
     backgroundColor: "#FAFAFA",
-    borderRadius: 10,
-    height: 260,
+    borderRadius: 15,
+    height: 250,
     width: "49%",
-    paddingBottom: 20,
+    paddingBottom: 30,
     marginBottom: 10,
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 0.5 },
@@ -131,13 +154,11 @@ const styles = StyleSheet.create({
   eventDetailLayout: {
     flexDirection: "row",
     marginVertical: 2,
-    alignItems: 'center'
   },
   eventImage: {
-    width: "100%",
     height: '60%',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   eventInfoContainer: {
     height: '40%',
@@ -145,12 +166,10 @@ const styles = StyleSheet.create({
   },
   eventDetailText: {
     fontSize: 10,
-    fontWeight: "light",
-    flexWrap: 'wrap',
     width: "90%"
   },
   eventName: {
-    height: '35%',
+    height: '45%',
     fontWeight: "500",
     marginVertical: 3,
     fontSize: 15
