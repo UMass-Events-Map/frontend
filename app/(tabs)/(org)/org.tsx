@@ -269,7 +269,8 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
   };
 
 
-  // Handle updating event
+  
+  /*
   const handleUpdateEvent = async () => {
     if (!selectedEvent) return;
 
@@ -280,34 +281,69 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
       if (!sessionData?.session) throw new Error('No active session found');
       
 
-      const response = await fetch('https://umaps.phoenixfi.app/events/${selectedEvent.id}',{
+      const response = await fetch(`https://umaps.phoenixfi.app/events/${selectedEvent.id}`,{
         method: 'PATCH',
         headers: {
           'Content-Type':'application/json',
-          'Authorization':'`Bearer ${sessionData.session.access_token}',
+          'Authorization':`Bearer ${sessionData.session.access_token}`,
         },
         body: JSON.stringify({
-          name: selectedEvent.name,
-          description:selectedEvent.description,
-          date: selectedEvent.date,
-          time: selectedEvent.time,
-          building_id: selectedEvent.building_id,
           room_number: 1000,
         })
       })
       if (response.status == 400){
-        throw new Error("error occured patching event")
+        console.log(response)
+        throw new Error('400')
+       
       }
       Alert.alert("Success", "Event updated successfully");
       setEditModalVisible(false);
       await refreshEvents();
     } catch (error: any) {
-      Alert.alert("Error", error.message || "Failed to update event");
+      Alert.alert("Error", error.message || "Failed ");
     } finally {
       setLoadingEdit(false);
     }
   };
+*/
+const handleUpdateEvent = async () => {
+  if (!selectedEvent) return;
+  setLoadingEdit(true);
+  try {
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData?.session) throw new Error('No active session found');
+    
+    const response = await fetch(`https://umaps.phoenixfi.app/events/${selectedEvent.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionData.session.access_token}`,
+      },
+      
+      body: JSON.stringify({
+        name: editName || selectedEvent.name,
+        room_number: editRoomNumber || selectedEvent.room_number,
+        time: editTime || selectedEvent.time,
+        date: editDate || selectedEvent.date,
+      })
+    });
 
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error(`HTTP error! status: ${response.status}`, errorBody);
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+
+    Alert.alert("Success", "Event updated successfully");
+    setEditModalVisible(false);
+    await refreshEvents();
+  } catch (error: any) {
+    console.error('Update event error:', error);
+    Alert.alert("Error", error.message || "Failed to update event");
+  } finally {
+    setLoadingEdit(false);
+  }
+};
 
   const refreshEvents = async () => {
     if (!organization) return;
