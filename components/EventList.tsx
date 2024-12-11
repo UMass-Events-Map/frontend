@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     height: 250,
     width: "49%",
-    paddingBottom: 25,
+    paddingBottom: 30,
     marginBottom: 10,
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 0.5 },
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     width: "90%"
   },
   eventName: {
-    height: '40%',
+    height: '45%',
     fontWeight: "500",
     marginVertical: 3,
     fontSize: 15
