@@ -20,7 +20,7 @@ import {
   SafeAreaView,
   Button
 } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker, Polygon } from "react-native-maps";
 import ActionSheet, {
   SheetManager,
   ActionSheetRef,
@@ -149,6 +149,29 @@ export default function MapComponent() {
         style={styles.map}
         region={amherstRegion}
       >
+        <Polygon
+          coordinates={[
+            { latitude: 42.39687750573958, longitude: -72.53179399481978 },
+            { latitude: 42.39641734582244, longitude: -72.53399563305013 },
+            { latitude: 42.393027397115645, longitude: -72.53856507088673 },
+            { latitude: 42.38774861550499, longitude: -72.53894355996819 },
+            { latitude: 42.385319659157716, longitude: -72.53843166557478 },
+            { latitude: 42.3815595278501, longitude: -72.53820538835554 },
+            { latitude: 42.38183403111216, longitude: -72.53412549359008 },
+            { latitude: 42.3806869420396, longitude: -72.53182462588248 },
+            { latitude: 42.3806869420396, longitude: -72.53056305550214 },
+            { latitude: 42.38191652037847, longitude: -72.52584968838677 },
+            { latitude: 42.38332635504355, longitude: -72.52063673430507 },
+            { latitude: 42.38878603110683, longitude: -72.51698090183982 },
+            { latitude: 42.39262484388817, longitude: -72.51645806612888 },
+            { latitude: 42.3974397009589, longitude: -72.52093766444546 },
+            { latitude: 42.399236354401665, longitude: -72.52585840357689 },
+            { latitude: 42.39686901018197, longitude: -72.53178895977285 }
+          ]}
+          strokeWidth={2}
+          strokeColor='#AD3835'
+          lineDashPattern={[8, 5]}
+        />
         {buildings?.map((building) => (
           <Marker
             key={building.id}

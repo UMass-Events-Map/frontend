@@ -47,7 +47,7 @@ export default function BuildingPage(building: Building) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     height: "100%",
   },
   buildingImage: {
