@@ -170,7 +170,7 @@ export default function MapComponent() {
           ]}
           strokeWidth={2}
           strokeColor='#AD3835'
-          
+          lineDashPattern={[8, 5]}
         />
         {buildings?.map((building) => (
           <Marker
