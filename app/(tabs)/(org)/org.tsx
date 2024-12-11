@@ -606,7 +606,12 @@ const handleUpdateEvent = async () => {
                     <DateTimePicker
                     mode="single"
                     date={editDateTime}
-                    onChange={(params) => setEditDateTime(dayjs(params.date))}
+                    onChange={(params) => {
+
+                      const newDateTime = dayjs(params.date);
+                     
+                      setEditDateTime(newDateTime);}
+                    }
                     selectedItemColor="#AD3835"
                     headerButtonColor="#AD3835"
                     timePicker
