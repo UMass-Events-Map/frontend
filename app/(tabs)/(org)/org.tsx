@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ActivityIndicator, Alert, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, Button, SafeAreaView } from 'react-native';
+import { View, Text, Image, ActivityIndicator, Alert, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, Button, SafeAreaView, TouchableHighlight } from 'react-native';
 import { supabase } from '@/utils/supabase';
 import { useRouter } from 'expo-router';
 import { Session } from '@supabase/supabase-js';
-import { Event } from '@/constants/Interfaces';
+import { Building, Event } from '@/constants/Interfaces';
+import DateTimePicker from 'react-native-ui-datepicker';
+import dayjs from "dayjs";
+import { Ionicons } from '@expo/vector-icons';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 
 interface Organization {
@@ -31,19 +35,22 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
   const router = useRouter();
 
 
+  // State for calendar modal 
+  const [calendarModalVisible, setCalendarModalVisible] = useState(false);
+
   // State for Add Event Modal
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [addName, setAddName] = useState('');
   const [addDescription, setAddDescription] = useState('');
-  const [addDate, setAddDate] = useState('');
-  const [addTime, setAddTime] = useState('');
+  const [dateTime, setDateTime] = useState(dayjs());
   const [addBuildingId, setAddBuildingId] = useState('');
   const [addRoomNumber, setAddRoomNumber] = useState('');
   const [addThumbnail, setAddThumbnail] = useState('');
   const [addAttendance, setAddAttendance] = useState('');
-  const [buildings, setBuildings] = useState([]);
+  const [buildings, setBuildings] = useState<Building[]>([]);
   const [loadingBuildings, setLoadingBuildings] = useState(false);
+  const [addDropdownOpen, setAddDropdownOpen] = useState(false);
 
 
   // State for Edit Event Modal
@@ -195,8 +202,9 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
     // Reset fields
     setAddName('');
     setAddDescription('');
-    setAddDate('');
-    setAddTime('');
+    // setAddDate('');
+    // setAddTime('');
+    setDateTime(dayjs());
     setAddBuildingId('');
     setAddRoomNumber('');
     setAddThumbnail('');
@@ -225,12 +233,12 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
         body: JSON.stringify({
           name: addName,
           description: addDescription || null,
-          date: addDate,
-          time: addTime,
+          date: dateTime.format("YYYY-MM-DD"),
+          time: dateTime.format("hh:mm"),
           building_id: addBuildingId,
           room_number: addRoomNumber || null,
           thumbnail: addThumbnail || null,
-          attendance: addAttendance ? parseInt(addAttendance) : null
+          attendance: 0
         })
       });
       
@@ -241,7 +249,7 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
       
       // On success, parse the returned data
       const data = await response.json();
-
+      console.log(data);
 
       Alert.alert("Success", "Event created successfully");
       setAddModalVisible(false);
@@ -432,68 +440,100 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
       visible={addModalVisible}
       onRequestClose={() => setAddModalVisible(false)}
       animationType="slide"
-      transparent={true} // Make the background transparent to show the dim layer
+      transparent={false} // Make the background transparent to show the dim layer
     >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
-          <Text style={styles.title}>Create New Event</Text>
-         
-          <Text>Name *</Text>
-          <TextInput style={styles.input} value={addName} onChangeText={setAddName} />
+        <SafeAreaView>
+          <ScrollView style={styles.container}>
+              <Text style={styles.attributeText}>Name:</Text>
+              <TextInput
+                  value={addName}
+                  onChangeText={setAddName}
+                  placeholder="Enter event name"
+                  style={styles.textInput}/>
+              <Text style={styles.attributeText}>Thumbnail:</Text>
+              <TextInput
+                  value={addThumbnail}
+                  onChangeText={setAddThumbnail}
+                  placeholder="Provide a thumbnail link"
+                  style={styles.textInput}/>
+              <Text style={styles.attributeText}>Date & Time:</Text>
+              <View style={styles.dateLayout}>
+                  <Text style={styles.dateInput}>{dateTime.format('ddd, MMMM DD, YYYY')}</Text>
+                  <Text style={styles.timeInput}>{dateTime.format('HH:mm')}</Text>
+                  <TouchableHighlight onPress={() => setCalendarModalVisible(true)} style={styles.calendarButton} underlayColor={'#7E2622'}>
+                      <Ionicons name={"calendar-outline"} size={30} color={'white'}/>
+                  </TouchableHighlight>
+              </View>
+              <Modal
+                  transparent={true}
+                  visible={calendarModalVisible}
+                  onRequestClose={() => {
+                  setCalendarModalVisible(!calendarModalVisible);}}
+                  >
+                  <View style={styles.datePickerContainer}>
+                      <DateTimePicker
+                      mode="single"
+                      date={dateTime}
+                      onChange={(params) => setDateTime(dayjs(params.date))}
+                      selectedItemColor="#AD3835"
+                      headerButtonColor="#AD3835"
+                      timePicker
+                      displayFullDays
+                      todayContainerStyle={{
+                          borderWidth: 1,
+                        }}
+                      />
+                      <Button 
+                          title="Done"
+                          color={'#AD3835'}
+                          onPress={() => setCalendarModalVisible(!calendarModalVisible)}
+                      />
+                  </View>
+              </Modal>
+              <Text style={styles.attributeText}>Building:</Text>
+              <DropDownPicker
+                  listMode="MODAL"
+                  open={addDropdownOpen}
+                  setOpen={setAddDropdownOpen}
+                  value={addBuildingId}
+                  setValue={setAddBuildingId}
+                  style={{ borderColor: '#AD3835', borderWidth: 2}}
+                  items={buildings.map((b: Building) => {return {label: b.name, value: b.id}})}
+                  placeholder="Select a building"/>
+              <Text style={styles.attributeText}>Room Number:</Text>
+              <TextInput
+                  value={addRoomNumber}
+                  onChangeText={setAddRoomNumber}
+                  placeholder="Enter a room number"
+                  style={styles.textInput}/>
+                
+              <Text style={styles.attributeText}>Description:</Text>
+              <TextInput 
+                  editable
+                  multiline
+                  numberOfLines={10}
+                  value={addDescription}
+                  onChangeText={setAddDescription}
+                  placeholder="Enter a description"
+                  style={styles.textInput}/>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 30}}>
+                <Button title="Cancel" onPress={() => setAddModalVisible(false)} />
+                <Button title={loadingAdd ? 'Creating...' : 'Create Event'} onPress={handleAddEvent} disabled={loadingAdd}/>
+              </View>
 
-
-          <Text>Description</Text>
-          <TextInput style={styles.input} value={addDescription} onChangeText={setAddDescription} />
-
-
-          <Text>Date (YYYY-MM-DD)*</Text>
-          <TextInput style={styles.input} value={addDate} onChangeText={setAddDate} />
-
-
-          <Text>Time (HH:MM)*</Text>
-          <TextInput style={styles.input} value={addTime} onChangeText={setAddTime} />
-
-
-          <Text>Building *</Text>
-          {loadingBuildings ? (
-            <Text>Loading buildings...</Text>
-          ) : (
-            <View style={styles.input}>
-              {buildings.map((b: any) => (
-                <TouchableOpacity key={b.id} onPress={() => setAddBuildingId(b.id)}>
-                  <Text style={{ color: addBuildingId === b.id ? 'blue' : 'black' }}>{b.name}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-
-
-          <Text>Room Number</Text>
-          <TextInput style={styles.input} value={addRoomNumber} onChangeText={setAddRoomNumber} />
-
-
-          <Text>Thumbnail URL</Text>
-          <TextInput style={styles.input} value={addThumbnail} onChangeText={setAddThumbnail} />
-
-
-          <Text>Expected Attendance</Text>
-          <TextInput style={styles.input} value={addAttendance} onChangeText={setAddAttendance} keyboardType="numeric" />
-
-
-          <Button title={loadingAdd ? 'Creating...' : 'Create Event'} onPress={handleAddEvent} disabled={loadingAdd} />
-          <Button title="Cancel" onPress={() => setAddModalVisible(false)} />
-        </View>
-      </View>
+          </ScrollView>
+        </SafeAreaView>
       </Modal>
-
 
       {/* Edit Event Modal */}
       <Modal
         visible={editModalVisible}
+        transparent
         onRequestClose={() => setEditModalVisible(false)}
         animationType="slide"
       >
-        <View style={styles.modalContainer}>
+        <View style={styles.modalOverlay}>
+        <View style={styles.modalContent}>
           <Text style={styles.title}>Edit Event</Text>
           <Text>Name *</Text>
           <TextInput style={styles.input} value={editName} onChangeText={setEditName} />
@@ -525,6 +565,7 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
 
           <Button title={loadingEdit ? 'Updating...' : 'Update Event'} onPress={handleUpdateEvent} disabled={loadingEdit} />
           <Button title="Cancel" onPress={() => setEditModalVisible(false)} />
+        </View>
         </View>
       </Modal>
 
@@ -587,12 +628,12 @@ const styles = StyleSheet.create({
   cardDetail: {
     fontSize: 14, color: '#555', marginBottom: 8
   },
-  addEventButton: {
-    backgroundColor: '#7E2622',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 8
-  },
+  // addEventButton: {
+  //   backgroundColor: '#7E2622',
+  //   paddingVertical: 12,
+  //   paddingHorizontal: 32,
+  //   borderRadius: 8
+  // },
   addEventButtonText: {
     color: '#fff',
     fontWeight: 'bold'
@@ -652,8 +693,104 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 8,
     marginBottom: 10
-  }
+  },
+  attributeText: {
+    fontSize: 18,
+    marginVertical: '3%'
+},
+textInput: {
+    fontSize: 15,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#D6D6D6",
+    borderRadius: 3,
+},
+dateLayout: {
+    flexDirection: 'row',
+    alignItems: 'center'
+},
+dateInput: {
+    fontSize: 15,
+    padding: 10,
+    flex: 1,
+    borderColor: "#D6D6D6",
+    borderWidth: 1,
+    borderRadius: 3,
+    marginRight: '2%'
+},
+timeInput: {
+    fontSize: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    borderColor: "#D6D6D6",
+    borderWidth: 1,
+    borderRadius: 3,
+    marginRight: '2%'
+},
+calendarButton: {
+    borderRadius: 3,
+    backgroundColor: '#AD3835',
+    padding: 5,
+    height: "auto",
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 0.5 },
+    shadowOpacity: 0.4,
+    shadowRadius: 1
+},
+button: {
+    borderWidth: 1
+},
+footerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '20%',
+    marginBottom: 200
+},
+addEventButton: {
+    backgroundColor: '#AD3835',
+    borderRadius: 3,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+},
+// addEventButtonText: {
+//     fontWeight: 'bold',
+//     fontSize: 15,
+//     color: 'white',
+// },
+loading: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F5FCFF88",
+    flex: 1
+  },
+datePickerContainer: {
+    flex: 1, 
+    justifyContent: 'center', 
+    backgroundColor: 'white'
+},
+container: {
+  paddingHorizontal: '5%',
+  backgroundColor: "white",
+},
 });
 
-
-
+const buildings = [
+  { label: "Science & Engineering Library", value: "8620cbb2-7da9-48fd-a0fe-883ddf9e1b72" },
+  { label: "Campus Center", value: "7364af36-b61c-43cd-820d-a3d905dbfd8c" },
+  { label: "UMass Campus Recreation", value: "d7eff2b2-63ca-4236-adb9-0a88bf7b96ea" },
+  { label: "Manning Computer Science Building", value: "c9e08449-318d-4540-b392-7c0cfc3d6ef7" },
+  { label: "Berkshire Dining Commons", value: "e1c7eab5-d176-4f1d-ae51-3a7716e27c8b" },
+  { label: "Hampshire Dining Commons", value: "bd5da697-3862-439f-9ee1-0d97fdd84ec3" },
+  { label: "Isenberg", value: "63a5d025-896b-4168-a2e5-6800c3879f80" },
+  { label: "Franklin Dining Commons", value: "316b4fff-79a9-4668-8ca5-2e0c1edf169a" },
+  { label: "Mullins Center", value: "070c9890-49e0-46f6-a92b-6a7fc0c3f33e" },
+  { label: "Worcester Commons", value: "ed2d1571-99f6-4d26-8ac0-63f647aacda4" },
+];
