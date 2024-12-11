@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import { EventCard } from '@/components/EventList';
+import { EventCard } from "@/components/EventList";
 import { Event, Building } from "@/constants/Interfaces";
 
 // Define mock building
@@ -36,7 +36,7 @@ const sample_event_1: Event = {
 describe('EventCard', () => {
   it('renders correctly', () => {
     // Render the component
-    const { getByText } = render(<EventCard event={sample_event_1}/>);
+    const { getByText } = render(<EventCard event={sample_event_1} />);
 
     // Check if event name is rendered
     expect(getByText("Sample Event #1")).toBeTruthy();
