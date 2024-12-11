@@ -45,7 +45,7 @@ export default function EventList({ events }: EventListProps) {
       numColumns={2}
       style={styles.eventList}
       contentContainerStyle={{ paddingBottom: 150 }} 
-      renderItem={({ item }) => EventCard(item)}
+      renderItem={({ item }) => (<EventCard event={item}/>)}
       extraData={events}
       keyExtractor={(item) => item.id.toString()}
     />
@@ -57,7 +57,7 @@ export default function EventList({ events }: EventListProps) {
  * @param event -> contains data about an event
  * @returns a card component with information about an events
  */
-export function EventCard(event: Event) {
+export function EventCard({ event }: { event: Event }) {
   // When the card is pressed, pull up the event details page as a popup sheet
   const onPressEvent = () => {
     SheetManager.show("eventdetail-sheet", {
@@ -78,7 +78,10 @@ export function EventCard(event: Event) {
       // TouchableHighlight is a wrapper that makes views responsive to user touches
       // Pressing will reduce the opacity of the view, indicating a press to the user
       <TouchableHighlight
-        style={[styles.eventContainer, isEventSoon && styles.eventSoon]}
+        style={[
+          styles.eventContainer,
+          isEventSoon ? styles.eventSoon : styles.notEventSoon
+        ]}
         accessibilityLabel={`Event ${event.name}`}
         onPress={onPressEvent}
         underlayColor={"white"}
@@ -138,6 +141,9 @@ const styles = StyleSheet.create({
   },
   eventSoon: {
     backgroundColor: "#FFB5B3", // Highlight the event in maroon if the event is happening soon
+  },
+  notEventSoon: {
+    backgroundColor: "#FAFAFA", // Highlight the event in maroon if the event is happening soon
   },
   eventContainer: {
     backgroundColor: "#FAFAFA",
