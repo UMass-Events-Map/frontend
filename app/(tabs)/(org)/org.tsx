@@ -270,42 +270,7 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
 
 
   
-  /*
-  const handleUpdateEvent = async () => {
-    if (!selectedEvent) return;
-
-
-    setLoadingEdit(true);
-    try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      if (!sessionData?.session) throw new Error('No active session found');
-      
-
-      const response = await fetch(`https://umaps.phoenixfi.app/events/${selectedEvent.id}`,{
-        method: 'PATCH',
-        headers: {
-          'Content-Type':'application/json',
-          'Authorization':`Bearer ${sessionData.session.access_token}`,
-        },
-        body: JSON.stringify({
-          room_number: 1000,
-        })
-      })
-      if (response.status == 400){
-        console.log(response)
-        throw new Error('400')
-       
-      }
-      Alert.alert("Success", "Event updated successfully");
-      setEditModalVisible(false);
-      await refreshEvents();
-    } catch (error: any) {
-      Alert.alert("Error", error.message || "Failed ");
-    } finally {
-      setLoadingEdit(false);
-    }
-  };
-*/
+ 
 const handleUpdateEvent = async () => {
   if (!selectedEvent) return;
   setLoadingEdit(true);
@@ -323,7 +288,7 @@ const handleUpdateEvent = async () => {
       body: JSON.stringify({
         name: editName || selectedEvent.name,
         room_number: editRoomNumber || selectedEvent.room_number,
-        description: editDescription||selectedEvent.description,
+        description: editDescription || selectedEvent.description,
         time: editTime || selectedEvent.time,
         date: editDate || selectedEvent.date,
       })
