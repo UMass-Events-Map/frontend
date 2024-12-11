@@ -282,7 +282,7 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
     fetchBuildings();
   };
   
-<<<<<<< HEAD
+
  
 const handleUpdateEvent = async () => {
   if (!selectedEvent) return;
@@ -302,8 +302,8 @@ const handleUpdateEvent = async () => {
         name: editName || selectedEvent.name,
         room_number: editRoomNumber || selectedEvent.room_number,
         description: editDescription || selectedEvent.description,
-        time: editTime || selectedEvent.time,
-        date: editDate || selectedEvent.date,
+        time: editDateTime.format("HH:mm") || selectedEvent.time,
+        date: editDateTime.format("YYYY-MM-DD") || selectedEvent.date,
       })
     });
 
@@ -323,48 +323,7 @@ const handleUpdateEvent = async () => {
     setLoadingEdit(false);
   }
 };
-=======
-  const handleUpdateEvent = async () => {
-    if (!selectedEvent) return;
-    setLoadingEdit(true);
-    try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      if (!sessionData?.session) throw new Error('No active session found');
-      
-      const response = await fetch(`https://umaps.phoenixfi.app/events/${selectedEvent.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionData.session.access_token}`,
-        },
-        
-        body: JSON.stringify({
-          name: editName || selectedEvent.name,
-          room_number: editRoomNumber || selectedEvent.room_number,
-          description: editDescription||selectedEvent.description,
-          time: editTime || selectedEvent.time,
-          date: editDate || selectedEvent.date,
-          //building_id: editBuildingId
-        })
-      });
 
-      if (!response.ok) {
-        const errorBody = await response.text();
-        console.error(`HTTP error! status: ${response.status}`, errorBody);
-        throw new Error(`Request failed with status ${response.status}`);
-      }
-
-      Alert.alert("Success", "Event updated successfully");
-      setEditModalVisible(false);
-      await refreshEvents();
-    } catch (error: any) {
-      console.error('Update event error:', error);
-      Alert.alert("Error", error.message || "Failed to update event");
-    } finally {
-      setLoadingEdit(false);
-    }
-  };
->>>>>>> d115babc18adaab47c4a629cda889e6e26122536
 
   const refreshEvents = async () => {
     if (!organization) return;
