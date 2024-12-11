@@ -278,27 +278,26 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
     try {
       const { data: sessionData } = await supabase.auth.getSession();
       if (!sessionData?.session) throw new Error('No active session found');
-     
-      const { data: updatedEvent, error: eventError } = await supabase
-        .from('events')
-        .update({
-          name: editName,
-          description: editDescription || null,
-          date: editDate,
-          time: editTime,
-          room_number: editRoomNumber || null,
-          thumbnail: editThumbnail || null,
-          attendance: editAttendance ? parseInt(editAttendance) : null,
+      
+
+      const response = await fetch('https://umaps.phoenixfi.app/events/${selectedEvent.id}',{
+        method: 'PATCH',
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization':'`Bearer ${sessionData.session.access_token}',
+        },
+        body: JSON.stringify({
+          name: selectedEvent.name,
+          description:selectedEvent.description,
+          date: selectedEvent.date,
+          time: selectedEvent.time,
+          building_id: selectedEvent.building_id,
+          room_number: 1000,
         })
-        .eq('id', selectedEvent.id)
-        .select('*');
-
-
-      if (eventError) {
-        throw eventError;
+      })
+      if (response.status == 400){
+        throw new Error("error occured patching event")
       }
-
-
       Alert.alert("Success", "Event updated successfully");
       setEditModalVisible(false);
       await refreshEvents();
