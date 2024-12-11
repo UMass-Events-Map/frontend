@@ -72,7 +72,7 @@ export function EventCard({ event }: { event: Event }) {
   // Check if the event is within the next hour
   // This function is used to tell if the event is happening soon
   // If the event is happening soon, the event will be colored maroon
-  const isEventSoon = eventTime > currentTime && (eventTime.getTime() - currentTime.getTime()) <= 3600000;
+  const isEventSoon = Math.abs(eventTime.getTime() - currentTime.getTime()) <= 3600000;
 
   return (
       // TouchableHighlight is a wrapper that makes views responsive to user touches
