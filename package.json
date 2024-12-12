@@ -10,12 +10,15 @@
     "test": "jest --watchAll",
     "lint": "expo lint"
   },
-  "jest": {
-    "preset": "jest-expo",
-    "setupFilesAfterEnv": [
-      "/Users/vinayakrao/UMassEventsMap/frontend/jest-setup.js"
-    ]
-  },
+"jest": {
+  "preset": "jest-expo",
+  "setupFilesAfterEnv": [
+    "/Users/samuelsanchez/Downloads/CS320/frontend/jest-setup.js"
+  ],
+  "transformIgnorePatterns": [
+    "node_modules/(?!(@react-native|react-native|@react-navigation|expo-font|expo-modules-core|expo)/)"
+  ]
+},
   "dependencies": {
     "@expo/config-plugins": "~9.0.0",
     "@expo/metro-config": "~0.19.0",
