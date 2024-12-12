@@ -218,7 +218,6 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
     fetchBuildings();
   };
 
-
   // Handle adding event
   const handleAddEvent = async () => {
     if (!organization) return;
@@ -254,7 +253,6 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
       
       // On success, parse the returned data
       const data = await response.json();
-      console.log(data);
 
       Alert.alert("Success", "Event created successfully");
       setAddModalVisible(false);
@@ -282,48 +280,46 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
     setEditModalVisible(true);
     fetchBuildings();
   };
-  
-
  
-const handleUpdateEvent = async () => {
-  if (!selectedEvent) return;
-  setLoadingEdit(true);
-  try {
-    const { data: sessionData } = await supabase.auth.getSession();
-    if (!sessionData?.session) throw new Error('No active session found');
-    
-    const response = await fetch(`https://umaps.phoenixfi.app/events/${selectedEvent.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionData.session.access_token}`,
-      },
+  const handleUpdateEvent = async () => {
+    if (!selectedEvent) return;
+    setLoadingEdit(true);
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData?.session) throw new Error('No active session found');
       
-      body: JSON.stringify({
-        name: editName || selectedEvent.name,
-        room_number: editRoomNumber || selectedEvent.room_number,
-        description: editDescription || selectedEvent.description,
-        time: editDateTime.format("HH:mm") || selectedEvent.time,
-        date: editDateTime.format("YYYY-MM-DD") || selectedEvent.date,
-      })
-    });
+      const response = await fetch(`https://umaps.phoenixfi.app/events/${selectedEvent.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${sessionData.session.access_token}`,
+        },
+        
+        body: JSON.stringify({
+          name: editName || selectedEvent.name,
+          room_number: editRoomNumber || selectedEvent.room_number,
+          description: editDescription || selectedEvent.description,
+          time: editDateTime.format("HH:mm") || selectedEvent.time,
+          date: editDateTime.format("YYYY-MM-DD") || selectedEvent.date,
+        })
+      });
 
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error(`HTTP error! status: ${response.status}`, errorBody);
-      throw new Error(`Request failed with status ${response.status}`);
+      if (!response.ok) {
+        const errorBody = await response.text();
+        console.error(`HTTP error! status: ${response.status}`, errorBody);
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      Alert.alert("Success", "Event updated successfully");
+      setEditModalVisible(false);
+      await refreshEvents();
+    } catch (error: any) {
+      console.error('Update event error:', error);
+      Alert.alert("Error", error.message || "Failed to update event");
+    } finally {
+      setLoadingEdit(false);
     }
-
-    Alert.alert("Success", "Event updated successfully");
-    setEditModalVisible(false);
-    await refreshEvents();
-  } catch (error: any) {
-    console.error('Update event error:', error);
-    Alert.alert("Error", error.message || "Failed to update event");
-  } finally {
-    setLoadingEdit(false);
-  }
-};
+  };
 
 
   const refreshEvents = async () => {
@@ -339,6 +335,35 @@ const handleUpdateEvent = async () => {
     }
   };
 
+  const deleteEvent = async (event: Event) => {
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData?.session) throw new Error('No active session found');
+
+    const response = await fetch(`https://umaps.phoenixfi.app/events/${event.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionData.session.access_token}`
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to delete event');
+    }
+
+    // On success, parse the returned data
+    const data = await response.json();
+    // console.log(data);
+    if (data.success) {
+      refreshEvents();
+      Alert.alert("Success", data.message);
+    }
+    else {
+      Alert.alert("Error");
+    }
+
+  }
 
   if (loadingOrg) {
     return (
@@ -431,12 +456,40 @@ const handleUpdateEvent = async () => {
 
 
             <View style={styles.buttonRow}>
-              <TouchableOpacity
+              <TouchableHighlight
+                onPress={() => {
+                  Alert.alert(
+                    'Delete',
+                    `Are you sure you want to delete ${event.name}`,
+                    [
+                      {
+                        text: 'Cancel',
+                        style: 'cancel',
+                      },
+                      {
+                        text: 'Confirm',
+                        onPress: () => deleteEvent(event)
+                      }
+                    ],
+                    {
+                      cancelable: true,
+                      onDismiss: () =>
+                        Alert.alert(
+                          'This alert was dismissed by tapping outside of the alert dialog.',
+                        ),
+                    },
+                  );
+                }}
+                style={styles.deleteButton}>
+                <Text style={styles.buttonText}>Delete</Text>
+              </TouchableHighlight>
+              <View style={{flex: 1}}/>
+              <TouchableHighlight
                 style={styles.editButton}
                 onPress={() => handleOpenEditModal(event)}
               >
-                <Text style={styles.editButtonText}>Edit</Text>
-              </TouchableOpacity>
+                <Text style={styles.buttonText}>Edit</Text>
+              </TouchableHighlight>
             </View>
           </View>
         ))
@@ -761,7 +814,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8
   },
-  editButtonText: {
+  deleteButton: {
+    backgroundColor: 'red',
+    borderRadius: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginRight: 10
+  },
+  buttonText: {
     color: '#fff', fontWeight: '600'
   },
   // Overlay fills the entire screen, centers content, and adds a dim background
