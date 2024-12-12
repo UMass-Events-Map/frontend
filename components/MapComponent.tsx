@@ -18,7 +18,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   SafeAreaView,
-  Button
+  Button,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker, Polygon } from "react-native-maps";
 import ActionSheet, {
@@ -28,11 +28,11 @@ import ActionSheet, {
 } from "react-native-actions-sheet";
 import { BuildingProp, Building, Event } from "@/constants/Interfaces";
 import { Ionicons } from "@expo/vector-icons";
-import dayjs from 'dayjs';
-import DateTimePicker from 'react-native-ui-datepicker';
+import dayjs from "dayjs";
+import DateTimePicker from "react-native-ui-datepicker";
 
+// Initial region settings for Amherst map area
 const amherstRegion = {
-  // Data to have map focus in on Amherst Area on load
   latitude: 42.390309,
   longitude: -72.527682,
   latitudeDelta: 0.012,
@@ -40,7 +40,7 @@ const amherstRegion = {
 };
 
 const amherstOutline = [
-  // Data to draw a Polygon outline around amherst map
+  // Coordinates defining a polygon that outlines the Amherst area
   { latitude: 42.39687750573958, longitude: -72.53179399481978 },
   { latitude: 42.39641734582244, longitude: -72.53399563305013 },
   { latitude: 42.393027397115645, longitude: -72.53856507088673 },
@@ -56,31 +56,41 @@ const amherstOutline = [
   { latitude: 42.39262484388817, longitude: -72.51645806612888 },
   { latitude: 42.3974397009589, longitude: -72.52093766444546 },
   { latitude: 42.399236354401665, longitude: -72.52585840357689 },
-  { latitude: 42.39686901018197, longitude: -72.53178895977285 }
-]
+  { latitude: 42.39686901018197, longitude: -72.53178895977285 },
+];
 
 export default function MapComponent() {
+  // State that holds currently displayed buildings with events
   const [buildings, setBuildings] = useState<Building[]>([]);
+  // State that holds all buildings fetched from the API
   const [allBuildings, setAllBuildings] = useState<Building[]>([]);
+  // State to track loading data
   const [loading, setLoading] = useState<boolean>(true);
+  // State to track the currently selected date for events
   const [date, setDate] = useState(dayjs());
 
-  // Manage modal visibility
+  // Controls the visibility of the date picker modal
   const [modalVisible, setModalVisible] = useState(false);
 
-  const mapRef = useRef<MapView>(null)
+  // Ref for the MapView component
+  const mapRef = useRef<MapView>(null);
 
+  // State used to force a re-render of the map when filtering
   const [mapKey, setMapKey] = useState(0);
+
+  // Function to increment the mapKey and thus reload the map
   const reloadMap = () => {
-    setMapKey(prevKey => prevKey + 1);
+    setMapKey((prevKey) => prevKey + 1);
   };
 
+  // Recenters the map to the initial Amherst region
   const zoomToRegion = () => {
     if (mapRef.current) {
       mapRef.current.animateToRegion(amherstRegion, 250);
     }
   };
 
+  // Fetches all buildings from the API
   const fetchBuildings = async (): Promise<Building[]> => {
     const response = await fetch(
       `https://umaps.phoenixfi.app/buildings?limit=${30}`,
@@ -92,6 +102,7 @@ export default function MapComponent() {
       }
     );
 
+    // If successful response
     if (response.status === 200 || 304) {
       const data = await response.json();
       setAllBuildings(data.data);
@@ -102,6 +113,7 @@ export default function MapComponent() {
     }
   };
 
+  // Fetches events for a specific building by its ID
   const fetchEventByBuildingId = async (id: string): Promise<Event[]> => {
     const response = await fetch(
       `https://umaps.phoenixfi.app/buildings/${id}/events`,
@@ -113,6 +125,7 @@ export default function MapComponent() {
       }
     );
 
+    // If successful response
     if (response.status === 200 || 304) {
       const data = await response.json();
       return data;
@@ -122,38 +135,51 @@ export default function MapComponent() {
     }
   };
 
+  // Filters buildings based on the currently selected date
   const filterBuildingByDate = async () => {
     setLoading(true);
     const promises: Promise<Event[]>[] = new Array(allBuildings.length);
+    // Iterate through all buildings and fetch their events, then filter by date
     allBuildings.forEach(async (building, index) => {
       const promise = fetchEventByBuildingId(building.id);
       promises[index] = promise;
-      building.events = (await promise).filter((e) => e.date === date.format('YYYY-MM-DD'));
+      building.events = (await promise).filter(
+        (e) => e.date === date.format("YYYY-MM-DD")
+      );
     });
     await Promise.all(promises);
-    setBuildings(allBuildings.filter(b => b.events !== null && b.events.length > 0));
+    // Update state with only those buildings that have events for the selected date
+    setBuildings(
+      allBuildings.filter((b) => b.events !== null && b.events.length > 0)
+    );
     setLoading(false);
-    reloadMap()
-  }
+    reloadMap();
+  };
 
   useEffect(() => {
-    fetchBuildings()
-    .then(async (data) => {
+    // Initial fetch of buildings, then events, and set state accordingly
+    fetchBuildings().then(async (data) => {
       setAllBuildings(data);
       setLoading(true);
       const promises: Promise<Event[]>[] = new Array(data.length);
       data.forEach(async (building, index) => {
         const promise = fetchEventByBuildingId(building.id);
         promises[index] = promise;
-        building.events = (await promise).filter((e) => e.date === date.format('YYYY-MM-DD'));
+        building.events = (await promise).filter(
+          (e) => e.date === date.format("YYYY-MM-DD")
+        );
       });
       await Promise.all(promises);
-      setBuildings(data.filter(b => b.events !== null && b.events.length > 0));
+      // After fetching and filtering events, set the buildings state
+      setBuildings(
+        data.filter((b) => b.events !== null && b.events.length > 0)
+      );
       setLoading(false);
-      reloadMap()
-    })
+      reloadMap();
+    });
   }, []);
 
+  // Handles the press event on a building marker, displaying more info in the action sheet
   const handleMarkerPress = (building: Building) => {
     SheetManager.show("mapaction-sheet", {
       payload: { value: building },
@@ -162,6 +188,7 @@ export default function MapComponent() {
 
   return (
     <View style={styles.container}>
+      {/* The main map view */}
       <MapView
         key={mapKey}
         ref={mapRef}
@@ -169,12 +196,14 @@ export default function MapComponent() {
         style={styles.map}
         region={amherstRegion}
       >
+        {/* Draws an outline polygon around Amherst area */}
         <Polygon
           coordinates={amherstOutline}
           strokeWidth={2}
-          strokeColor='#AD3835'
+          strokeColor="#AD3835"
           lineDashPattern={[8, 5]}
         />
+        {/* Place markers for buildings that have events on the selected date */}
         {buildings?.map((building) => (
           <Marker
             key={building.id}
@@ -185,6 +214,7 @@ export default function MapComponent() {
             onPress={() => handleMarkerPress(building)}
             zIndex={9999999}
           >
+            {/* Custom marker image */}
             <Image
               style={styles.markerImage}
               source={require("../assets/icons/pin.png")}
@@ -192,63 +222,88 @@ export default function MapComponent() {
           </Marker>
         ))}
       </MapView>
+
+      {/* Button to recenter the map to the Amherst region */}
       <View style={styles.buttonsContainer}>
-        <TouchableHighlight style={styles.circleButton} underlayColor={"#FAFAFA"} onPress={zoomToRegion}> 
-          <Ionicons name={"navigate"} size={30} color={'#7E2622'}/>
+        <TouchableHighlight
+          style={styles.circleButton}
+          underlayColor={"#FAFAFA"}
+          onPress={zoomToRegion}
+        >
+          <Ionicons name={"navigate"} size={30} color={"#7E2622"} />
         </TouchableHighlight>
       </View>
-      <SafeAreaView style={{ position: 'absolute', width: '100%', alignItems: 'center'}}>
-          <TouchableHighlight style={styles.dateContainer} onPress={() => setModalVisible(!modalVisible)} underlayColor={"#FAFAFA"}>
-            <Text style={styles.dateText}>{date.format('dddd, MMMM D, YYYY')}</Text>
-          </TouchableHighlight>
+
+      {/* Date selector trigger at the top center */}
+      <SafeAreaView
+        style={{ position: "absolute", width: "100%", alignItems: "center" }}
+      >
+        <TouchableHighlight
+          style={styles.dateContainer}
+          onPress={() => setModalVisible(!modalVisible)}
+          underlayColor={"#FAFAFA"}
+        >
+          <Text style={styles.dateText}>
+            {date.format("dddd, MMMM D, YYYY")}
+          </Text>
+        </TouchableHighlight>
       </SafeAreaView>
+
+      {/* Loading indicator while fetching/filtering data */}
       {loading && (
         <View style={styles.loading}>
           <ActivityIndicator color="#7E2622" size="large" animating={loading} />
         </View>
       )}
+
+      {/* Date picker modal */}
       <Modal
-          transparent={true}
-          animationType="slide"
-          visible={modalVisible}
-          onRequestClose={() => {
-          setModalVisible(!modalVisible);}}
-          >
-          <View style={styles.datePickerContainer}>
-              <DateTimePicker
-              mode="single"
-              date={date}
-              onChange={(params) => setDate(dayjs(params.date))}
-              selectedItemColor="#AD3835"
-              headerButtonColor="#AD3835"
-              displayFullDays
-              todayContainerStyle={{
-                  borderWidth: 1,
-                }}
-              />
-              <Button 
-                  title="Done"
-                  color={'#AD3835'}
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                    filterBuildingByDate();
-                  }}
-              />
-          </View>
+        transparent={true}
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.datePickerContainer}>
+          <DateTimePicker
+            mode="single"
+            date={date}
+            onChange={(params) => setDate(dayjs(params.date))}
+            selectedItemColor="#AD3835"
+            headerButtonColor="#AD3835"
+            displayFullDays
+            todayContainerStyle={{
+              borderWidth: 1,
+            }}
+          />
+          {/* Done button to close modal and refetch events filtered by new date */}
+          <Button
+            title="Done"
+            color={"#AD3835"}
+            onPress={() => {
+              setModalVisible(!modalVisible);
+              filterBuildingByDate();
+            }}
+          />
+        </View>
       </Modal>
     </View>
   );
 }
 
+// Dimensions for resizing the marker image
 const resizedWidth = 30;
 const resizedHeight = resizedWidth / 0.86;
 
 const styles = StyleSheet.create({
+  // Container for the entire screen
   container: {
     flex: 1,
   },
+  // Loading overlay styles
   loading: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     right: 0,
     bottom: 0,
@@ -256,47 +311,55 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#F5FCFF88",
-    flex: 1
+    flex: 1,
   },
+  // Style for the MapView component
   map: {
     flex: 1,
   },
+  // Content container (if needed for scroll views, etc.)
   contentContainer: {
     padding: 16,
     alignItems: "center",
   },
+  // Title style (not currently used)
   title: {
     fontSize: 18,
     fontWeight: "bold",
   },
+  // Description style (not currently used)
   description: {
     fontSize: 16,
     color: "#666",
   },
+  // Style for the custom marker pin image
   markerImage: {
     width: resizedWidth,
     height: resizedHeight,
   },
+  // Container for any floating action buttons over the map
   buttonsContainer: {
-    position: 'absolute',
-    top: '30%',
-    right: '3%',
+    position: "absolute",
+    top: "30%",
+    right: "3%",
   },
+  // Style for a circular floating button
   circleButton: {
     height: 55,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: 55,
     borderRadius: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 0.5 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
-    marginBottom: 10
+    marginBottom: 10,
   },
+  // Container for the date label at the top
   dateContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 100,
     paddingVertical: 15,
     paddingHorizontal: 20,
@@ -305,14 +368,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 5,
   },
+  // Text style for the currently selected date
   dateText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#7E2622'
+    fontWeight: "bold",
+    color: "#7E2622",
   },
+  // Container for the date picker modal
   datePickerContainer: {
-    flex: 1, 
-    justifyContent: 'center', 
-    backgroundColor: 'white'
-}
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "white",
+  },
 });

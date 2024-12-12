@@ -1,12 +1,21 @@
-import { View, StyleSheet, TextInput, SafeAreaView, ActivityIndicator, Text, TouchableOpacity, TouchableHighlight } from "react-native";
-import React from 'react';
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  SafeAreaView,
+  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  TouchableHighlight,
+} from "react-native";
+import React from "react";
 import EventList from "@/components/EventList";
 import { useState, useEffect, useMemo } from "react";
 import { Event } from "@/constants/Interfaces";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Ionicons } from "@expo/vector-icons";
 
-
+//Here we got the main component for listing events
 export default function List() {
   // State management for the events that are shown
   const [events, setEvents] = useState<any[] | null>(null);
@@ -32,13 +41,14 @@ export default function List() {
     { label: "1 Month", value: "1_month" },
   ]);
 
- 
- const handleSearch = (query: string) => {
-    // handle searching 
+  //Here we have a function to handle search input change
+  const handleSearch = (query: string) => {
+    // handle searching
     setSearchQuery(query);
   };
-
+  //here we have an effect to fetch events from the server when the component mounts
   useEffect(() => {
+    //here we are fetching a single event by its id
     const fetchEvent = async (id: string): Promise<Event | null> => {
       const response = await fetch(`https://umaps.phoenixfi.app/events/${id}`, {
         method: "GET",
@@ -46,7 +56,7 @@ export default function List() {
           "Content-Type": "application/json",
         },
       });
-  
+      //checking whethere there is an error or not
       if (response.status === 200 || 304) {
         const data = await response.json();
         return data;
@@ -55,42 +65,45 @@ export default function List() {
         return null;
       }
     };
-  
-    const fetchEventsId = async (): Promise<(Event & { buildingName?: string })[]> => {
+    //here we have a function to fetch all event IDS and then fetch each event by its ID
+    //as an optional parameter we include the buildingName which we can choose to filter by if included
+    const fetchEventsId = async (): Promise<
+      (Event & { buildingName?: string })[]
+    > => {
       const response = await fetch(`https://umaps.phoenixfi.app/events/ids`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
-  
+
       if (response.status === 200 || 304) {
         const data = await response.json();
         const eventPromises = data.ids.map(async (id: string) => {
           const event = await fetchEvent(id);
           return event;
         });
-        return (await Promise.all(eventPromises)).filter((e) => e !== null) as Event[];
+        return (await Promise.all(eventPromises)).filter(
+          (e) => e !== null
+        ) as Event[];
       } else {
         console.error("Error fetching events");
         return [];
       }
     };
-  
+    //Here we fetch events and we update the state
     fetchEventsId().then((data) => {
       setEvents(data);
     });
   }, []);
-  
 
-
-  // Calculate Time Range
+  // Here we calculate the end date based on the specific time range
   const filterByTimeRange = (events: any[], range: string | null) => {
     if (!range) return events;
 
     const now = new Date();
     let endDate: any;
-
+    //Here we are determing the end date based on the specified range
     switch (range) {
       case "1_week":
         endDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -105,23 +118,21 @@ export default function List() {
         endDate = new Date(now.setMonth(now.getMonth() + 1));
         break;
     }
-
+    //Then we are filtering events to only include those within the specified time range
     return events.filter((event) => {
       const eventDate = new Date(event.date);
       return eventDate <= endDate;
     });
   };
-
-
-  // Filtered Events
+  //Here we are filtering the events based on search criteria
   const filteredEvents = useMemo(() => {
     setLoading(true);
     if (!events) return null;
-  
+
     const searchFiltered = events.filter((event) => {
       const formattedDate = formatter.format(new Date(event.date));
       const eventTime = event.time.substring(0, event.time.length - 3);
-    
+
       return (
         event.name.toLowerCase().includes(searchQuery.toLowerCase()) || // Search by name
         formattedDate.toLowerCase().includes(searchQuery.toLowerCase()) || // Search by date
@@ -129,21 +140,24 @@ export default function List() {
         event.building.name.toLowerCase().includes(searchQuery.toLowerCase()) // Search by building
       );
     });
-
+    //here we are filtering events based on the selected day
     const dayFiltered = selectedDay
       ? searchFiltered.filter((event) => {
           const eventDate = new Date(event.date);
-          const eventDay = new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
-            new Date(eventDate.getTime() + eventDate.getTimezoneOffset() * 60000)
+          const eventDay = new Intl.DateTimeFormat("en-US", {
+            weekday: "long",
+          }).format(
+            new Date(
+              eventDate.getTime() + eventDate.getTimezoneOffset() * 60000
+            )
           );
           return eventDay.toLowerCase() === selectedDay.toLowerCase();
         })
       : searchFiltered;
 
-      setLoading(false);
-      return filterByTimeRange(dayFiltered, rangeValue);
-    }, [events, searchQuery, selectedDay, rangeValue]);
-  
+    setLoading(false);
+    return filterByTimeRange(dayFiltered, rangeValue);
+  }, [events, searchQuery, selectedDay, rangeValue]);
 
   const [key, setKey] = useState(0);
   const reloadComponent = () => {
@@ -152,22 +166,22 @@ export default function List() {
   return (
     <SafeAreaView>
       <View style={styles.containerRow}>
-      <TextInput
-        placeholder="Search by name, date, or time"
-        placeholderTextColor="grey"
-        style={styles.searchBar}
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-      />
-      <TouchableHighlight
-        style={styles.refreshButton}
-        underlayColor={"#FAFAFA"}
-        onPress={reloadComponent}
-      >
-        <Ionicons name={"refresh-outline"} size={27} color={"#7E2622"} />
-      </TouchableHighlight>
-    </View>
-    
+        <TextInput
+          placeholder="Search by name, date, or time"
+          placeholderTextColor="grey"
+          style={styles.searchBar}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+        <TouchableHighlight
+          style={styles.refreshButton}
+          underlayColor={"#FAFAFA"}
+          onPress={reloadComponent}
+        >
+          <Ionicons name={"refresh-outline"} size={27} color={"#7E2622"} />
+        </TouchableHighlight>
+      </View>
+
       <View style={styles.dropdownRow}>
         <DropDownPicker
           open={isDropdownOpen}
@@ -203,11 +217,11 @@ export default function List() {
           zIndex={1000} // Prevent overlap issues
         />
       </View>
-        <EventList key={key} events={filteredEvents as Event[]} />
+      <EventList key={key} events={filteredEvents as Event[]} />
     </SafeAreaView>
   );
 }
-
+//these are our styles for the component
 const styles = StyleSheet.create({
   containerRow: {
     flexDirection: "row",
@@ -221,7 +235,7 @@ const styles = StyleSheet.create({
     borderColor: "#D6D6D6",
     borderWidth: 1,
     borderRadius: 20,
-    height: 50
+    height: 50,
   },
   container: {
     flex: 1,
@@ -243,7 +257,7 @@ const styles = StyleSheet.create({
     borderColor: "#D6D6D6",
     borderWidth: 1,
     borderRadius: 20,
-    height: 50
+    height: 50,
   },
   dropdownContainer: {
     paddingHorizontal: 5,
@@ -255,27 +269,28 @@ const styles = StyleSheet.create({
   dropdown: {
     borderColor: "#D6D6D6",
     borderRadius: 10,
-    zIndex: 1000
+    zIndex: 1000,
   },
   dropdownRow: {
     flexDirection: "row", // Aligns the dropdowns side by side
     justifyContent: "space-between", // Ensures they are spaced evenly
     marginHorizontal: 6,
     marginBottom: 10,
-    zIndex: 1000
+    zIndex: 1000,
   },
   loading: {
     alignItems: "center",
     justifyContent: "center",
-    flex: 100
+    flex: 100,
   },
 });
 
+//These are our date formatter options
 const options: Intl.DateTimeFormatOptions = {
   weekday: "short",
   year: "numeric",
   month: "short",
   day: "numeric",
 };
-
+//These are our date formatter instances
 const formatter = new Intl.DateTimeFormat("en-US", options);
