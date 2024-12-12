@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "main": "expo-router/entry",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
@@ -10,15 +10,15 @@
     "test": "jest --watchAll",
     "lint": "expo lint"
   },
-"jest": {
-  "preset": "jest-expo",
-  "setupFilesAfterEnv": [
-    "/Users/samuelsanchez/Downloads/CS320/frontend/jest-setup.js"
-  ],
-  "transformIgnorePatterns": [
-    "node_modules/(?!(@react-native|react-native|@react-navigation|expo-font|expo-modules-core|expo)/)"
-  ]
-},
+  "jest": {
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "/Users/samuelsanchez/Downloads/CS320/frontend/jest-setup.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@react-native|react-native|@react-navigation|expo-font|expo-modules-core|expo)/)"
+    ]
+  },
   "dependencies": {
     "@expo/config-plugins": "~8.0.0",
     "@expo/metro-config": "~0.18.11",
