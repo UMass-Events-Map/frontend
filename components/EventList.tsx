@@ -31,8 +31,8 @@ export default function EventList({ events }: EventListProps) {
   // If there are no events, display text that says there are no events
   if (events.length == 0) {
     return (
-      <View>
-        <Text style={styles.noEventText}>No events available</Text>
+      <View testID={"EmptyListView"}>
+        <Text testID={"EmptyListText"} style={styles.noEventText}>No events available</Text>
       </View>
     );
   } 
@@ -48,6 +48,7 @@ export default function EventList({ events }: EventListProps) {
       renderItem={({ item }) => (<EventCard event={item}/>)}
       extraData={events}
       keyExtractor={(item) => item.id.toString()}
+      testID={"ListView"}
     />
   );
 }

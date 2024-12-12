@@ -81,7 +81,6 @@ describe('EventCard', () => {
 
   it('Given an event that is upcoming soon, the EventCard component renders with a red background', () => {
     const input_event = sample_event_2;
-    console.log(input_event.date);
 
     // Render the component
     const { getByTestId } = render(<EventCard event={input_event} />);
