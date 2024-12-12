@@ -64,4 +64,4 @@ In order to close an issue, add a comment and select 'close issue.' It is also p
 
 To add an issue, select the green 'new issue' button. Add a title, description, the correct label (issue, feature, etc.), assignees, and milestone. Be sure to include the estimated timeline of completion in the issue description. Also be sure to designate each issue by priority through labels (high, medium, low). Afterwards, you should be good to go!
 
-### NOTE: All frontend issues will be in the frontend repo, and all backend issues will be in the backend repo [https://github.com/UMass-Events-Map/backend]
+### NOTE: All frontend issues will be in the frontend repo, and all backend issues will be in the (backend repo)[https://github.com/UMass-Events-Map/backend]
