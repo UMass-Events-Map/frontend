@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": "^13.2.0",
+    "version": "^14.1.0",
     "appVersionSource": "remote",
     "requireCommit": true
   },
@@ -10,6 +10,8 @@
       "distribution": "internal",
       "env": {
         "EXPO_PACKAGE_NAME": "app.phoenixfi.umaps",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://gdacboczcpnnnqfxkjsj.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkYWNib2N6Y3Bubm5xZnhranNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2MjQwMzIsImV4cCI6MjA0NTIwMDAzMn0.z9pvzajPfB_qPYmFMD-U-_hcdfarXF3Kq7WHG3OPz5c",
         "GOOGLE_MAPS_API_KEY": "AIzaSyDSEJJvOBviVvo9wWCC9BhjkK5JVzd8FZY"
       }
     },
@@ -17,6 +19,8 @@
       "distribution": "internal",
       "env": {
         "EXPO_PACKAGE_NAME": "app.phoenixfi.umaps",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://gdacboczcpnnnqfxkjsj.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkYWNib2N6Y3Bubm5xZnhranNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2MjQwMzIsImV4cCI6MjA0NTIwMDAzMn0.z9pvzajPfB_qPYmFMD-U-_hcdfarXF3Kq7WHG3OPz5c",
         "GOOGLE_MAPS_API_KEY": "AIzaSyDSEJJvOBviVvo9wWCC9BhjkK5JVzd8FZY"
       }
     },
@@ -26,6 +30,8 @@
       },
       "env": {
         "EXPO_PACKAGE_NAME": "app.phoenixfi.umaps",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://gdacboczcpnnnqfxkjsj.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkYWNib2N6Y3Bubm5xZnhranNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2MjQwMzIsImV4cCI6MjA0NTIwMDAzMn0.z9pvzajPfB_qPYmFMD-U-_hcdfarXF3Kq7WHG3OPz5c",
         "GOOGLE_MAPS_API_KEY": "AIzaSyDSEJJvOBviVvo9wWCC9BhjkK5JVzd8FZY"
       }
     }
