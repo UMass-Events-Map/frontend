@@ -24,7 +24,7 @@ export default function MapActionSheet(props: SheetProps<'mapaction-sheet'>) {
               <BuildingPage {...props.payload?.value}></BuildingPage>
         </ActionSheet>
       )
-    } 
+    }
 }
 
 const styles = StyleSheet.create({

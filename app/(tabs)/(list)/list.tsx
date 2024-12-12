@@ -5,12 +5,15 @@ import {
   SafeAreaView,
   ActivityIndicator,
   Text,
+  TouchableOpacity,
+  TouchableHighlight,
 } from "react-native";
 import React from "react";
 import EventList from "@/components/EventList";
 import { useState, useEffect, useMemo } from "react";
 import { Event } from "@/constants/Interfaces";
 import DropDownPicker from "react-native-dropdown-picker";
+import { Ionicons } from "@expo/vector-icons";
 
 //Here we got the main component for listing events
 export default function List() {
@@ -156,16 +159,29 @@ export default function List() {
     return filterByTimeRange(dayFiltered, rangeValue);
   }, [events, searchQuery, selectedDay, rangeValue]);
 
-  //finally we render the component
+  const [key, setKey] = useState(0);
+  const reloadComponent = () => {
+    setKey((prevKey) => prevKey + 1);
+  };
   return (
     <SafeAreaView>
-      <TextInput
-        placeholder="Search by name, date, or time"
-        placeholderTextColor="grey"
-        style={styles.searchBar}
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-      />
+      <View style={styles.containerRow}>
+        <TextInput
+          placeholder="Search by name, date, or time"
+          placeholderTextColor="grey"
+          style={styles.searchBar}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+        <TouchableHighlight
+          style={styles.refreshButton}
+          underlayColor={"#FAFAFA"}
+          onPress={reloadComponent}
+        >
+          <Ionicons name={"refresh-outline"} size={27} color={"#7E2622"} />
+        </TouchableHighlight>
+      </View>
+
       <View style={styles.dropdownRow}>
         <DropDownPicker
           open={isDropdownOpen}
@@ -201,12 +217,26 @@ export default function List() {
           zIndex={1000} // Prevent overlap issues
         />
       </View>
-      <EventList events={filteredEvents as Event[]} />
+      <EventList key={key} events={filteredEvents as Event[]} />
     </SafeAreaView>
   );
 }
 //these are our styles for the component
 const styles = StyleSheet.create({
+  containerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  refreshButton: {
+    marginHorizontal: 10,
+    marginBottom: 10,
+    padding: 10,
+    borderColor: "#D6D6D6",
+    borderWidth: 1,
+    borderRadius: 20,
+    height: 50,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -220,6 +250,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   searchBar: {
+    flex: 1,
     marginHorizontal: 10,
     marginBottom: 10,
     padding: 10,
