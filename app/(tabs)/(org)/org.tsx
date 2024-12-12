@@ -274,6 +274,7 @@ export default function MainOrgPage({ userId }: MainOrgPageProps) {
     setEditDescription(event.description || '');
     setEditDate(event.date || '');
     setEditTime(event.time || '');
+    setEditDateTime(dayjs(event.date + " " + event.time))
     setEditRoomNumber(event.room_number || '');
     setEditThumbnail(event.thumbnail || '');
     setEditAttendance(event.attendance ? event.attendance.toString() : '');
