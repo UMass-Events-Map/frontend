@@ -44,6 +44,21 @@ The user is also able to login as an organizer. Organizers have the ability to u
 
 4. After running `npx expo start` follow the on terminal instructions to start the emulators/simulators, press `a` for starting the Android emulator (ensure emulator is running first), and `i` for iOS simulator
 
+## Testing
+
+All of the tests are included in the @components/__tests__folder. Unit test files are labeled as such, while other files are integration tests such as login.tsx. More information on our testing strategy is located in the test_plan.MD file in the same folder. To run tests, run the following command:
+
+```bash
+   npm run test
+   ```
+To view the test coverage, please run:
+
+```bash
+   npm run test -- --coverage
+   ```
+
+Thus far, our team has reached 100% coverage for functions, statements, and branches for the EventList and EventCard components. We have also added integration tests for the login. In order to run the backend tests, please refer to the backend repository.
+
 
 ## Bug Tracking
 
