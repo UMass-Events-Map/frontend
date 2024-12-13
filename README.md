@@ -1,5 +1,9 @@
 # Welcome to UMass Events Map 👋
 
+## 1.0 Release Introduction
+
+To view our 1.0 Release, please navigate to the following [link](https://github.com/UMass-Events-Map/frontend/releases/tag/v1.1.0).
+
 ## Product Overview
 
 Welcome to the UMass Events Map, the best mobile application for finding upcoming events at the University of Massachusetts, Amherst. Our application serves as a centralized platform for students who wish to find events and organizers who wish to publish events. The application runs on both iOS and Android and with devices that support Android 5 and beyond and iPhone models with iOS 6 and beyond.
