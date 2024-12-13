@@ -2,7 +2,7 @@
 
 ## 1.0 Release Introduction
 
-To view our 1.0 Release, please navigate to the following [link](https://github.com/UMass-Events-Map/frontend/releases/tag/v1.1.0).
+To view our 1.0 Release, please navigate to the following [link](https://github.com/UMass-Events-Map/frontend/releases/tag/v1.1.0). This README.md contains additional information on testing and the use of design patterns.
 
 ## Product Overview
 
@@ -58,6 +58,18 @@ To view the test coverage, please run:
    ```
 
 Thus far, our team has reached 100% coverage for functions, statements, and branches for the EventList and EventCard components. We have also added integration tests for the login. In order to run the backend tests, please refer to the backend repository.
+
+## Design Patterns
+
+One design principle that we applied to our code is encapsulation. Encapsulation focuses on data hiding to ensure that the internal state is protected and only accessible in a controlled way. In our code, encapsulation is applied in various components where state variables are initialized and managed privately within components. This helps to limit direct manipulation from outside.
+
+1. File and Line Reference: Line 16 in @components/BuildingPage.tsx
+
+- BuildingPage component (lines where “events” and “error” are defined): These are encapsulated within the component’s scope using useState. Instead of exposing these states directly, only controlled access and updates are allowed through the component logic. 
+
+- fetchEvents function in the BuildingPage component (applies within the useEffect): Here, the internal state “events” is updated only when data is successfully fetched, and “error” is set only when there's an error in fetching. This approach prevents unintended side effects, as external components cannot directly alter “events” or “error”.
+
+Without encapsulation, exposing states like “events” or “error” could lead to unintended effects, such as overwriting data. This in turn might break how events are displayed. Encapsulation through “useState” and controlled access inside the component ensures that “events” can only be set and accessed within the logic defined by the component itself. For example, “setEvents” and “setError” handle updates, ensuring that updates happen in a proper way (only after successful data retrieval or upon encountering errors).
 
 
 ## Bug Tracking
